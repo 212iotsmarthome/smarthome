@@ -1,0 +1,22 @@
+build/default/production/main.o:  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/main.c  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/timer/timer.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/button_matrix/button.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/lcd/lcd.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/uart/uart.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/adc/adc.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/i2c/i2c.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/mystring.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/DHT11.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/delay.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/two_mode_led.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/pwm.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/spi_74hc595.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/conditioner.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/curtain.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/main.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/interrupt/interrupt.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/uartProcess.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/door.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/gas_sensor.h  \
+

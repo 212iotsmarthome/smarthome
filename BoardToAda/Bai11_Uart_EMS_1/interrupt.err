@@ -1,0 +1,4 @@
+Warning[2058] D:\GitHub\smarthome\BoardToAda\Bai11_Uart_EMS_1\interrupt\interrupt.c 68 : call of function without prototype
+Warning[2058] D:\GitHub\smarthome\BoardToAda\Bai11_Uart_EMS_1\interrupt\interrupt.c 81 : call of function without prototype
+Warning[2058] D:\GitHub\smarthome\BoardToAda\Bai11_Uart_EMS_1\interrupt\interrupt.c 113 : call of function without prototype
+Warning[2058] D:\GitHub\smarthome\BoardToAda\Bai11_Uart_EMS_1\interrupt\interrupt.c 126 : call of function without prototype
