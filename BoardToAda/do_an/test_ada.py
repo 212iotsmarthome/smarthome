@@ -70,6 +70,15 @@ def set_conditioner_temp(temp):
     print(command)
     ser.write(command.encode())
 
+'''
+gui serial command de set 4 den lan luot la den 0, 1, 2, 3 voi mode0, mode1, mode2, mode3
+'''
+def set_mul_led(mode0, mode1, mode2, mode3):
+    command = f'!setMulLed:{mode0}:{mode1}:{mode2}:{mode3}*'
+    print(command)
+    ser.write(command.encode())
+
+
 
 def getPort():
     ports = serial.tools.list_ports.comports()
@@ -118,7 +127,9 @@ def processData(data=""):
         device_ready = 1
         print("device ready")
     else:
-        device_info = json.loads(data)
+        temp_device_info = json.loads(data)
+        device_info = temp_device_info
+
 
 
 serial_message = ""
