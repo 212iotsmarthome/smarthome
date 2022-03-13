@@ -4,8 +4,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/i2c/i2c.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/two_mode_led.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/main.c</file>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/gas_sensor.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/lcd/lcd.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/uartProcess.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/uart/uart.c</file>
