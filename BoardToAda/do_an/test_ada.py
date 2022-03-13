@@ -52,21 +52,12 @@ def set_curtain(mode):
 
 
 '''
-gui serial command de tat mo may lanh
+gui serial command de tat mo may lanh va thay doi nhiet do
 is_on: [0,1] -> 0: tat may lanh, 1: mo may lanh
+temp: [0,99] : gia tri nhiet do may lanh
 '''
-def set_conditioner_power(is_on):
-    command = f'!setConditioner:{is_on}*'        #f' string in python.
-    print(command)
-    ser.write(command.encode())
-
-
-'''
-gui serial command de chinh nhiet do may lanh
-temp: [0,99]
-'''
-def set_conditioner_temp(temp):
-    command = f'!setConditionerTemp:{temp}*'
+def set_conditioner(is_on, temp):
+    command = f'!setConditioner:{is_on}:{temp}*'        #f' string in python.
     print(command)
     ser.write(command.encode())
 
