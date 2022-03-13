@@ -19,10 +19,8 @@ static char command_setLed[7] = "setLed";
 static char command_setCurtain[11] = "setCurtain";
 //getAllInfo
 static char command_getAllInfo[11] = "getAllInfo";
-//setConditioner:a      (a[0:1])
+//setConditioner:a:bb      (a[0:1], bb[0:99])
 static char command_set_conditioner[15] = "setConditioner";
-//setConditionerTemp:aa (a[0:99])
-static char command_set_contidionter_temp[19] = "setConditionerTemp";
 //setMulLed:a:b:c:d
 static char command_setMulLed[10] = "setMulLed";
 
@@ -49,13 +47,10 @@ void Uart_Processing() {
             UartSendString("!OK*");
         } else if (str_ncmp(uart_message, command_getAllInfo, 10) == 0) {
             send_All_Info();
-        } else if(str_ncmp(uart_message, command_set_contidionter_temp, 18) == 0) {
-            value = (uart_message[19] - '0') * 10 + (uart_message[20] - '0');
-            set_conditioner_temp(value);
-            UartSendString("!OK*");
         } else if (str_ncmp(uart_message, command_set_conditioner, 14) == 0){
-            value = uart_message[15] - '0';
-            set_conditioner_state(value);
+            value = (uart_message[17] - '0') * 10 + (uart_message[18] - '0');
+            set_conditioner_state(uart_message[15] - '0');
+            set_conditioner_temp(value);
             UartSendString("!OK*");
         } else if (str_ncmp(uart_message, command_setMulLed, 9) == 0) {
             set_Led(0, uart_message[10] - '0');
@@ -64,7 +59,7 @@ void Uart_Processing() {
             set_Led(3, uart_message[16] - '0');
             UartSendString("!OK*");
         }  else {
-            UartSendString("Something went wrong");
+            UartSendString("!Something went wrong*");
         }
     }
 }
