@@ -67,6 +67,15 @@ def set_mul_led(mode0, mode1, mode2, mode3):
     ser.write(command.encode())
 
 
+'''
+gui serial command de dong mo cua. 1 de mo cua, 0 de dong cua.
+'''
+def set_door(open):
+    command = f'!setDoor:{open}*'
+    print(command)
+    ser.write(command.encode())
+
+
 def getPort():
     ports = serial.tools.list_ports.comports()
     N = len(ports)

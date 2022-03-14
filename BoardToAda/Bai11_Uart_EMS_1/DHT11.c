@@ -59,9 +59,39 @@ void startQueryDHT() {
     
     
     //check for DHT response
-    while(DHT_PORT_IN);
-    while(!DHT_PORT_IN);
-    while(DHT_PORT_IN);
+    TMR1H = 0;
+    TMR1L = 0;
+    tempTime = 0;
+    while(DHT_PORT_IN) {
+        tempTime = TMR1L;
+        tempTime = tempTime | ((int)TMR1H << 8);
+        if (tempTime > 500) {
+            reason1 += 1;
+            return; 
+        }
+    }
+    TMR1H = 0;
+    TMR1L = 0;
+    tempTime = 0;
+    while(!DHT_PORT_IN) {
+        tempTime = TMR1L;
+        tempTime = tempTime | ((int)TMR1H << 8);
+        if (tempTime > 500) {
+            reason1 += 1;
+            return; 
+        }
+    }
+    TMR1H = 0;
+    TMR1L = 0;
+    tempTime = 0;
+    while(DHT_PORT_IN) {
+        tempTime = TMR1L;
+        tempTime = tempTime | ((int)TMR1H << 8);
+        if (tempTime > 500) {
+            reason1 += 1;
+            return; 
+        }
+    }
     
     /* read Data send by DHT
     * Data is readed bit by bit, place inside DHTDataArray
