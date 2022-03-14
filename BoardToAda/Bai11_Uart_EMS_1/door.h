@@ -15,6 +15,10 @@ extern "C" {
 void init_door();
 void check_door();
 char get_door_value();
+void open_door();
+void close_door();
+void stop_door();
+void setDoor(int value);
 
 
 #ifdef	__cplusplus

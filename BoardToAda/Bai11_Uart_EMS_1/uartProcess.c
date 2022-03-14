@@ -23,6 +23,8 @@ static char command_getAllInfo[11] = "getAllInfo";
 static char command_set_conditioner[15] = "setConditioner";
 //setMulLed:a:b:c:d
 static char command_setMulLed[10] = "setMulLed";
+//setDoor:a a[0:1]
+static char command_setDoor[8] = "setDoor";
 
 
 
@@ -58,7 +60,10 @@ void Uart_Processing() {
             set_Led(2, uart_message[14] - '0');
             set_Led(3, uart_message[16] - '0');
             UartSendString("!OK*");
-        }  else {
+        }  else if (str_ncmp(uart_message, command_setDoor, 7) == 0) {
+            setDoor(uart_message[8] - '0');
+            UartSendString("!OK*");
+        }else {
             UartSendString("!Something went wrong*");
         }
     }

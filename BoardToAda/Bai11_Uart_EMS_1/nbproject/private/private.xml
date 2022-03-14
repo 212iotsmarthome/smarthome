@@ -7,9 +7,19 @@
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/i2c/i2c.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/two_mode_led.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/main.c</file>
+<<<<<<< Updated upstream
+=======
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/door.c</file>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/door.h</file>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/adc/adc.c</file>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/button_matrix/button.c</file>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/pwm.h</file>
+>>>>>>> Stashed changes
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/gas_sensor.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/lcd/lcd.c</file>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/pwm.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/uartProcess.c</file>
+            <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/DHT11.c</file>
             <file>file:/D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/uart/uart.c</file>
         </group>
     </open-files>

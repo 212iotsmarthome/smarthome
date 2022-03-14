@@ -50,19 +50,32 @@ void main(void)
     lcd_clear();
     LcdClearS();
     delay_ms(1000);
+    set_DC_speed(0.8);
     
 	while (1)
 	{
         while (!flag_timer3);
         flag_timer3 = 0;
-        scan_key_matrix_with_uart();
-        button_check();
+//        if (PORTDbits.RD2 == 1) {
+//            LcdPrintNumS(0, 0, 1);
+//        } else {
+//            LcdPrintNumS(0 ,0 ,0);
+//        }
+//        scan_key_matrix_with_uart();
+//        button_check();
 //        
         
 //        
-//        if (k % 20 == 0) {      //run every 1 second
-//           
-//        }
+        if (k % 20 == 0) {      //run every 1 second
+//            get_adc_value();
+//            if (temp == 0) {
+//                PWM_turn_on();
+//                temp = 1;
+//            } else {
+//                PWM_turn_off();
+//                temp = 0;
+//            }
+        }
         startQueryDHT();        //read DHT11
         run_Led();              //run 4 leds
         run_Curtain();          //run curtain
@@ -71,7 +84,7 @@ void main(void)
         check_door();           //check if the door is open and run it.
         
         get_adc_value();        //read adc value and store it inside array.
-        toggle();               // I'm alive
+//        toggle();               // I'm alive
         Uart_Processing();      //handle uart receive message
         
         if (k == 0) {       //run every 5 seconds.
@@ -81,7 +94,7 @@ void main(void)
         
         k = (k + 1) % 100;
         DisplayLcdScreen();
-      
+        
 	}
 }
 
@@ -137,10 +150,10 @@ void init_system(void)
     init_key_matrix_with_uart();
     init_uart();
     init_adc();
-    init_i2c();
+//    init_i2c();
     initDHT();
-//    init_pwm();
-    init_SPI_manual();
+    init_pwm();
+//    init_SPI_manual();
     init_door();
     init_Curtain();
     init_conditioner();
