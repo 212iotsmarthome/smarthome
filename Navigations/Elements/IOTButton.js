@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity } from "react-native";
 
-const IOTButton = ({ text = "My Button", type = "dark" }) => {
+const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
   return (
     <View
       style={{
@@ -13,6 +13,7 @@ const IOTButton = ({ text = "My Button", type = "dark" }) => {
       }}
     >
       <TouchableOpacity
+        onPress={onPress}
         style={
           type == "dark"
             ? {
