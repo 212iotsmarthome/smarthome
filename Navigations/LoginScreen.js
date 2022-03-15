@@ -5,9 +5,9 @@ import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";
 import Credit from "./Elements/Credit";
 
-export default function LIScreen() {
+export default function LIScreen({ navigation }) {
   return (
-    <View style={{ height: "100%" }}>
+    <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext="" largetext="Login" />
       </View>
@@ -27,7 +27,10 @@ export default function LIScreen() {
         <IOTTextInput placeholder="Password" secureTextEntry={true} />
       </View>
 
-      <IOTButton text="Log In" />
+      <IOTButton
+        text="Log In"
+        onPress={() => navigation.navigate("HomeScreen")}
+      />
 
       <Credit />
     </View>

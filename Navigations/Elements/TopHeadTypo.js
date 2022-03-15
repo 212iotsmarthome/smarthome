@@ -5,16 +5,24 @@ const THTypo = ({ smalltext = "Lorem", largetext = "Ipsum" }) => {
   return (
     <View
       style={{
-        backgroundColor: "#fff",
+        // backgroundColor: "#fff",
         alignItems: "flex-start",
         justifyContent: "flex-start",
-        // marginTop: 60,
         marginLeft: 40,
       }}
     >
-      <StatusBar style="inverted" />
+      <StatusBar hidden={true} />
 
-      <Text style={{ fontSize: 18, color: "#222" }}> {smalltext} </Text>
+      <Text
+        style={{
+          fontSize: 18,
+          color: "#222",
+          fontWeight: "bold",
+          marginBottom: -5,
+        }}
+      >
+        {smalltext}
+      </Text>
 
       <Text
         style={{
