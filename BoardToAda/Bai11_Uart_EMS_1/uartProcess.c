@@ -21,7 +21,7 @@ static char command_setCurtain[11] = "setCurtain";
 static char command_getAllInfo[11] = "getAllInfo";
 //setConditioner:a:bb      (a[0:1], bb[0:99])
 static char command_set_conditioner[15] = "setConditioner";
-//setMulLed:a:b:c:d
+//setMulLed:a:b
 static char command_setMulLed[10] = "setMulLed";
 //setDoor:a a[0:1]
 static char command_setDoor[8] = "setDoor";
@@ -57,8 +57,6 @@ void Uart_Processing() {
         } else if (str_ncmp(uart_message, command_setMulLed, 9) == 0) {
             set_Led(0, uart_message[10] - '0');
             set_Led(1, uart_message[12] - '0');
-            set_Led(2, uart_message[14] - '0');
-            set_Led(3, uart_message[16] - '0');
             UartSendString("!OK*");
         }  else if (str_ncmp(uart_message, command_setDoor, 7) == 0) {
             setDoor(uart_message[8] - '0');
@@ -83,18 +81,10 @@ void send_All_Info() {
     UartSendNum(read_adc_value(1));
     UartSendString(", \"2\":");
     UartSendNum(read_adc_value(2));
-    UartSendString(", \"3\":");
-    UartSendNum(read_adc_value(3));
-    UartSendString(",\"4\":");
-    UartSendNum(read_adc_value(4));
     UartSendString("}, \"LED\":{\"0\":");
     UartSendNum(get_Led(0));
     UartSendString(", \"1\":");
     UartSendNum(get_Led(1));
-    UartSendString(", \"2\":");
-    UartSendNum(get_Led(2));
-    UartSendString(", \"3\":");
-    UartSendNum(get_Led(3));
     UartSendString("}, \"curtain\":");
     UartSendNum(get_Curtain());
     UartSendString(", \"door\":");  

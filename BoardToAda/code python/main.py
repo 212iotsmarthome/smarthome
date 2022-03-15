@@ -14,8 +14,8 @@ humid, temperature, LDR, door, gas la thuoc tinh dang input, se doc len server
 LED, curtain, conditioner la thuoc tinh output, do minh dieu khien
 '''
 device_info = {"humid": 0, "temperature": 0,
-               "LDR": {"1": 0, "2": 0, "3": 0, "4": 0},
-               "LED": {"0": 0, "1": 0, "2": 0, "3": 0},
+               "LDR": {"1": 0, "2": 0},
+               "LED": {"0": 0, "1": 0},
                "curtain": 0,
                "door": 0,
                "conditioner": {"power": 0, "temp": 22},
@@ -31,7 +31,7 @@ device_ready = 1
 #danh sach cac ham gui command ve board.
 '''
 gui serial command de bat den theo cac che do khac nhau
-LedIndex: [0,3]
+LedIndex: [0,1]
 mode: [0,3] -> 0:tat, 1:sang den trai, 2:sang den phai, 3:sang 2 den
 '''
 def set_led(ledIndex, mode):
@@ -59,10 +59,10 @@ def set_conditioner(is_on, temp):
     ser.write(command.encode())
 
 '''
-gui serial command de set 4 den lan luot la den 0, 1, 2, 3 voi mode0, mode1, mode2, mode3
+gui serial command de set 4 den lan luot la den 0, 1 voi mode0, mode1
 '''
-def set_mul_led(mode0, mode1, mode2, mode3):
-    command = f'!setMulLed:{mode0}:{mode1}:{mode2}:{mode3}*'
+def set_mul_led(mode0, mode1):
+    command = f'!setMulLed:{mode0}:{mode1}*'
     print(command)
     ser.write(command.encode())
 
@@ -99,10 +99,8 @@ def print_data():
     print("---------------------------------------------------------------------")
     print("temperature = ", device_info["temperature"])
     print("humid = ", device_info["humid"])
-    print("LDR1 = ", device_info["LDR"]["1"], "; LDR2 = ", device_info["LDR"]["2"],
-          "\r\nLDR3 = ", device_info["LDR"]["3"], "; LDR4 = ", device_info["LDR"]["4"])
-    print("LED0 = ", device_info["LED"]["0"], "; LED1 = ", device_info["LED"]["1"],
-          "\r\nLED2 = ", device_info["LED"]["2"], "; LED3 = ", device_info["LED"]["3"])
+    print("LDR1 = ", device_info["LDR"]["1"], "; LDR2 = ", device_info["LDR"]["2"])
+    print("LED0 = ", device_info["LED"]["0"], "; LED1 = ", device_info["LED"]["1"])
     print("curtain = ", device_info["curtain"])
     print("door = ", device_info["door"])
     print("conditioner: power = ", device_info["conditioner"]["power"], " temp = ", device_info["conditioner"]["temp"])
@@ -125,8 +123,7 @@ nhieu lan
 '''
 def DeviceHandle(temp_info):
     if temp_info["LED"] != device_info["LED"]:
-        LED_json = {"value": {"0": temp_info["LED"]["0"], "1": temp_info["LED"]["1"],
-                              "2": temp_info["LED"]["2"], "3": temp_info["LED"]["3"]}}
+        LED_json = {"value": {"0": temp_info["LED"]["0"], "1": temp_info["LED"]["1"]}}
         client.publish(AIO_FEED_IDS["LED"], json.dumps(LED_json))
     if temp_info["conditioner"] != device_info["conditioner"]:
         cond_json = {"value":{"power":temp_info["conditioner"]["power"],"temp":temp_info["conditioner"]["temp"]}}
@@ -144,9 +141,8 @@ def SensorHandle():
     dht11_json = {"value": {"humid": device_info["humid"], "temperature": device_info["temperature"]}}
     client.publish(AIO_FEED_IDS["dht11"], json.dumps(dht11_json))
     # Send light sensor
-    # "LDR": {"1": 0, "2": 0, "3": 0, "4": 0},
-    LDR_json = {"value": {"1": device_info["LDR"]["1"], "2": device_info["LDR"]["2"],
-                          "3": device_info["LDR"]["3"], "4": device_info["LDR"]["4"]}}
+    # "LDR": {"1": 0, "2": 0},
+    LDR_json = {"value": {"1": device_info["LDR"]["1"], "2": device_info["LDR"]["2"]}}
     client.publish(AIO_FEED_IDS["LDR"], json.dumps(LDR_json))
     # Send gas sensor
     client.publish(AIO_FEED_IDS["gas"], device_info["gas"])
@@ -236,7 +232,7 @@ def message(client, feed_id, payload):
     if device_ready:
         if (feed_id == AIO_FEED_IDS["LED"]):
             payload_json = json.loads(payload)
-            set_mul_led(payload_json["0"],payload_json["1"],payload_json["2"],payload_json["3"])
+            set_mul_led(payload_json["0"],payload_json["1"])
             device_ready = 0
         elif (feed_id == AIO_FEED_IDS["curtain"]):
             set_curtain(payload)

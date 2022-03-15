@@ -53,17 +53,21 @@ char get_door_value() {
 }
 
 void open_door() {
-    PWM_turn_on();
-    DOOR_LAT_1 = 1;
-    DOOR_LAT_2 = 0;
-    door_moving = 1;
+    if (is_door_open = CLOSE) {
+        PWM_turn_on();
+        DOOR_LAT_1 = 1;
+        DOOR_LAT_2 = 0;
+        door_moving = 1;
+    }
 }
 
 void close_door() {
-    PWM_turn_on();
-    DOOR_LAT_1 = 0;
-    DOOR_LAT_2 = 1;
-    door_moving = 1;
+    if (is_door_open == OPEN) {
+        PWM_turn_on();
+        DOOR_LAT_1 = 0;
+        DOOR_LAT_2 = 1;
+        door_moving = 1;
+    }
 }
 
 void stop_door() {

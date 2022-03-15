@@ -61,8 +61,8 @@ void main(void)
 //        } else {
 //            LcdPrintNumS(0 ,0 ,0);
 //        }
-//        scan_key_matrix_with_uart();
-//        button_check();
+        scan_key_matrix_with_uart();
+        button_check();
 //        
         
 //        
@@ -77,7 +77,7 @@ void main(void)
 //            }
         }
         startQueryDHT();        //read DHT11
-        run_Led();              //run 4 leds
+        run_Led();              //run 2 leds
         run_Curtain();          //run curtain
         run_conditioner();      //run conditioner
         display_Scene();        //display on LCD
@@ -114,15 +114,9 @@ void button_check() {
         switch_led_state(1);
     }
     if (key_code[4] == 1) {
-        switch_led_state(2);
-    }
-    if (key_code[5] == 1) {
-        switch_led_state(3);
-    }
-    if (key_code[2] == 1) {
         switch_curtain_state();
     }
-    if (key_code[6] == 1) {
+    if (key_code[5] == 1) {
         switch_conditioner_state();
     }
 }
@@ -134,6 +128,8 @@ void init_system(void)
 {
     PORTDbits.RD1 = 0;
     TRISDbits.RD1 = 0;
+    TRISCbits.RC2 = 0;      //output RC2
+    LATCbits.LATC2 = 0;
     TRISB = 0x00;		//setup PORTB is output
     TRISA = 0x00;
     init_lcd();
@@ -153,7 +149,7 @@ void init_system(void)
 //    init_i2c();
     initDHT();
     init_pwm();
-//    init_SPI_manual();
+    init_SPI_manual();
     init_door();
     init_Curtain();
     init_conditioner();
@@ -173,14 +169,10 @@ void display_Scene() {
         case SCENE_ADC:
             LcdPrintNumS(0, 0, read_adc_value(1));
             LcdPrintNumS(0, 8, read_adc_value(2));
-            LcdPrintNumS(1, 0, read_adc_value(3));
-            LcdPrintNumS(1, 8, read_adc_value(4));
             break;
         case  SCENE_LED_STATE:
             LcdPrintNumS(0, 0, get_Led(0));
             LcdPrintNumS(0, 8, get_Led(1));
-            LcdPrintNumS(1, 0, get_Led(2));
-            LcdPrintNumS(1, 8, get_Led(3));
             break;
         case SCENE_CURTAIN_A_DOOR:
             LcdPrintStringS(0, 0, "Cur:");

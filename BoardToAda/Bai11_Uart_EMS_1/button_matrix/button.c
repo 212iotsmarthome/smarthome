@@ -47,7 +47,7 @@ void scan_key_matrix_with_uart()
         PORT_BUTTON = ~arrayMaskOutputOfKey[i];
 		for(j=0;j<MAX_COL;j++)
 		{
-            if (j > 1) continue;
+            if (j > 1) continue;        //don't scan column 2 and 3.
 			if((PORT_BUTTON & arrayMaskInputOfKey[j]) == 0)
 				key_code[i*MAX_ROW+j] = key_code[i*MAX_ROW+j] + 1;
 			else
