@@ -11,10 +11,11 @@ export default function LIScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-  useLogIn(() => {navigation.navigate("Home")})
+
+  useLogIn(() => {navigation.navigate("HomeScreen")})
 
   return (
-    <View style={{ height: "100%" }}>
+    <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext="" largetext="Login" />
       </View>

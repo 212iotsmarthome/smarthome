@@ -1,4 +1,5 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Alert } from "react-native";
+
 
 const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
   return (
@@ -28,13 +29,14 @@ const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
             ? {
                 height: 50,
                 width: "90%",
-                backgroundColor: "#fff",
+                backgroundColor: "#FFF",
                 borderRadius: 25,
                 shadowColor: "grey",
                 elevation: 5,
               }
             : {}
         }
+        onPress={onPress}
       >
         <Text
           style={
