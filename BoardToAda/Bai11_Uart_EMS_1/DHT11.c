@@ -52,7 +52,7 @@ void startQueryDHT() {
     delay_ms(22);
     
     DHT_PORT_OUT = 1;
-    delay_6us(7); //6 * 7 ~ 42us
+    //delay_6us(7); //6 * 7 ~ 42us
     
     DHT_TRIS = 1; // set D0 as input
     

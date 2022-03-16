@@ -35,7 +35,7 @@ void button_check();
 #define     SCENE_CONDITIONER       4
 #define     GAS_SENSOR              5
 
-static char scene = GAS_SENSOR;
+static char scene = SCENE_CURTAIN_A_DOOR;
 
 
 
@@ -67,16 +67,9 @@ void main(void)
         
 //        
         if (k % 20 == 0) {      //run every 1 second
-//            get_adc_value();
-//            if (temp == 0) {
-//                PWM_turn_on();
-//                temp = 1;
-//            } else {
-//                PWM_turn_off();
-//                temp = 0;
-//            }
+          startQueryDHT();        //read DHT11
         }
-        startQueryDHT();        //read DHT11
+       
         run_Led();              //run 2 leds
         run_Curtain();          //run curtain
         run_conditioner();      //run conditioner
@@ -88,7 +81,7 @@ void main(void)
         Uart_Processing();      //handle uart receive message
         
         if (k == 0) {       //run every 5 seconds.
-            scene = (scene + 1) % 6;
+//            scene = (scene + 1) % 6;
             send_All_Info();
         }
         
