@@ -6,6 +6,22 @@ import time
 import serial.tools.list_ports
 # from Adafruit_IO import Client, Feed, Data
 
+# AIO_FEED_IDS = ["bbc-led","bbc-dht11","bbc-conditioner","bbc-ldr","bbc-door","bbc-curtain","bbc-gas"]
+AIO_FEED_ID_DEVICES = {
+               "LED": "bbc-led",
+               "curtain": "bbc-curtain",
+               "door": "bbc-door",
+               "conditioner": "bbc-conditioner",
+               }
+AIO_FEED_ID_SENSORS = {
+                "dht11": "bbc-dht11",
+                "LDR": "bbc-ldr",
+                "gas": "bbc-gas",
+                }
+# AIO_FEED_IDS_TEST = "bbc-curtain"
+AIO_USERNAME = "namdiep239"
+AIO_KEY = "aio_cSFh41uOGJgJ3IyiK0f0evTUtDOw"
+
 
 #----------------------------------------SERIAL COMMUNICATION-----------------------------------
 '''
@@ -124,14 +140,14 @@ nhieu lan
 def DeviceHandle(temp_info):
     if temp_info["LED"] != device_info["LED"]:
         LED_json = {"value": {"0": temp_info["LED"]["0"], "1": temp_info["LED"]["1"]}}
-        client.publish(AIO_FEED_IDS["LED"], json.dumps(LED_json))
+        client.publish(AIO_FEED_ID_DEVICES["LED"], json.dumps(LED_json))
     if temp_info["conditioner"] != device_info["conditioner"]:
         cond_json = {"value":{"power":temp_info["conditioner"]["power"],"temp":temp_info["conditioner"]["temp"]}}
-        client.publish(AIO_FEED_IDS["conditioner"], json.dumps(cond_json))
+        client.publish(AIO_FEED_ID_DEVICES["conditioner"], json.dumps(cond_json))
     if temp_info["curtain"] != device_info["curtain"]:
-        client.publish(AIO_FEED_IDS["curtain"], temp_info["curtain"])
+        client.publish(AIO_FEED_ID_DEVICES["curtain"], temp_info["curtain"])
     if temp_info["door"] != device_info["door"]:
-        client.publish(AIO_FEED_IDS["door"], temp_info["door"])
+        client.publish(AIO_FEED_ID_DEVICES["door"], temp_info["door"])
 
 '''
 SensorHandle: gui tin hieu tu cac sensor len Ada 
@@ -139,13 +155,13 @@ SensorHandle: gui tin hieu tu cac sensor len Ada
 def SensorHandle():
     # Send temp and humid
     dht11_json = {"value": {"humid": device_info["humid"], "temperature": device_info["temperature"]}}
-    client.publish(AIO_FEED_IDS["dht11"], json.dumps(dht11_json))
+    client.publish(AIO_FEED_ID_SENSORS["dht11"], json.dumps(dht11_json))
     # Send light sensor
     # "LDR": {"1": 0, "2": 0},
     LDR_json = {"value": {"1": device_info["LDR"]["1"], "2": device_info["LDR"]["2"]}}
-    client.publish(AIO_FEED_IDS["LDR"], json.dumps(LDR_json))
+    client.publish(AIO_FEED_ID_SENSORS["LDR"], json.dumps(LDR_json))
     # Send gas sensor
-    client.publish(AIO_FEED_IDS["gas"], device_info["gas"])
+    client.publish(AIO_FEED_ID_SENSORS["gas"], device_info["gas"])
 
 def processData(data):
     data = data.replace("!", "")
@@ -198,25 +214,14 @@ ser = serial.Serial( port="COM2", baudrate=9600) #baudrate=115200
 
 
 #----------------------------------------MQTT---------------------------------------------------
-# AIO_FEED_IDS = ["bbc-led","bbc-dht11","bbc-conditioner","bbc-ldr","bbc-door","bbc-curtain","bbc-gas"]
-AIO_FEED_IDS = {
-               "dht11": "bbc-dht11",
-               "LDR": "bbc-ldr",
-               "LED": "bbc-led",
-               "curtain": "bbc-curtain",
-               "door": "bbc-door",
-               "conditioner": "bbc-conditioner",
-               "gas": "bbc-gas",
-               }
-# AIO_FEED_IDS_TEST = "bbc-curtain"
-AIO_USERNAME = "namdiep239"
-AIO_KEY = "aio_cSFh41uOGJgJ3IyiK0f0evTUtDOw"
 
 def connected(client):
     print("Ket noi thanh cong...")
-    for feed in AIO_FEED_IDS:
-        client.subscribe(AIO_FEED_IDS[feed])
+    for feed in AIO_FEED_ID_DEVICES:
+        client.subscribe(AIO_FEED_ID_DEVICES[feed])
     # client.subscribe(AIO_FEED_IDS_TEST)
+    # for feed1 in AIO_FEED_ID_SENSORS:
+    #     client.subscribe(AIO_FEED_ID_SENSORS[feed1])
 
 def subscribe(client, userdata, mid, granted_qos):
     print("Subscribe thanh cong...")
@@ -225,22 +230,25 @@ def disconnected(client):
     print("Ngat ket noi...")
     sys.exit(1)
 
+def SendToBoard(feed_id, payload):
+    if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
+        payload_json = json.loads(payload)
+        set_mul_led(payload_json["0"], payload_json["1"])
+    elif (feed_id == AIO_FEED_ID_DEVICES["curtain"]):
+        set_curtain(payload)
+    elif (feed_id == AIO_FEED_ID_DEVICES["conditioner"]):
+        payload_json = json.loads(payload)
+        set_conditioner(payload_json["power"], payload_json["temp"])
+    elif (feed_id == AIO_FEED_ID_DEVICES["door"]):
+        set_door(payload)
+
 def message(client, feed_id, payload):
     print(feed_id + " nhan du lieu: " + payload)
-    # print(type(payload))
+    print(type(payload))
     global device_ready
     if device_ready:
-        if (feed_id == AIO_FEED_IDS["LED"]):
-            payload_json = json.loads(payload)
-            set_mul_led(payload_json["0"],payload_json["1"])
-            device_ready = 0
-        elif (feed_id == AIO_FEED_IDS["curtain"]):
-            set_curtain(payload)
-            device_ready = 0
-        elif (feed_id == AIO_FEED_IDS["conditioner"]):
-            payload_json = json.loads(payload)
-            set_conditioner(payload_json["power"],payload_json["temp"])
-            device_ready = 0
+        SendToBoard(feed_id,payload)
+        device_ready = 0
 
 client = MQTTClient(AIO_USERNAME, AIO_KEY)
 client.on_connect = connected
