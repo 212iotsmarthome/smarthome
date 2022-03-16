@@ -1,8 +1,10 @@
-#include <p18f4620.h>
+
 
 #include "pwm.h"
 #include "door.h"
 #include "delay.h"
+
+#include <p18f4620.h>
 
 #define DOOR_PORT       PORTDbits.RD3
 //direction for the motor
@@ -53,7 +55,7 @@ char get_door_value() {
 }
 
 void open_door() {
-    if (is_door_open = CLOSE) {
+    if (is_door_open == CLOSE) {
         PWM_turn_on();
         DOOR_LAT_1 = 1;
         DOOR_LAT_2 = 0;
@@ -75,7 +77,7 @@ void stop_door() {
 }
 
 void setDoor(int value) {
-    if (value == 1) {
+    if (value == OPEN) {
         open_door();
     } else {
         close_door();
