@@ -14,7 +14,6 @@ const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
       }}
     >
       <TouchableOpacity
-        onPress={onPress}
         style={
           type == "dark"
             ? {
