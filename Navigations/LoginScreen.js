@@ -1,23 +1,17 @@
 import { Text, View } from "react-native";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";
 import Credit from "./Elements/Credit";
-import { auth } from "../firebase";
+import { handleSignUp, handleSignIn, useLogIn } from "../Firebase/utility";
 
 export default function LIScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const handleSignUp = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredential =>{
-        const user = userCredential.user;
-        console.log(user.email);
-      })
-      .catch(error => alert(error.message))
-  }
+  const navigation = useNavigation();
+  useLogIn(() => {navigation.navigate("Home")})
 
   return (
     <View style={{ height: "100%" }}>
@@ -40,8 +34,7 @@ export default function LIScreen() {
         <IOTTextInput value={password} onChangeText={(text) => {setPassword(text);}} placeholder="Password" secureTextEntry={true} />
       </View>
 
-      <IOTButton text="Log In" onPress={handleSignUp}/>
-
+      <IOTButton text="Log In" onPress={() => handleSignIn(email, password)}/>
       <Credit />
     </View>
   );

@@ -1,0 +1,48 @@
+[33mcommit 459378808838ce9327ce9c8bb8c06dbad9a3f6f2[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m)[m
+Author: NoKnight41 <tdmdo2612@gmail.com>
+Date:   Tue Mar 15 19:31:10 2022 +0700
+
+    Hello
+
+[33mcommit 77444b71241829510e2cd6284ea042c6362f87c0[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: dongphong543 <59389018+dongphong543@users.noreply.github.com>
+Date:   Fri Mar 11 10:02:55 2022 +0700
+
+    Update README.md
+
+[33mcommit b10516d3825db7e1192ad683d1917f869bdc485a[m
+Author: Kuzuma-kun <ngoccatt@gmail.com>
+Date:   Fri Mar 11 10:00:59 2022 +0700
+
+    board to ada
+
+[33mcommit a6f638ae8a341912a0ecdf724c3c67fb83fb53de[m
+Merge: a5376f9 96ee384
+Author: dongphong543 <dongphong543@gmail.com>
+Date:   Thu Mar 10 22:06:56 2022 +0700
+
+    Merge branch 'main' of https://github.com/212iotsmarthome/smarthome
+
+[33mcommit a5376f9f8cc48bc28427aaaa97be7bbb7dda09e7[m
+Author: dongphong543 <dongphong543@gmail.com>
+Date:   Thu Mar 10 22:02:29 2022 +0700
+
+    Phong_1st-commit-and-several-codes
+
+[33mcommit e342da4ee901078f6d457a29ff0517cf81aac737[m
+Author: dongphong543 <dongphong543@gmail.com>
+Date:   Thu Mar 10 16:01:03 2022 +0700
+
+    Created a new Expo app
+
+[33mcommit 96ee384e8252d48b7c7f1a71f8a6c87d7b96754c[m
+Author: dongphong543 <59389018+dongphong543@users.noreply.github.com>
+Date:   Thu Feb 24 21:26:45 2022 +0700
+
+    Update README.md
+
+[33mcommit 4e5d32efe20958f25554ac47150190fdd0822264[m
+Author: dongphong543 <59389018+dongphong543@users.noreply.github.com>
+Date:   Thu Feb 24 21:25:36 2022 +0700
+
+    Initial commit
