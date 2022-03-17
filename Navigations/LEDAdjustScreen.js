@@ -162,7 +162,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             }}
             value={brightness}
             onValueChange={console.log(!isOn || isAuto)}
-            disabled={true}
+            // disabled={true}
           />
         </View>
       </View>

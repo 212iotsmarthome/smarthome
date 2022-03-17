@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 import { Icon } from "react-native-elements";
 
@@ -10,13 +16,13 @@ export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const LED = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
-  const [isLocked, setIsLocked] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isClosed, setIsClosed] = React.useState(false);
+  const [isMoving, setIsMoving] = React.useState(false);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Smart Door Adjustment" largetext={LED.name} />
+        <TopHeadTypo smalltext="Auto Curtain Adjustment" largetext={LED.name} />
 
         <Image
           style={{
@@ -28,7 +34,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             width: "40%",
             resizeMode: "contain",
           }}
-          source={require("../assets/smart-door.png")}
+          source={require("../assets/smart-curtain.png")}
         />
 
         <View
@@ -55,7 +61,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
                 fontWeight: "bold",
               }}
             >
-              Lock/Unlock
+              Open/Close
             </Text>
           </View>
 
@@ -69,7 +75,16 @@ export default function LEDAdjustScreen({ navigation, route }) {
             }}
           >
             <TouchableOpacity
-              onPress={() => setIsLocked(!isLocked)}
+              onPress={() => {
+                setIsMoving(true);
+                setTimeout(() => {
+                  setIsClosed(!isClosed);
+                }, 500);
+
+                setTimeout(() => {
+                  setIsMoving(false);
+                }, 3000);
+              }}
               style={{
                 width: "90%",
                 height: "100%",
@@ -77,64 +92,23 @@ export default function LEDAdjustScreen({ navigation, route }) {
               }}
             >
               <Icon
-                name={isLocked ? "lock-outline" : "lock-open-outline"}
+                name={isClosed ? "window-closed" : "window-open"}
                 type="material-community"
-                color={isLocked ? "#29ABE2" : "#cc0000"}
+                color={isClosed ? "#29ABE2" : "#cc0000"}
                 size={36}
               />
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <View
-          style={{
-            height: 70,
-            width: "82%",
-            borderRadius: 20,
-            paddingLeft: 20,
-
-            marginRight: "auto",
-            marginLeft: "auto",
-            marginTop: 5,
-
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-        >
-          <View style={{ width: "70%" }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: "black",
-              }}
-            >
-              Open/Close door
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: "30%",
-
-              position: "absolute",
-              right: "0%",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => setIsOpen(!isOpen)}
-              style={{
-                width: "90%",
-                height: "100%",
-                justifyContent: "center",
-              }}
-            >
-              <Icon
-                name={isOpen ? "door-open" : "door-closed"}
-                type="material-community"
-                color={isOpen ? "#cc0000" : "#29ABE2"}
-                size={36}
-              />
+              <ActivityIndicator
+                color="#29ABE2"
+                size={40}
+                animating={isMoving ? true : false}
+                style={{
+                  position: "absolute",
+                  top: "0%",
+                  left: "25%",
+                  backgroundColor: isMoving ? "#F1F9FD" : null,
+                }}
+              ></ActivityIndicator>
             </TouchableOpacity>
           </View>
         </View>
