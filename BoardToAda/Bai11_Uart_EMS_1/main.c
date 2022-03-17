@@ -13,6 +13,7 @@
 #include "conditioner.h"
 #include "curtain.h"
 #include "gas_sensor.h"
+#include "buzzer.h"
 // Noi khai bao hang so
 #define     LED     PORTB
 #define     ON      1
@@ -28,14 +29,14 @@ void toggle();
 void display_Scene();
 void button_check();
 
-#define     SCENE_TEMP_HUMID        0
-#define     SCENE_ADC               1
-#define     SCENE_LED_STATE         2
-#define     SCENE_CURTAIN_A_DOOR    3
-#define     SCENE_CONDITIONER       4
-#define     GAS_SENSOR              5
+#define     SCENE_TEMP_HUMID            0
+#define     SCENE_ADC                   1
+#define     SCENE_LED_STATE             2
+#define     SCENE_CURTAIN_AND_DOOR      3
+#define     SCENE_CONDITIONER           4
+#define     GAS_SENSOR_AND_BUZZER       5
 
-static char scene = GAS_SENSOR;
+static char scene = GAS_SENSOR_AND_BUZZER;
 
 
 
@@ -50,38 +51,44 @@ void main(void)
     lcd_clear();
     LcdClearS();
     delay_ms(1000);
+    set_DC_speed(0.8);
     
 	while (1)
 	{
         while (!flag_timer3);
         flag_timer3 = 0;
+//        if (PORTDbits.RD2 == 1) {
+//            LcdPrintNumS(0, 0, 1);
+//        } else {
+//            LcdPrintNumS(0 ,0 ,0);
+//        }
         scan_key_matrix_with_uart();
         button_check();
 //        
         
 //        
-//        if (k % 20 == 0) {      //run every 1 second
-//           
-//        }
-        startQueryDHT();        //read DHT11
-        run_Led();              //run 4 leds
+        if (k % 20 == 0) {      //run every 1 second
+          startQueryDHT();        //read DHT11
+        }
+       
+        run_Led();              //run 2 leds
         run_Curtain();          //run curtain
         run_conditioner();      //run conditioner
         display_Scene();        //display on LCD
         check_door();           //check if the door is open and run it.
         
         get_adc_value();        //read adc value and store it inside array.
-        toggle();               // I'm alive
+//        toggle();               // I'm alive
         Uart_Processing();      //handle uart receive message
         
         if (k == 0) {       //run every 5 seconds.
-            scene = (scene + 1) % 6;
+//            scene = (scene + 1) % 6;
             send_All_Info();
         }
         
         k = (k + 1) % 100;
         DisplayLcdScreen();
-      
+        
 	}
 }
 
@@ -101,15 +108,9 @@ void button_check() {
         switch_led_state(1);
     }
     if (key_code[4] == 1) {
-        switch_led_state(2);
-    }
-    if (key_code[5] == 1) {
-        switch_led_state(3);
-    }
-    if (key_code[2] == 1) {
         switch_curtain_state();
     }
-    if (key_code[6] == 1) {
+    if (key_code[5] == 1) {
         switch_conditioner_state();
     }
 }
@@ -121,6 +122,8 @@ void init_system(void)
 {
     PORTDbits.RD1 = 0;
     TRISDbits.RD1 = 0;
+    TRISCbits.RC2 = 0;      //output RC2
+    LATCbits.LATC2 = 0;
     TRISB = 0x00;		//setup PORTB is output
     TRISA = 0x00;
     init_lcd();
@@ -137,14 +140,15 @@ void init_system(void)
     init_key_matrix_with_uart();
     init_uart();
     init_adc();
-    init_i2c();
+//    init_i2c();
     initDHT();
-//    init_pwm();
+    init_pwm();
     init_SPI_manual();
     init_door();
     init_Curtain();
     init_conditioner();
     init_gas_sensor();
+    init_buzzer();
 //    SetupTimeForRealTime();
 }
 
@@ -160,16 +164,12 @@ void display_Scene() {
         case SCENE_ADC:
             LcdPrintNumS(0, 0, read_adc_value(1));
             LcdPrintNumS(0, 8, read_adc_value(2));
-            LcdPrintNumS(1, 0, read_adc_value(3));
-            LcdPrintNumS(1, 8, read_adc_value(4));
             break;
         case  SCENE_LED_STATE:
             LcdPrintNumS(0, 0, get_Led(0));
             LcdPrintNumS(0, 8, get_Led(1));
-            LcdPrintNumS(1, 0, get_Led(2));
-            LcdPrintNumS(1, 8, get_Led(3));
             break;
-        case SCENE_CURTAIN_A_DOOR:
+        case SCENE_CURTAIN_AND_DOOR:
             LcdPrintStringS(0, 0, "Cur:");
             LcdPrintStringS(1, 0, "Door:");
             LcdPrintNumS(0, 8, get_Curtain());
@@ -181,9 +181,11 @@ void display_Scene() {
             LcdPrintNumS(0, 8, get_conditioner_state());
             LcdPrintNumS(1, 8, get_conditioner_temp());
             break;
-        case GAS_SENSOR:
+        case GAS_SENSOR_AND_BUZZER:
             LcdPrintStringS(0, 0, "Gas:");
             LcdPrintNumS(0, 8, get_gas_sensor_val());
+            LcdPrintStringS(1, 0, "Buzz:");
+            LcdPrintNumS(1, 8, get_buzzer());
             break;
     }
 }
