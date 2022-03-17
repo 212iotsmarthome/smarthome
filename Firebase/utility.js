@@ -1,7 +1,6 @@
 import { db, auth } from "./firebase";
-import { useState, useEffect } from 'react';
-
-const userCollectionRef = db.collection("Users");
+import { serverTimestamp } from 'firebase/compat/firestore';
+import { addDocument } from "./service";
 
 const handleSignUp = (email, password) => {
     auth
@@ -9,6 +8,12 @@ const handleSignUp = (email, password) => {
       .then(userCredential =>{
         const user = userCredential.user;
         console.log("Registered with: " + user.email);
+        addDocument("User", {
+          email: user.email,
+          name: "Sample Text",
+          ID: user.uid,
+          control: [],
+        })
       })
       .catch(error => alert(error.message))
 }
@@ -30,17 +35,6 @@ const handleSignOut = (action) => {
     .catch(error => alert(error.message))
 }
 
-function useLogIn(action) {
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if(user){
-              action();
-            }
-        })
-        return unsubscribe;
-    }, [])
-}
-
 // function getUser(email) {
 //   useEffect(() => {
 //     const getUser = async () => {
@@ -55,4 +49,4 @@ function useLogIn(action) {
 // }
 
 
-export { handleSignUp, handleSignIn, handleSignOut, useLogIn, auth };
+export { handleSignUp, handleSignIn, handleSignOut, auth };

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, LogBox } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +11,7 @@ import { navigationRef } from "./RootNavigation";
 
 import WelcomeScreen from "./Navigations/WelcomeScreen";
 import LoginScreen from "./Navigations/LoginScreen";
+import SignupScreen from "./Navigations/SignupScreen";
 import HomeScreen from "./Navigations/HomeScreen";
 import LEDScreen from "./Navigations/LEDScreen";
 import LEDAdjustScreen from "./Navigations/LEDAdjustScreen";
@@ -20,6 +21,7 @@ import SmartDoorScreen from "./Navigations/SmartDoorScreen";
 import SDAdjustScreen from "./Navigations/SDAdjustScreen";
 
 const Stack = createNativeStackNavigator();
+LogBox.ignoreLogs(['Setting a timer for a long period of time'])
 
 export default function App() {
   return (
@@ -32,7 +34,11 @@ export default function App() {
             component={WelcomeScreen}
             options={{ headerShown: false }}
           />
-
+          <Stack.Screen
+            name="SignUpScreen"
+            component={SignupScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}

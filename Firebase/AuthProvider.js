@@ -11,17 +11,18 @@ export default function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    const getUser = async (email) => {
+    const getUser = async (target_email) => {
       const data = await userCollectionRef.get();
       const list = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      const {control, useremail, ID, loggedIn, name, uid} = list.find(x => x.email === email)
-      setUser({control, useremail, ID, loggedIn, name})
+      const {email, name, createAt, ID, control} = list.find(x => x.email === target_email)
+      setUser({email, name, createAt, ID, control})
+      return {email, name, createAt, ID, control}
     };
     
     const unsubscibed = auth.onAuthStateChanged(async (user) => {
         if (user) {
             setIsLoading(false);
-            await getUser(user.email);
+            const temp = await getUser(user.email);
             RootNavigation.navigate("HomeScreen");
             return;
         }
@@ -32,7 +33,7 @@ export default function AuthProvider({ children }) {
   }, [RootNavigation, auth]);
 
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {isLoading ? <></> : children}
     </AuthContext.Provider>
   );

@@ -14,7 +14,7 @@ export default function HomeScreen({ navigation }) {
   const [username, setUsername] = React.useState("Lorem");
   const [isConnected, setIsConnected] = React.useState(true);
 
-  const { user } = React.useContext(AuthContext);
+  const { user, setUser } = React.useContext(AuthContext);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -24,7 +24,7 @@ export default function HomeScreen({ navigation }) {
 
       <AvatarButton />
 
-      <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
+      <IOTButton text="Log Out" onPress={() => handleSignOut(() => {setUser(null)})}/>
 
       <Image
         style={{
