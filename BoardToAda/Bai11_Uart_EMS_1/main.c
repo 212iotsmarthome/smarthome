@@ -13,6 +13,7 @@
 #include "conditioner.h"
 #include "curtain.h"
 #include "gas_sensor.h"
+#include "buzzer.h"
 // Noi khai bao hang so
 #define     LED     PORTB
 #define     ON      1
@@ -28,14 +29,14 @@ void toggle();
 void display_Scene();
 void button_check();
 
-#define     SCENE_TEMP_HUMID        0
-#define     SCENE_ADC               1
-#define     SCENE_LED_STATE         2
-#define     SCENE_CURTAIN_A_DOOR    3
-#define     SCENE_CONDITIONER       4
-#define     GAS_SENSOR              5
+#define     SCENE_TEMP_HUMID            0
+#define     SCENE_ADC                   1
+#define     SCENE_LED_STATE             2
+#define     SCENE_CURTAIN_AND_DOOR      3
+#define     SCENE_CONDITIONER           4
+#define     GAS_SENSOR_AND_BUZZER       5
 
-static char scene = SCENE_CURTAIN_A_DOOR;
+static char scene = GAS_SENSOR_AND_BUZZER;
 
 
 
@@ -147,6 +148,7 @@ void init_system(void)
     init_Curtain();
     init_conditioner();
     init_gas_sensor();
+    init_buzzer();
 //    SetupTimeForRealTime();
 }
 
@@ -167,7 +169,7 @@ void display_Scene() {
             LcdPrintNumS(0, 0, get_Led(0));
             LcdPrintNumS(0, 8, get_Led(1));
             break;
-        case SCENE_CURTAIN_A_DOOR:
+        case SCENE_CURTAIN_AND_DOOR:
             LcdPrintStringS(0, 0, "Cur:");
             LcdPrintStringS(1, 0, "Door:");
             LcdPrintNumS(0, 8, get_Curtain());
@@ -179,9 +181,11 @@ void display_Scene() {
             LcdPrintNumS(0, 8, get_conditioner_state());
             LcdPrintNumS(1, 8, get_conditioner_temp());
             break;
-        case GAS_SENSOR:
+        case GAS_SENSOR_AND_BUZZER:
             LcdPrintStringS(0, 0, "Gas:");
             LcdPrintNumS(0, 8, get_gas_sensor_val());
+            LcdPrintStringS(1, 0, "Buzz:");
+            LcdPrintNumS(1, 8, get_buzzer());
             break;
     }
 }

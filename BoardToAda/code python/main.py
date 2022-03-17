@@ -27,7 +27,7 @@ AIO_KEY = "aio_cSFh41uOGJgJ3IyiK0f0evTUtDOw"
 '''
 Cac thuoc tinh cua device:
 humid, temperature, LDR, door, gas la thuoc tinh dang input, se doc len server
-LED, curtain, conditioner la thuoc tinh output, do minh dieu khien
+LED, curtain, conditioner, buzzer la thuoc tinh output, do minh dieu khien
 '''
 device_info = {"humid": 0, "temperature": 0,
                "LDR": {"1": 0, "2": 0},
@@ -35,7 +35,7 @@ device_info = {"humid": 0, "temperature": 0,
                "curtain": 0,
                "door": 0,
                "conditioner": {"power": 0, "temp": 22},
-               "gas": 0}
+               "gas": 0, "buzzer": 0}
 
 '''
 moi khi gui command, ong hay set bien nay ve 0. cho cho toi khi device gui ve OK, nghia la
@@ -53,7 +53,7 @@ mode: [0,3] -> 0:tat, 1:sang den trai, 2:sang den phai, 3:sang 2 den
 def set_led(ledIndex, mode):
     command = "!setLed:" + str(ledIndex) + ":" + str(mode) + "*"
     print(command)
-    ser.write(command.encode())
+    ser.write(command.encode())     #chuyen du lieu ve dang binary de chuyen sang uart.
 
 '''
 gui serial command de dong mo rem cua
@@ -92,6 +92,15 @@ def set_door(open):
     ser.write(command.encode())
 
 
+'''
+gui serial command de tat mo buzzer. 1 de mo loa, 0 de tat loa
+'''
+def set_buzzer(open):
+    command = f'setBuzzer:{open}*'
+    print(command)
+    ser.write(command.encode())
+
+
 def getPort():
     ports = serial.tools.list_ports.comports()
     N = len(ports)
@@ -120,7 +129,7 @@ def print_data():
     print("curtain = ", device_info["curtain"])
     print("door = ", device_info["door"])
     print("conditioner: power = ", device_info["conditioner"]["power"], " temp = ", device_info["conditioner"]["temp"])
-    print("gas = ", device_info["gas"])
+    print("gas = ", device_info["gas"], " buzzer = ", device_info["buzzer"])
 
 '''
  message kieu: !abc*
