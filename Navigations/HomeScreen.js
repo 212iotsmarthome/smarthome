@@ -3,21 +3,28 @@ import { View, Image, TouchableOpacity, ScrollView } from "react-native";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
+import IOTButton from "./Elements/IOTButton";
 import AvatarButton from "./Elements/AvatarButton";
+import { AuthContext } from "../Firebase/AuthProvider";
 
 import Credit from "./Elements/Credit";
+import { handleSignOut } from "../Firebase/utility";
 
 export default function HomeScreen({ navigation }) {
   const [username, setUsername] = React.useState("Lorem");
   const [isConnected, setIsConnected] = React.useState(true);
 
+  const { user } = React.useContext(AuthContext);
+
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
-        <TopHeadTypo smalltext={"Hello, " + username} largetext="Home" />
+        <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
 
       <AvatarButton />
+
+      <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
 
       <Image
         style={{

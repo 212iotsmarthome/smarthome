@@ -1,18 +1,14 @@
 import { Text, View } from "react-native";
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";
 import Credit from "./Elements/Credit";
-import { handleSignUp, handleSignIn, useLogIn } from "../Firebase/utility";
+import { handleSignUp, handleSignIn } from "../Firebase/utility";
 
 export default function LIScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
-
-  useLogIn(() => {navigation.navigate("HomeScreen")})
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>

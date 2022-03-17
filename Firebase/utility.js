@@ -1,5 +1,7 @@
-import { db, auth } from "../firebase";
+import { db, auth } from "./firebase";
 import { useState, useEffect } from 'react';
+
+const userCollectionRef = db.collection("Users");
 
 const handleSignUp = (email, password) => {
     auth
@@ -32,11 +34,25 @@ function useLogIn(action) {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             if(user){
-                action();
+              action();
             }
         })
         return unsubscribe;
     }, [])
 }
+
+// function getUser(email) {
+//   useEffect(() => {
+//     const getUser = async () => {
+//       const data = await userCollectionRef.get();
+//       const list = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+//       console.log(list);
+//       setUser(list.find(x => x.email === email))
+//     };
+
+//     getUser();
+//   }, []);
+// }
+
 
 export { handleSignUp, handleSignIn, handleSignOut, useLogIn, auth };

@@ -6,6 +6,9 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import AuthProvider from "./Firebase/AuthProvider";
+import { navigationRef } from "./RootNavigation";
+
 import WelcomeScreen from "./Navigations/WelcomeScreen";
 import LoginScreen from "./Navigations/LoginScreen";
 import HomeScreen from "./Navigations/HomeScreen";
@@ -21,7 +24,8 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-      <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
+      <AuthProvider>
         <Stack.Navigator>
           <Stack.Screen
             name="WelcomeScreen"
@@ -75,7 +79,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
+      </AuthProvider>
+    </NavigationContainer>
     </>
   );
 
