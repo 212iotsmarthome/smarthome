@@ -72,18 +72,20 @@ void Uart_Processing() {
         }
     }
 }
-//{"humid":90.12, "temperature": 90.12, 
+//{"deviceID":"device1",
+//"DHT11": {"humid":90.12, "temperature": 90.12}, 
 //"LDR":{"1":1023, "2":1023, "3":1023,"4":1023}, 
 //"LED":{"0":3, "1":3, "2":3, "3":3}, 
 //"curtain":2, "door":1, 
 //"conditioner":{"power":1, "temp":22}, 
 //"gas":1, "buzzer":0}
 void send_All_Info() {
-    UartSendString("!{\"humid\":");
+    UartSendString("!{\"deviceID\":\"device1\",");
+    UartSendString("\"DHT11\": {\"humid\":");
     UartSendNumPercent(get_DHT11_humidity());
     UartSendString(", \"temperature\":");
     UartSendNumPercent(get_DHT11_temperature());
-    UartSendString(", \"LDR\":{\"1\":");
+    UartSendString("}, \"LDR\":{\"1\":");
     UartSendNum(read_adc_value(1));
     UartSendString(", \"2\":");
     UartSendNum(read_adc_value(2));
