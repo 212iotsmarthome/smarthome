@@ -7,22 +7,8 @@ import serial.tools.list_ports
 
 # from Adafruit_IO import Client, Feed, Data
 
-
+# AIO_FEED_IDS = ["bbc-led","bbc-dht11","bbc-conditioner","bbc-ldr","bbc-door","bbc-curtain","bbc-gas"]
 AIO_FEED_ID_DEVICES = {
-<<<<<<< Updated upstream
-               "LED": "bbc-led",
-               "curtain": "bbc-curtain",
-               "door": "bbc-door",
-               "conditioner": "bbc-conditioner",
-               "buzzer": "bbc-buzzer"
-               }
-AIO_FEED_ID_SENSOR = "bbc-sensor"
-# AIO_FEED_ID_SENSORS = {
-#                 "dht11": "bbc-dht11",
-#                 "LDR": "bbc-ldr",
-#                 "gas": "bbc-gas",
-#                 }
-=======
     "LED": "bbc-led",
     "curtain": "bbc-curtain",
     "door": "bbc-door",
@@ -30,7 +16,6 @@ AIO_FEED_ID_SENSOR = "bbc-sensor"
     "buzzer": "bbc-buzzer"
 }
 AIO_FEED_ID_SENSORS = "bbc-sensor"
->>>>>>> Stashed changes
 # AIO_FEED_IDS_TEST = "bbc-curtain"
 AIO_USERNAME = "namdiep239"
 AIO_KEY = "aio_cSFh41uOGJgJ3IyiK0f0evTUtDOw"
@@ -124,13 +109,9 @@ def set_door(ser, open):
 '''
 gui serial command de tat mo buzzer. 1 de mo loa, 0 de tat loa
 '''
-<<<<<<< Updated upstream
-def set_buzzer(open):
-=======
 
 
 def set_buzzer(ser, open):
->>>>>>> Stashed changes
     command = f'!setBuzzer:{open}*'
     print(command)
     ser.write(command.encode())
@@ -193,21 +174,6 @@ sensor_json = {"value": {}}
 rem, cua). Neu input thay doi thi moi publish len Ada server -> tranh viec gui qua 
 nhieu lan
 '''
-<<<<<<< Updated upstream
-def DeviceHandle(temp_info):
-    if temp_info["LED"] != device_info["LED"]:
-        LED_json = {"value": {"0": temp_info["LED"]["0"], "1": temp_info["LED"]["1"]}}
-        client.publish(AIO_FEED_ID_DEVICES["LED"], json.dumps(LED_json))
-    if temp_info["conditioner"] != device_info["conditioner"]:
-        cond_json = {"value":{"power":temp_info["conditioner"]["power"],"temp":temp_info["conditioner"]["temp"]}}
-        client.publish(AIO_FEED_ID_DEVICES["conditioner"], json.dumps(cond_json))
-    if temp_info["curtain"] != device_info["curtain"]:
-        client.publish(AIO_FEED_ID_DEVICES["curtain"], temp_info["curtain"])
-    if temp_info["door"] != device_info["door"]:
-        client.publish(AIO_FEED_ID_DEVICES["door"], temp_info["door"])
-    if temp_info["buzzer"] != device_info["buzzer"]:
-        client.publish(AIO_FEED_ID_DEVICES["buzzer"], temp_info["buzzer"])
-=======
 
 
 def DeviceHandle(temp_info, index):
@@ -232,31 +198,10 @@ def DeviceHandle(temp_info, index):
     curtain_json["value"][temp_info["deviceID"]] = temp_info["curtain"]
     door_json["value"][temp_info["deviceID"]] = temp_info["door"]
 
->>>>>>> Stashed changes
 
 '''
 SensorHandle: gui tin hieu tu cac sensor len Ada 
 '''
-<<<<<<< Updated upstream
-def SensorHandle():
-    sensor_json = {"value":{"humid": device_info["humid"], "temperature": device_info["temperature"],
-                            "LDR1": device_info["LDR"]["1"], "LDR2": device_info["LDR"]["2"],
-                            "gas" : device_info["gas"]}}
-    client.publish(AIO_FEED_ID_SENSOR, json.dumps(sensor_json))
-    '''
-    # Send temp and humid
-    dht11_json = {"value": {"humid": device_info["humid"], "temperature": device_info["temperature"]}}
-    client.publish(AIO_FEED_ID_SENSORS["dht11"], json.dumps(dht11_json))
-    # Send light sensor
-    # "LDR": {"1": 0, "2": 0},
-    LDR_json = {"value": {"1": device_info["LDR"]["1"], "2": device_info["LDR"]["2"]}}
-    client.publish(AIO_FEED_ID_SENSORS["LDR"], json.dumps(LDR_json))
-    # Send gas sensor
-    client.publish(AIO_FEED_ID_SENSORS["gas"], device_info["gas"])
-    '''
-
-def processData(data):
-=======
 
 
 def SensorHandle(index):
@@ -269,9 +214,12 @@ def SensorHandle(index):
 
 
 def processData(data, index):
->>>>>>> Stashed changes
     data = data.replace("!", "")
     data = data.replace("*", "")
+    # splitData = data.split(":")
+    # print(splitData)
+    # if splitData[1] == "TEMP":
+    #     client.publish("bbc-temp", splitData[2])
     global device_info
     global device_ready
     if data == "OK":
@@ -280,19 +228,11 @@ def processData(data, index):
     else:
         temp_device_info = json.loads(data)
         # kiem tra su thay doi input cua cac device va gui
-<<<<<<< Updated upstream
-        DeviceHandle(temp_device_info)
-        # load vao device_info
-        device_info = temp_device_info
-        # gui input cua sensor (ko can kiem tra)
-        SensorHandle()
-=======
         DeviceHandle(temp_device_info, index)
         # load vao device_info
         device_info[index] = temp_device_info
         # gui input cua sensor (ko can kiem tra)
         SensorHandle(index)
->>>>>>> Stashed changes
 
 
 # serial_messages = ""
@@ -305,14 +245,14 @@ tien hanh processData
 def readSerial(ser, index):
     bytesToRead = ser.inWaiting()
     serial_messages = ""
-    if (bytesToRead > 0):
+    if bytesToRead > 0:
         serial_messages = serial_messages + ser.read(bytesToRead).decode("UTF-8")
         # print(serial_messages)
         while ("!" in serial_messages) and ("*" in serial_messages):
             start = serial_messages.find("!")
             end = serial_messages.find("*")
             processData(serial_messages[start:end + 1], index)
-            if (end == len(serial_messages)):
+            if end == len(serial_messages):
                 serial_messages = ""
             else:
                 serial_messages = serial_messages[end + 1:]
@@ -360,6 +300,8 @@ def connected(client):
     for feed in AIO_FEED_ID_DEVICES:
         client.subscribe(AIO_FEED_ID_DEVICES[feed])
     # client.subscribe(AIO_FEED_IDS_TEST)
+    # for feed1 in AIO_FEED_ID_SENSORS:
+    #     client.subscribe(AIO_FEED_ID_SENSORS[feed1])
 
 
 def subscribe(client, userdata, mid, granted_qos):
@@ -372,7 +314,6 @@ def disconnected(client):
 
 
 def SendToBoard(feed_id, payload):
-    global device_info
     if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
         payload_json = json.loads(payload)
         # payload_json se co dang kieu: {"device1":{"0":3, "1":3}, "device2": {"0":3, "1":3}}
@@ -401,13 +342,6 @@ def SendToBoard(feed_id, payload):
                     break
 
     elif (feed_id == AIO_FEED_ID_DEVICES["door"]):
-<<<<<<< Updated upstream
-        device_info["door"] = int(payload)
-        set_door(payload)
-    elif (feed_id == AIO_FEED_ID_DEVICES["buzzer"]):
-        device_info["buzzer"] = int(payload)
-        set_buzzer(payload)
-=======
         payload_json = json.loads(payload)
         # payload_json se co dang kieu: {"device1": 0, "device2": 1}
         for key in payload_json:
@@ -425,7 +359,6 @@ def SendToBoard(feed_id, payload):
                     set_buzzer(ser[index], payload_json[key])
                     break
 
->>>>>>> Stashed changes
 
 def message(client, feed_id, payload):
     print(feed_id + " nhan du lieu: " + payload)
@@ -451,16 +384,10 @@ while True:
     for j in range(0, NUM_OF_DEVICE):
         readSerial(ser[j], j)
 
-<<<<<<< Updated upstream
-    # i = (i + 1) % 5
-    # if i == 0:
-    #     print_data()
-=======
     i = (i + 1) % 5
     if i == 0:
         send_to_ada()
         print("----------------")
->>>>>>> Stashed changes
     time.sleep(1)
 
     # value = random.randint(0,100)
