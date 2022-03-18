@@ -1,7 +1,7 @@
 #include "two_mode_led.h"
 #include <p18f4620.h>
 #include "spi_74hc595.h"
-#define MAX_LED 4
+#define MAX_LED 2
 
 #define OFF         0       //0b00
 #define LEFT        1       //0b01
@@ -11,9 +11,9 @@
 #define MANUAL  0
 #define AUTO    4
 
-static char led_status_array[MAX_LED] = {OFF, OFF, OFF, OFF};
-static char led_auto_array[MAX_LED] = {MANUAL, MANUAL, MANUAL, MANUAL};
-static char attached_LDR[MAX_LED] = {-1, -1, -1, -1};
+static char led_status_array[MAX_LED] = {OFF, OFF};
+static char led_auto_array[MAX_LED] = {MANUAL, MANUAL};
+static char attached_LDR[MAX_LED] = {-1, -1};
 
 void run_Led() {
     int i;

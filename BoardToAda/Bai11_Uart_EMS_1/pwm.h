@@ -13,7 +13,9 @@ extern "C" {
 #endif
 
 void init_pwm();
-void set_DC_speed(unsigned char value);
+void set_DC_speed(double value);
+void PWM_turn_off();
+void PWM_turn_on();
 
 
 #ifdef	__cplusplus

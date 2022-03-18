@@ -101,6 +101,7 @@ export default function HomeScreen({ navigation }) {
             subtitle="Your privacy"
             name="window-open"
             type="material-community"
+            onPress={() => navigation.navigate("AutoCurtainScreen")}
           />
         </View>
 
