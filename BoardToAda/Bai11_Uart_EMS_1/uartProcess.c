@@ -73,20 +73,20 @@ void Uart_Processing() {
         }
     }
 }
-//{"deviceID":"device1",
-//"DHT11": {"humid":90.12, "temperature": 90.12}, 
-//"LDR":{"1":1023, "2":1023, "3":1023,"4":1023}, 
-//"LED":{"0":3, "1":3, "2":3, "3":3}, 
-//"curtain":2, "door":{"motor":0, "lock":1}, 
-//"conditioner":{"power":1, "temp":22}, 
-//"gas":1, "buzzer":0}
+//{"deviceID":"board1",
+//"DHT11": {"0":{"humid":90.12, "temperature": 90.12}}, 
+//"LDR":{"0":1023, "1":1023}, 
+//"LED":{"0":3, "1":3}, 
+//"curtain":{"0":2}, "door":{"0":{"motor":0, "lock":1}}, 
+//"conditioner":{"0":{"power":1, "temp":22}}, 
+//"gas":{"0":1}, "buzzer":{"0":0}}
 void send_All_Info() {
     UartSendString("!{\"deviceID\":\"board1\",");
-    UartSendString("\"DHT11\": {\"humid\":");
+    UartSendString("\"DHT11\": {\"0\":{\"humid\":");
     UartSendNumPercent(get_DHT11_humidity());
     UartSendString(", \"temperature\":");
     UartSendNumPercent(get_DHT11_temperature());
-    UartSendString("}, \"LDR\":{\"1\":");
+    UartSendString("}}, \"LDR\":{\"1\":");
     UartSendNum(read_adc_value(1));
     UartSendString(", \"2\":");
     UartSendNum(read_adc_value(2));
@@ -94,19 +94,19 @@ void send_All_Info() {
     UartSendNum(get_Led(0));
     UartSendString(", \"1\":");
     UartSendNum(get_Led(1));
-    UartSendString("}, \"curtain\":");
+    UartSendString("}, \"curtain\":{\"0\":");
     UartSendNum(get_Curtain());
-    UartSendString(", \"door\":{\"motor\":");  
+    UartSendString("}, \"door\":{\"0\":{\"motor\":");  
     UartSendNum(get_door_value());
     UartSendString(", \"lock\":");
     UartSendNum(get_lock_value());
-    UartSendString("}, \"conditioner\":{\"power\":");
+    UartSendString("}}, \"conditioner\":{\"0\":{\"power\":");
     UartSendNum(get_conditioner_state());
     UartSendString(", \"temp\":");
     UartSendNum(get_conditioner_temp());
-    UartSendString("}, \"gas\":");
+    UartSendString("}}, \"gas\":{\"0\":");
     UartSendNum(get_gas_sensor_val());
-    UartSendString(", \"buzzer\":");
+    UartSendString("}, \"buzzer\":{\"0\":");
     UartSendNum(get_buzzer());
-    UartSendString("}*");
+    UartSendString("}}*");
 }
