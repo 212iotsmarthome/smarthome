@@ -36,7 +36,7 @@ void button_check();
 #define     SCENE_CONDITIONER           4
 #define     GAS_SENSOR_AND_BUZZER       5
 
-static char scene = GAS_SENSOR_AND_BUZZER;
+static char scene = SCENE_CURTAIN_AND_DOOR;
 
 
 

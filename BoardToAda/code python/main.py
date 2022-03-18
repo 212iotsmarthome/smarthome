@@ -34,7 +34,7 @@ for i in range(0, NUM_OF_DEVICE):
                         "LDR": {"1": 0, "2": 0},
                         "LED": {"0": 0, "1": 0},
                         "curtain": 0,
-                        "door": 0,
+                        "door": {"motor": 0, "lock": 1},
                         "conditioner": {"power": 0, "temp": 22},
                         "gas": 0, "buzzer": 0})
 
@@ -96,12 +96,12 @@ def set_mul_led(ser, mode0, mode1):
 
 
 '''
-gui serial command de dong mo cua. 1 de mo cua, 0 de dong cua.
+gui serial command de dong mo cua. open: 1 de mo cua, 0 de dong cua; lock: 1 de mo khoa, 0 de khoa.
 '''
 
 
-def set_door(ser, open):
-    command = f'!setDoor:{open}*'
+def set_door(ser, open, lock):
+    command = f'!setDoor:{open}:{lock}*'
     print(command)
     ser.write(command.encode())
 
@@ -316,7 +316,7 @@ def disconnected(client):
 def SendToBoard(feed_id, payload):
     if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1":{"0":3, "1":3}, "device2": {"0":3, "1":3}}
+        # payload_json se co dang kieu: {"board1":{"0":1, "1":0}, "board2": {"0":1, "1":1}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
@@ -325,7 +325,7 @@ def SendToBoard(feed_id, payload):
 
     elif (feed_id == AIO_FEED_ID_DEVICES["curtain"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": 0, "device2": 1}
+        # payload_json se co dang kieu: {"board1": 0, "board2": 1}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
@@ -334,7 +334,7 @@ def SendToBoard(feed_id, payload):
 
     elif (feed_id == AIO_FEED_ID_DEVICES["conditioner"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": {"power": 1, "temp": 22}, "device2": {"power": 0, "temp": 22}}
+        # payload_json se co dang kieu: {"board1": {"power": 1, "temp": 22}, "board2": {"power": 0, "temp": 22}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
@@ -343,16 +343,16 @@ def SendToBoard(feed_id, payload):
 
     elif (feed_id == AIO_FEED_ID_DEVICES["door"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": 0, "device2": 1}
+        # payload_json se co dang kieu: {"board1": {"motor":0, "lock":1}, "board2": {"motor":0, "lock":1}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
-                    set_door(ser[index], payload_json[key])
+                    set_door(ser[index], payload_json[key]["motor"], payload_json[key]["lock"])
                     break
 
     elif (feed_id == AIO_FEED_ID_DEVICES["buzzer"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": 0, "device2": 1}
+        # payload_json se co dang kieu: {"board1": 0, "board2": 1}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:

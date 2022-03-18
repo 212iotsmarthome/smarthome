@@ -11,6 +11,10 @@
 #define DOOR_LAT_1      LATDbits.LATD1
 #define DOOR_LAT_2      LATDbits.LATD2
 
+//door lock: 1 la unlock, 0 la lock.
+#define DOOR_LOCK_LAT       LATAbits.LATA5
+#define DOOR_LOCK_PORT      PORTAbits.RA5
+
 
 #define OPEN    1
 #define CLOSE   0
@@ -25,6 +29,9 @@ void init_door() {
     TRISDbits.TRISD3 = 1;       //INPUT, read door switch
     //PWM RC2
     stop_door();
+    //DOOR LOCK: LED
+    TRISAbits.RA5 = 0;      //RA5 la output.
+    
 }
 
 void check_door() {
@@ -81,5 +88,18 @@ void setDoor(int value) {
         open_door();
     } else {
         close_door();
+    }
+}
+
+char get_lock_value() {
+    return DOOR_LOCK_PORT;
+}
+
+//0 la dong, 1 la mo. 
+void set_lock(int value) {
+    if (value == 1) {
+        DOOR_LOCK_LAT = 1;
+    } else {
+        DOOR_LOCK_LAT = 0;
     }
 }
