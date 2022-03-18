@@ -9,6 +9,7 @@ build/default/production/uartProcess.o:  \
 	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/curtain.h  \
 	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/door.h  \
 	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/conditioner.h  \
+	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/buzzer.h  \
 	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/uartProcess.h  \
 	D:/GitHub/smarthome/BoardToAda/Bai11_Uart_EMS_1/gas_sensor.h  \
 

@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=button_matrix/button.c interrupt/interrupt.c lcd/lcd.c timer/timer.c uart/uart.c main.c adc/adc.c i2c/i2c.c mystring.c uartProcess.c DHT11.c delay.c pwm.c two_mode_led.c spi_74hc595.c door.c curtain.c conditioner.c gas_sensor.c
+SOURCEFILES_QUOTED_IF_SPACED=button_matrix/button.c interrupt/interrupt.c lcd/lcd.c timer/timer.c uart/uart.c main.c adc/adc.c i2c/i2c.c mystring.c uartProcess.c DHT11.c delay.c pwm.c two_mode_led.c spi_74hc595.c door.c curtain.c conditioner.c gas_sensor.c buzzer.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/button_matrix/button.o ${OBJECTDIR}/interrupt/interrupt.o ${OBJECTDIR}/lcd/lcd.o ${OBJECTDIR}/timer/timer.o ${OBJECTDIR}/uart/uart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/adc/adc.o ${OBJECTDIR}/i2c/i2c.o ${OBJECTDIR}/mystring.o ${OBJECTDIR}/uartProcess.o ${OBJECTDIR}/DHT11.o ${OBJECTDIR}/delay.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/two_mode_led.o ${OBJECTDIR}/spi_74hc595.o ${OBJECTDIR}/door.o ${OBJECTDIR}/curtain.o ${OBJECTDIR}/conditioner.o ${OBJECTDIR}/gas_sensor.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/button_matrix/button.o.d ${OBJECTDIR}/interrupt/interrupt.o.d ${OBJECTDIR}/lcd/lcd.o.d ${OBJECTDIR}/timer/timer.o.d ${OBJECTDIR}/uart/uart.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/adc/adc.o.d ${OBJECTDIR}/i2c/i2c.o.d ${OBJECTDIR}/mystring.o.d ${OBJECTDIR}/uartProcess.o.d ${OBJECTDIR}/DHT11.o.d ${OBJECTDIR}/delay.o.d ${OBJECTDIR}/pwm.o.d ${OBJECTDIR}/two_mode_led.o.d ${OBJECTDIR}/spi_74hc595.o.d ${OBJECTDIR}/door.o.d ${OBJECTDIR}/curtain.o.d ${OBJECTDIR}/conditioner.o.d ${OBJECTDIR}/gas_sensor.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/button_matrix/button.o ${OBJECTDIR}/interrupt/interrupt.o ${OBJECTDIR}/lcd/lcd.o ${OBJECTDIR}/timer/timer.o ${OBJECTDIR}/uart/uart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/adc/adc.o ${OBJECTDIR}/i2c/i2c.o ${OBJECTDIR}/mystring.o ${OBJECTDIR}/uartProcess.o ${OBJECTDIR}/DHT11.o ${OBJECTDIR}/delay.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/two_mode_led.o ${OBJECTDIR}/spi_74hc595.o ${OBJECTDIR}/door.o ${OBJECTDIR}/curtain.o ${OBJECTDIR}/conditioner.o ${OBJECTDIR}/gas_sensor.o ${OBJECTDIR}/buzzer.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/button_matrix/button.o.d ${OBJECTDIR}/interrupt/interrupt.o.d ${OBJECTDIR}/lcd/lcd.o.d ${OBJECTDIR}/timer/timer.o.d ${OBJECTDIR}/uart/uart.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/adc/adc.o.d ${OBJECTDIR}/i2c/i2c.o.d ${OBJECTDIR}/mystring.o.d ${OBJECTDIR}/uartProcess.o.d ${OBJECTDIR}/DHT11.o.d ${OBJECTDIR}/delay.o.d ${OBJECTDIR}/pwm.o.d ${OBJECTDIR}/two_mode_led.o.d ${OBJECTDIR}/spi_74hc595.o.d ${OBJECTDIR}/door.o.d ${OBJECTDIR}/curtain.o.d ${OBJECTDIR}/conditioner.o.d ${OBJECTDIR}/gas_sensor.o.d ${OBJECTDIR}/buzzer.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/button_matrix/button.o ${OBJECTDIR}/interrupt/interrupt.o ${OBJECTDIR}/lcd/lcd.o ${OBJECTDIR}/timer/timer.o ${OBJECTDIR}/uart/uart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/adc/adc.o ${OBJECTDIR}/i2c/i2c.o ${OBJECTDIR}/mystring.o ${OBJECTDIR}/uartProcess.o ${OBJECTDIR}/DHT11.o ${OBJECTDIR}/delay.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/two_mode_led.o ${OBJECTDIR}/spi_74hc595.o ${OBJECTDIR}/door.o ${OBJECTDIR}/curtain.o ${OBJECTDIR}/conditioner.o ${OBJECTDIR}/gas_sensor.o
+OBJECTFILES=${OBJECTDIR}/button_matrix/button.o ${OBJECTDIR}/interrupt/interrupt.o ${OBJECTDIR}/lcd/lcd.o ${OBJECTDIR}/timer/timer.o ${OBJECTDIR}/uart/uart.o ${OBJECTDIR}/main.o ${OBJECTDIR}/adc/adc.o ${OBJECTDIR}/i2c/i2c.o ${OBJECTDIR}/mystring.o ${OBJECTDIR}/uartProcess.o ${OBJECTDIR}/DHT11.o ${OBJECTDIR}/delay.o ${OBJECTDIR}/pwm.o ${OBJECTDIR}/two_mode_led.o ${OBJECTDIR}/spi_74hc595.o ${OBJECTDIR}/door.o ${OBJECTDIR}/curtain.o ${OBJECTDIR}/conditioner.o ${OBJECTDIR}/gas_sensor.o ${OBJECTDIR}/buzzer.o
 
 # Source Files
-SOURCEFILES=button_matrix/button.c interrupt/interrupt.c lcd/lcd.c timer/timer.c uart/uart.c main.c adc/adc.c i2c/i2c.c mystring.c uartProcess.c DHT11.c delay.c pwm.c two_mode_led.c spi_74hc595.c door.c curtain.c conditioner.c gas_sensor.c
+SOURCEFILES=button_matrix/button.c interrupt/interrupt.c lcd/lcd.c timer/timer.c uart/uart.c main.c adc/adc.c i2c/i2c.c mystring.c uartProcess.c DHT11.c delay.c pwm.c two_mode_led.c spi_74hc595.c door.c curtain.c conditioner.c gas_sensor.c buzzer.c
 
 
 CFLAGS=
@@ -241,6 +241,14 @@ ${OBJECTDIR}/gas_sensor.o: gas_sensor.c  nbproject/Makefile-${CND_CONF}.mk
 	@${DEP_GEN} -d ${OBJECTDIR}/gas_sensor.o 
 	@${FIXDEPS} "${OBJECTDIR}/gas_sensor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
+${OBJECTDIR}/buzzer.o: buzzer.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/buzzer.o.d 
+	@${RM} ${OBJECTDIR}/buzzer.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1 -p$(MP_PROCESSOR_OPTION) -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/buzzer.o   buzzer.c 
+	@${DEP_GEN} -d ${OBJECTDIR}/buzzer.o 
+	@${FIXDEPS} "${OBJECTDIR}/buzzer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
+	
 else
 ${OBJECTDIR}/button_matrix/button.o: button_matrix/button.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/button_matrix" 
@@ -393,6 +401,14 @@ ${OBJECTDIR}/gas_sensor.o: gas_sensor.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/gas_sensor.o   gas_sensor.c 
 	@${DEP_GEN} -d ${OBJECTDIR}/gas_sensor.o 
 	@${FIXDEPS} "${OBJECTDIR}/gas_sensor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
+	
+${OBJECTDIR}/buzzer.o: buzzer.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/buzzer.o.d 
+	@${RM} ${OBJECTDIR}/buzzer.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -p$(MP_PROCESSOR_OPTION) -ms -oa-  -I ${MP_CC_DIR}\\..\\h  -fo ${OBJECTDIR}/buzzer.o   buzzer.c 
+	@${DEP_GEN} -d ${OBJECTDIR}/buzzer.o 
+	@${FIXDEPS} "${OBJECTDIR}/buzzer.o.d" $(SILENT) -rsi ${MP_CC_DIR}../ -c18 
 	
 endif
 
