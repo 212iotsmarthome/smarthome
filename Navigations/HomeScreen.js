@@ -1,11 +1,12 @@
-import React from "react";
 import { View, Image, TouchableOpacity, ScrollView } from "react-native";
+import React from "react";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
 import IOTButton from "./Elements/IOTButton";
 import AvatarButton from "./Elements/AvatarButton";
 import { AuthContext } from "../Firebase/AuthProvider";
+import { AppContext } from "../Firebase/AppProvider";
 
 import Credit from "./Elements/Credit";
 import { handleSignOut } from "../Firebase/utility";
@@ -15,16 +16,20 @@ export default function HomeScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
 
   const { user, setUser } = React.useContext(AuthContext);
+  const { deviceList, setStatus } = React.useContext(AppContext);
 
+  console.log(user.control);
+  console.log(deviceList);
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
 
+
       <AvatarButton />
 
-      <IOTButton text="Log Out" onPress={() => handleSignOut(() => {setUser(null)})}/>
+      <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
 
       <Image
         style={{
@@ -54,14 +59,20 @@ export default function HomeScreen({ navigation }) {
             subtitle="Control lights"
             name="lightbulb-outline"
             type="material-community"
-            onPress={() => navigation.navigate("LEDScreen")}
+            onPress={() => {
+              setStatus(1);
+              navigation.navigate("LEDScreen");
+            }}
           />
           <IOTDeviceGroupCard
             title="AC"
             subtitle="Air Conditioner"
             name="air-conditioner"
             type="material-community"
-            onPress={() => navigation.navigate("ACScreen")}
+            onPress={() => {
+              setStatus(2);
+              navigation.navigate("ACScreen")
+            }}
           />
         </View>
 
@@ -80,7 +91,10 @@ export default function HomeScreen({ navigation }) {
             subtitle="Secure your home"
             name="door-open"
             type="material-community"
-            onPress={() => navigation.navigate("SmartDoorScreen")}
+            onPress={() => {
+              setStatus(5);
+              navigation.navigate("SmartDoorScreen");
+            }}
           />
           <IOTDeviceGroupCard
             title="Auto Curtain"

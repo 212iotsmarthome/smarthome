@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { collection, query, where, onSnapshot } from "firebase/compat/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from './firebase';
 
 export default function useFirebase(collectionParam, condition) {
@@ -16,7 +16,6 @@ export default function useFirebase(collectionParam, condition) {
       q = query(collectionRef, where(condition.fieldName, condition.operator, condition.compareValue));
     } catch (error) {
       setDocument([]);
-      // console.log(error);
       return;
     }
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -27,12 +26,10 @@ export default function useFirebase(collectionParam, condition) {
           id: doc.id
         })
       })
-      documents.sort((item1, item2) => item1.createdAt - item2.createdAt);
       setDocument(documents);
     });
-    return () => {
-      unsubscribe();
-    }
+    return unsubscribe;
   }, [collectionParam, condition, db])
   return document;
 }
+

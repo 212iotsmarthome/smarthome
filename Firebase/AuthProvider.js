@@ -22,7 +22,7 @@ export default function AuthProvider({ children }) {
     const unsubscibed = auth.onAuthStateChanged(async (user) => {
         if (user) {
             setIsLoading(false);
-            const temp = await getUser(user.email);
+            await getUser(user.email);
             RootNavigation.navigate("HomeScreen");
             return;
         }

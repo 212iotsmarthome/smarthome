@@ -4,58 +4,16 @@ import { View, Text, ScrollView } from "react-native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import LEDButton from "./Elements/LEDButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
+import { AuthContext } from "../Firebase/AuthProvider";
+import { AppContext } from "../Firebase/AppProvider";
 
 export default function LEDScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
 
+  const { user } = React.useContext(AuthContext);
+  const { status, selectDevice, setCurSelection} = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
-  const [LEDs, setLEDs] = React.useState([
-    {
-      id: 1000001,
-      type: "LED-21A",
-      name: "Phòng khách",
-    },
-    {
-      id: 1000002,
-      type: "LED-21A",
-      name: "Phòng khách 2",
-    },
-    {
-      id: 1100002,
-      type: "LED-8K",
-      name: "Phòng ngủ",
-    },
-    {
-      id: 1000004,
-      type: "LED-21A",
-      name: "Restroom",
-    },
-    {
-      id: 1000005,
-      type: "LED-21A",
-      name: "Phòng khách",
-    },
-    {
-      id: 1000006,
-      type: "LED-21A",
-      name: "Phòng khách 2",
-    },
-    {
-      id: 1100007,
-      type: "LED-8K",
-      name: "Phòng ngủ",
-    },
-    {
-      id: 1000008,
-      type: "LED-21A",
-      name: "Restroom",
-    },
-    {
-      id: 1000009,
-      type: "LED-21A",
-      name: "Restroom",
-    },
-  ]);
+  const [LEDs, setLEDs] = React.useState(selectDevice);
 
   function LEDDiv(props) {
     const length = props.length;
@@ -74,8 +32,11 @@ export default function LEDScreen({ navigation }) {
             <LEDButton
               type={LED.type}
               name={LED.name}
-              key={LED.id}
-              onMainPress={() => navigation.navigate("LEDAdjustScreen", LED)}
+              key={LED.ID}
+              onMainPress={() => {
+                setCurSelection(LED.ID);
+                navigation.navigate("LEDAdjustScreen", LED);
+              }}
             />
           ))}
         </View>

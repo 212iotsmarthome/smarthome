@@ -4,16 +4,14 @@ import { View, Text, ScrollView } from "react-native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import ACButton from "./Elements/ACButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
+import { AuthContext } from "../Firebase/AuthProvider";
+import { AppContext } from "../Firebase/AppProvider";
 
 export default function ACScreen({ navigation }) {
+  const { user } = React.useContext(AuthContext);
+  const { status, selectDevice, setCurSelection} = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
-  const [ACs, setACs] = React.useState([
-    {
-      id: 2000001,
-      type: "AC-07N",
-      name: "Phòng ngủ",
-    },
-  ]);
+  const [ACs, setACs] = React.useState(selectDevice);
 
   function ACDiv(props) {
     const length = props.length;
@@ -32,8 +30,11 @@ export default function ACScreen({ navigation }) {
             <ACButton
               type={AC.type}
               name={AC.name}
-              key={AC.id}
-              onMainPress={() => navigation.navigate("ACAdjustScreen", AC)}
+              key={AC.ID}
+              onMainPress={() => {
+                setCurSelection(AC.ID);
+                navigation.navigate("ACAdjustScreen", AC);
+              }}
             />
           ))}
         </View>

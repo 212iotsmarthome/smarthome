@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import AuthProvider from "./Firebase/AuthProvider";
+import AppProvider from "./Firebase/AppProvider";
 import { navigationRef } from "./RootNavigation";
 
 import WelcomeScreen from "./Navigations/WelcomeScreen";
@@ -28,6 +29,7 @@ export default function App() {
     <>
     <NavigationContainer ref={navigationRef}>
       <AuthProvider>
+        <AppProvider>
         <Stack.Navigator>
           <Stack.Screen
             name="WelcomeScreen"
@@ -85,6 +87,7 @@ export default function App() {
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
+        </AppProvider>
       </AuthProvider>
     </NavigationContainer>
     </>
