@@ -6,7 +6,7 @@ import THTypo from "./Elements/TopHeadTypo";
 
 const LogScreen = () => {
     return <View style={{ flex: 1 }}>
-        <View style={{ marginTop: "10%" }}>
+        <View style={{ marginTop: "10%", marginBottom: 20 }}>
             <THTypo smalltext="Personal" largetext="Log"></THTypo>
         </View>
         <ScrollView>
