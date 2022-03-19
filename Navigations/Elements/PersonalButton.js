@@ -7,7 +7,7 @@ const ACButton = ({
   subtext = "subtext",
   backgroundColor = "#fafafa",
   icon = "card-text-outline",
-  onMainPress = () =>
+  onPress = () =>
     Alert.alert("Not assigned yet", "In development", [
       {
         text: "Cancel",
@@ -34,17 +34,22 @@ const ACButton = ({
         justifyContent: "center",
         // alignItems: "flex-start",
       }}
-      onPress={onMainPress}
+      onPress={onPress}
     >
       <View style={{ left: "0%", position: "absolute", width: "25%" }}>
-        <Icon name={icon} type="material-community" color="#888" size={36} />
+        <Icon
+          name={icon}
+          type="material-community"
+          color={icon == "logout" ? "#c00" : "#888"}
+          size={36}
+        />
       </View>
 
       <View style={{ width: "70%", position: "absolute", left: "25%" }}>
         <Text
           style={{
             fontSize: 18,
-            color: "black",
+            color: icon == "logout" ? "#c00" : "black",
             fontWeight: "bold",
           }}
         >

@@ -9,7 +9,6 @@ import { AuthContext } from "../Firebase/AuthProvider";
 import { AppContext } from "../Firebase/AppProvider";
 
 import Credit from "./Elements/Credit";
-import { handleSignOut } from "../Firebase/utility";
 
 export default function HomeScreen({ navigation }) {
   const [username, setUsername] = React.useState("Lorem");
@@ -27,8 +26,6 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
-
-      <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})} />
 
       <Image
         style={{

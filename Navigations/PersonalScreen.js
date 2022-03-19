@@ -4,13 +4,12 @@ import { View, Text, ScrollView, Image } from "react-native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import PersonalButton from "./Elements/PersonalButton";
 
+import { AuthContext } from "../Firebase/AuthProvider";
+import { handleSignOut } from "../Firebase/utility";
+
 export default function ACScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
-  const [user, setUser] = React.useState({
-    id: "1911837",
-    name: "C. D. PHONG",
-    email: "phong.chung.543@hcmut.edu.vn",
-  });
+  const { user, setUser } = React.useContext(AuthContext);
 
   return (
     <ScrollView
@@ -21,7 +20,7 @@ export default function ACScreen({ navigation }) {
         <TopHeadTypo smalltext={"Personal"} largetext="Settings" />
       </View>
 
-      <View style={{ height: "25%" }}>
+      <View style={{ height: "20%" }}>
         <Image
           style={{
             marginLeft: "auto",
@@ -50,17 +49,7 @@ export default function ACScreen({ navigation }) {
         style={{
           marginLeft: "auto",
           marginRight: "auto",
-          fontSize: 16,
-        }}
-      >
-        {"User ID: " + user.id}
-      </Text>
-
-      <Text
-        style={{
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginBottom: 30,
+          marginBottom: 25,
           fontSize: 16,
         }}
       >
@@ -74,6 +63,13 @@ export default function ACScreen({ navigation }) {
         name="Change password"
         icon="asterisk"
         backgroundColor="white"
+      />
+
+      <PersonalButton
+        name="Log out"
+        icon="logout"
+        backgroundColor="white"
+        onPress={() => handleSignOut(() => {})}
       />
 
       {/* <View style={{ height: 5, backgroundColor: "#eee" }} /> */}
