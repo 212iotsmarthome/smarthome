@@ -1,18 +1,7 @@
 import { Text, View, TouchableOpacity, Alert } from "react-native";
 
-const IOTButton = ({
-  text = "My Button",
-  type = "dark",
-  onPress = () =>
-    Alert.alert("Not assigned yet", "In development", [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]),
-}) => {
+
+const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
   return (
     <View
       style={{
@@ -25,6 +14,7 @@ const IOTButton = ({
       }}
     >
       <TouchableOpacity
+        onPress={onPress}
         style={
           type == "dark"
             ? {

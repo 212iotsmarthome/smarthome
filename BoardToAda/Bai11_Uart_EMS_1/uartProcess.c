@@ -9,6 +9,7 @@
 #include "door.h"
 #include "conditioner.h"
 #include "gas_sensor.h"
+#include "buzzer.h"
 
 static char uart_message[50];
 
@@ -19,10 +20,14 @@ static char command_setLed[7] = "setLed";
 static char command_setCurtain[11] = "setCurtain";
 //getAllInfo
 static char command_getAllInfo[11] = "getAllInfo";
-//setConditioner:a      (a[0:1])
+//setConditioner:a:bb      (a[0:1], bb[0:99])
 static char command_set_conditioner[15] = "setConditioner";
-//setConditionerTemp:aa (a[0:99])
-static char command_set_contidionter_temp[19] = "setConditionerTemp";
+//setMulLed:a:b
+static char command_setMulLed[10] = "setMulLed";
+//setDoor:a a[0:1]
+static char command_setDoor[8] = "setDoor";
+//setBuzzer:a a[0:1]
+static char command_setBuzzer[10] = "setBuzzer";
 
 
 
@@ -47,46 +52,47 @@ void Uart_Processing() {
             UartSendString("!OK*");
         } else if (str_ncmp(uart_message, command_getAllInfo, 10) == 0) {
             send_All_Info();
-        } else if(str_ncmp(uart_message, command_set_contidionter_temp, 18) == 0) {
-            value = (uart_message[19] - '0') * 10 + (uart_message[20] - '0');
+        } else if (str_ncmp(uart_message, command_set_conditioner, 14) == 0){
+            value = (uart_message[17] - '0') * 10 + (uart_message[18] - '0');
+            set_conditioner_state(uart_message[15] - '0');
             set_conditioner_temp(value);
             UartSendString("!OK*");
-        } else if (str_ncmp(uart_message, command_set_conditioner, 14) == 0){
-            value = uart_message[15] - '0';
-            set_conditioner_state(value);
+        } else if (str_ncmp(uart_message, command_setMulLed, 9) == 0) {
+            set_Led(0, uart_message[10] - '0');
+            set_Led(1, uart_message[12] - '0');
             UartSendString("!OK*");
-        }  else {
-            UartSendString("Something went wrong");
+        }  else if (str_ncmp(uart_message, command_setDoor, 7) == 0) {
+            setDoor(uart_message[8] - '0');
+            UartSendString("!OK*");
+        }else if (str_ncmp(uart_message, command_setBuzzer, 9) == 0){
+            setBuzzer(uart_message[10] - '0');
+            UartSendString("!OK*");
+        }else {
+            UartSendString("!Something went wrong*");
         }
     }
 }
-//{"humid":90.12, "temperature": 90.12, 
+//{"deviceID":"device1",
+//"DHT11": {"humid":90.12, "temperature": 90.12}, 
 //"LDR":{"1":1023, "2":1023, "3":1023,"4":1023}, 
 //"LED":{"0":3, "1":3, "2":3, "3":3}, 
 //"curtain":2, "door":1, 
 //"conditioner":{"power":1, "temp":22}, 
-//"gas":1}
+//"gas":1, "buzzer":0}
 void send_All_Info() {
-    UartSendString("!{\"humid\":");
+    UartSendString("!{\"deviceID\":\"device1\",");
+    UartSendString("\"DHT11\": {\"humid\":");
     UartSendNumPercent(get_DHT11_humidity());
     UartSendString(", \"temperature\":");
     UartSendNumPercent(get_DHT11_temperature());
-    UartSendString(", \"LDR\":{\"1\":");
+    UartSendString("}, \"LDR\":{\"1\":");
     UartSendNum(read_adc_value(1));
     UartSendString(", \"2\":");
     UartSendNum(read_adc_value(2));
-    UartSendString(", \"3\":");
-    UartSendNum(read_adc_value(3));
-    UartSendString(",\"4\":");
-    UartSendNum(read_adc_value(4));
     UartSendString("}, \"LED\":{\"0\":");
     UartSendNum(get_Led(0));
     UartSendString(", \"1\":");
     UartSendNum(get_Led(1));
-    UartSendString(", \"2\":");
-    UartSendNum(get_Led(2));
-    UartSendString(", \"3\":");
-    UartSendNum(get_Led(3));
     UartSendString("}, \"curtain\":");
     UartSendNum(get_Curtain());
     UartSendString(", \"door\":");  
@@ -97,5 +103,7 @@ void send_All_Info() {
     UartSendNum(get_conditioner_temp());
     UartSendString("}, \"gas\":");
     UartSendNum(get_gas_sensor_val());
+    UartSendString(", \"buzzer\":");
+    UartSendNum(get_buzzer());
     UartSendString("}*");
 }

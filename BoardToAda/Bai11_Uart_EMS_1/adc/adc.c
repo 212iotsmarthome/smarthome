@@ -2,7 +2,7 @@
 #include <p18f4620.h>
 unsigned int adc_value[ADC_CHANNEL];
 //LIST OUT CHANNEL THAT U NEED TO USE BY SETTING IT TO 1.
-unsigned char analog_channel_using[ADC_CHANNEL] = {0, 1, 1, 1, 1, 0, 0};
+unsigned char analog_channel_using[ADC_CHANNEL] = {0, 1, 1, 0, 0, 0, 0};
 void init_adc(void)
 {
 	//Analog pin MUST BE INPUT PIN (0 -> output, 1 -> input)
@@ -10,16 +10,16 @@ void init_adc(void)
     TRISAbits.RA0 = 1;
     TRISAbits.RA1 = 1;
     TRISAbits.RA2 = 1;
-    TRISAbits.RA3 = 1;
-    TRISAbits.RA5 = 1;
+//    TRISAbits.RA3 = 1;
+//    TRISAbits.RA5 = 1;
 //    TRISEbits.RE0 = 1;
 //    TRISEbits.RE1 = 1;
     /*ADCON1
      * 5: Vref- = Vss
      4: Vref+ = Vdd
      3-0: A/D Port configuration control bits:
-     1000: AN0 -> AN6 la analog.*/
-	ADCON1 = 0b00001000;
+     1000: AN0 -> AN2 la analog.*/
+	ADCON1 = 0b00001100;
     
     /*ADCON0
      *  5-2: chon kenh analog - truoc khi doc du lieu analog, ta phai chon 1 kenh de doc no

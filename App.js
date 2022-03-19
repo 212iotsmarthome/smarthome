@@ -1,13 +1,18 @@
 import React from "react";
 
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, LogBox } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import AuthProvider from "./Firebase/AuthProvider";
+import AppProvider from "./Firebase/AppProvider";
+import { navigationRef } from "./RootNavigation";
+
 import WelcomeScreen from "./Navigations/WelcomeScreen";
 import LoginScreen from "./Navigations/LoginScreen";
+import SignupScreen from "./Navigations/SignupScreen";
 import HomeScreen from "./Navigations/HomeScreen";
 import LEDScreen from "./Navigations/LEDScreen";
 import LEDAdjustScreen from "./Navigations/LEDAdjustScreen";
@@ -23,24 +28,25 @@ import AddDeviceScreen from "./Navigations/AddDeviceScreen";
 import PersonalScreen from "./Navigations/PersonalScreen";
 
 const Stack = createNativeStackNavigator();
+LogBox.ignoreLogs(['Setting a timer for a long period of time'])
 
 export default function App() {
-  // return <WelcomeScreen />;
-  // return <LoginScreen />;
-  // return <HomeScreen />;
-  // return <LEDScreen />;
-  // return <ACScreen />;
-
   return (
     <>
-      <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
+      <AuthProvider>
+        <AppProvider>
         <Stack.Navigator>
           <Stack.Screen
             name="WelcomeScreen"
             component={WelcomeScreen}
             options={{ headerShown: false }}
           />
-
+          <Stack.Screen
+            name="SignUpScreen"
+            component={SignupScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
@@ -123,7 +129,10 @@ export default function App() {
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
+        </AppProvider>
+      </AuthProvider>
+    </NavigationContainer>
     </>
   );
+
 }

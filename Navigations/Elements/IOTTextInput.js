@@ -2,9 +2,11 @@ import React from "react";
 import { Text, View, TextInput } from "react-native";
 
 const IOTTextInput = ({
+  value,
   placeholder = "Aa",
   keyboardType = "default",
   secureTextEntry = false,
+  onChangeText,
 }) => {
   const [isFocus, setIsFocus] = React.useState(false);
 
@@ -28,12 +30,14 @@ const IOTTextInput = ({
           paddingLeft: 20,
           color: "#222",
         }}
+        value={value}
         selectionColor="#29ABE2"
         placeholder={placeholder}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
+        onChangeText={onChangeText}
       />
     </View>
   );

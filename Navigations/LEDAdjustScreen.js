@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
 import { Slider } from "react-native-elements";
 
+import { AppContext } from "../Firebase/AppProvider";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
 
@@ -12,6 +13,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [isOn, setIsOn] = React.useState(false);
   const [isAuto, setIsAuto] = React.useState(false);
   const [brightness, setBrightness] = React.useState(0);
+
+  const { selectedDevice, selectedDeviceInfo} = React.useContext(AppContext);
+  console.log(selectedDevice, selectedDeviceInfo);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -151,7 +155,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
         </TouchableOpacity>
       </View>
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" />
+        <IOTButton text="Save" 
+        onPress={() => {
+          navigation.navigate("LEDScreen");
+        }}/>
       </View>
     </View>
   );
