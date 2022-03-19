@@ -2,9 +2,11 @@ import React from "react";
 import { Text, View, TouchableOpacity, Switch, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 
-const LEDButton = ({
-  type = "LED",
-  name = "My LED",
+const ACButton = ({
+  name = "My Setting",
+  subtext = "subtext",
+  backgroundColor = "#fafafa",
+  icon = "card-text-outline",
   onMainPress = () =>
     Alert.alert("Not assigned yet", "In development", [
       {
@@ -19,9 +21,9 @@ const LEDButton = ({
   return (
     <TouchableOpacity
       style={{
-        height: 80,
+        height: 70,
         width: "82%",
-        backgroundColor: "#F1F9FD",
+        backgroundColor: { backgroundColor },
         borderRadius: 20,
         paddingLeft: 20,
 
@@ -30,29 +32,15 @@ const LEDButton = ({
         marginVertical: 5,
 
         justifyContent: "center",
-        alignItems: "flex-start",
+        // alignItems: "flex-start",
       }}
       onPress={onMainPress}
     >
       <View style={{ left: "0%", position: "absolute", width: "25%" }}>
-        <Icon
-          name="lightbulb-outline"
-          type="material-community"
-          color="#29ABE2"
-          size={36}
-        />
+        <Icon name={icon} type="material-community" color="#888" size={36} />
       </View>
 
-      <View style={{ width: "50%", position: "absolute", left: "25%" }}>
-        <Text
-          style={{
-            fontSize: 14,
-            color: "black",
-          }}
-        >
-          {type}
-        </Text>
-
+      <View style={{ width: "70%", position: "absolute", left: "25%" }}>
         <Text
           style={{
             fontSize: 18,
@@ -62,6 +50,17 @@ const LEDButton = ({
         >
           {name}
         </Text>
+
+        {/* <Text
+          style={{
+            fontSize: 18,
+            color: "black",
+            fontWeight: "bold",
+          }}
+          
+        >
+          {subtext}
+        </Text> */}
       </View>
 
       {/* <View
@@ -96,4 +95,4 @@ const LEDButton = ({
   );
 };
 
-export default LEDButton;
+export default ACButton;

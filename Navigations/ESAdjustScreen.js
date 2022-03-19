@@ -4,10 +4,9 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
+  Switch,
+  TextInput,
 } from "react-native";
-
-import { Icon } from "react-native-elements";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
@@ -16,13 +15,13 @@ export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const LED = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
-  const [isClosed, setIsClosed] = React.useState(false);
-  const [isMoving, setIsMoving] = React.useState(false);
+  const [isOn, setIsOn] = React.useState(false);
+  const [temp, setTemp] = React.useState("25");
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Auto Curtain Adjustment" largetext={LED.name} />
+        <TopHeadTypo smalltext="EnviSensor™ Adjustment" largetext={LED.name} />
 
         <Image
           style={{
@@ -30,16 +29,16 @@ export default function LEDAdjustScreen({ navigation, route }) {
             marginRight: "auto",
             marginTop: "10%",
             marginBottom: "10%",
-            height: "22%",
+            height: "20%",
             width: "40%",
             resizeMode: "contain",
           }}
-          source={require("../assets/smart-curtain.png")}
+          source={require("../assets/envi-sensor.png")}
         />
 
-        <View
+        <TouchableOpacity
           style={{
-            height: 70,
+            height: 120,
             width: "82%",
             backgroundColor: "#F1F9FD",
             borderRadius: 20,
@@ -61,7 +60,11 @@ export default function LEDAdjustScreen({ navigation, route }) {
                 fontWeight: "bold",
               }}
             >
-              Open/Close
+              Flammable gas alarm
+            </Text>
+            <Text style={{ fontSize: 12.5 }}>
+              The alarm goes off when the flammable gas concentration crosses
+              the threshhold, or when the temperature reaches 80°C.
             </Text>
           </View>
 
@@ -74,55 +77,29 @@ export default function LEDAdjustScreen({ navigation, route }) {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                // setIsMoving(true);
-                // setTimeout(() => {
-                //   setIsClosed(!isClosed);
-                // }, 500);
-
-                // setTimeout(() => {
-                //   setIsMoving(false);
-                // }, 3000);
-                setIsClosed(!isClosed);
-              }}
+            <Switch
               style={{
-                width: "90%",
-                height: "100%",
-                justifyContent: "center",
+                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
+                height: 80,
               }}
-            >
-              <Icon
-                name={isClosed ? "window-closed" : "window-open"}
-                type="material-community"
-                color={isClosed ? "#29ABE2" : "#cc0000"}
-                size={36}
-              />
-
-              {/* <ActivityIndicator
-                color="#29ABE2"
-                size={40}
-                animating={isMoving ? true : false}
-                style={{
-                  position: "absolute",
-                  top: "0%",
-                  left: "25%",
-                  backgroundColor: isMoving ? "#F1F9FD" : null,
-                }}
-              ></ActivityIndicator> */}
-            </TouchableOpacity>
+              thumbColor={isOn ? "#29ABE2" : "#eee"}
+              trackColor={{ true: "#C8E6EC", false: "#ccc" }}
+              value={isOn}
+              onValueChange={() => setIsOn(!isOn)}
+            />
           </View>
-        </View>
+        </TouchableOpacity>
 
-        <TouchableOpacity
+        <View
           style={{
-            height: 70,
+            height: 60,
             width: "82%",
             borderRadius: 20,
             paddingLeft: 20,
 
             marginRight: "auto",
             marginLeft: "auto",
+            marginTop: 15,
 
             justifyContent: "center",
             alignItems: "flex-start",
@@ -135,10 +112,17 @@ export default function LEDAdjustScreen({ navigation, route }) {
                 color: "black",
               }}
             >
-              Set time
+              Sensor
             </Text>
           </View>
-        </TouchableOpacity>
+        </View>
+
+        <View style={{ marginLeft: "auto", marginRight: "auto", width: "73%" }}>
+          <Text>{"        "}Temperature:</Text>
+          <Text>{"        "}Humidity:</Text>
+          <Text>{"        "}Brightness:</Text>
+          <Text>{"        "}Flammable gas:</Text>
+        </View>
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>

@@ -64,7 +64,7 @@ const SDButton = ({
         </Text>
       </View>
 
-      <View
+      {/* <View
         style={{
           height: "70%",
           width: "0.3%",
@@ -98,7 +98,7 @@ const SDButton = ({
             size={36}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </TouchableOpacity>
   );
 };

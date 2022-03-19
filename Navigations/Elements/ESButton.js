@@ -1,10 +1,16 @@
 import React from "react";
-import { Text, View, TouchableOpacity, Switch, Alert } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { Icon } from "react-native-elements";
 
-const LEDButton = ({
-  type = "LED",
-  name = "My LED",
+const AUButton = ({
+  type = "AU",
+  name = "My AU",
   onMainPress = () =>
     Alert.alert("Not assigned yet", "In development", [
       {
@@ -15,7 +21,8 @@ const LEDButton = ({
       { text: "OK", onPress: () => console.log("OK Pressed") },
     ]),
 }) => {
-  const [isEnabled, setIsEnabled] = React.useState(false);
+  const [isClosed, setIsClosed] = React.useState(false);
+  const [isMoving, setIsMoving] = React.useState(false);
   return (
     <TouchableOpacity
       style={{
@@ -36,7 +43,7 @@ const LEDButton = ({
     >
       <View style={{ left: "0%", position: "absolute", width: "25%" }}>
         <Icon
-          name="lightbulb-outline"
+          name="camera-control"
           type="material-community"
           color="#29ABE2"
           size={36}
@@ -72,28 +79,56 @@ const LEDButton = ({
           position: "absolute",
           right: "28%",
         }}
-      >
-        <Text></Text>
-      </View>
+      ></View>
 
       <View
         style={{
           width: "29.7%",
+          height: "100%",
           position: "absolute",
           right: "0%",
           alignItems: "center",
         }}
       >
-        <Switch
-          style={{ transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }}
-          thumbColor={isEnabled ? "#29ABE2" : "#eee"}
-          trackColor={{ true: "#C8E6EC", false: "#ccc" }}
-          value={isEnabled}
-          onValueChange={() => setIsEnabled(!isEnabled)}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            setIsMoving(true);
+            setTimeout(() => {
+              setIsClosed(!isClosed);
+            }, 500);
+
+            setTimeout(() => {
+              setIsMoving(false);
+            }, 3000);
+          }}
+          style={{
+            width: "90%",
+            height: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <Icon
+            name={isClosed ? "window-closed" : "window-open"}
+            type="material-community"
+            color={isClosed ? "#29ABE2" : "#cc0000"}
+            size={36}
+          />
+
+          <ActivityIndicator
+            color="#29ABE2"
+            size={40}
+            animating={isMoving ? true : false}
+            style={{
+              position: "absolute",
+              top: "25%",
+              left: "25%",
+              backgroundColor: isMoving ? "#F1F9FD" : null,
+            }}
+          ></ActivityIndicator>
+        </TouchableOpacity>
       </View> */}
     </TouchableOpacity>
   );
 };
 
-export default LEDButton;
+export default AUButton;

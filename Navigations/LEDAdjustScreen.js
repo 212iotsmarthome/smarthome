@@ -81,60 +81,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </TouchableOpacity>
 
-        <View
-          style={{
-            height: 60,
-            width: "82%",
-            borderRadius: 20,
-            paddingLeft: 20,
-
-            marginRight: "auto",
-            marginLeft: "auto",
-            marginVertical: 5,
-
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-        >
-          <View style={{ width: "70%" }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: isOn ? "black" : "#aaa",
-              }}
-            >
-              Auto mode
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: "30%",
-
-              position: "absolute",
-              right: "0%",
-              alignItems: "center",
-            }}
-          >
-            <Switch
-              style={{
-                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
-                height: 80,
-              }}
-              thumbColor={isOn ? (isAuto ? "#29ABE2" : "#eee") : "#eee"}
-              trackColor={
-                isOn
-                  ? { true: "#C8E6EC", false: "#ccc" }
-                  : { true: "#ccc", false: "#ccc" }
-              }
-              value={isAuto}
-              onValueChange={() => setIsAuto(!isAuto)}
-              disabled={!isOn}
-            />
-          </View>
-        </View>
-
-        <View style={{ width: "73%", alignSelf: "center" }}>
+        <View style={{ width: "73%", alignSelf: "center", marginTop: 10 }}>
           <Text
             style={{
               fontSize: 18,
@@ -165,6 +112,43 @@ export default function LEDAdjustScreen({ navigation, route }) {
             // disabled={true}
           />
         </View>
+
+        <TouchableOpacity
+          style={{
+            height: 70,
+            width: "82%",
+            borderRadius: 20,
+            paddingLeft: 20,
+
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginVertical: 5,
+
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+        >
+          <View style={{ width: "70%" }}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: "black",
+              }}
+            >
+              Set time
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: "30%",
+
+              position: "absolute",
+              right: "0%",
+              alignItems: "center",
+            }}
+          ></View>
+        </TouchableOpacity>
       </View>
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton text="Save" />

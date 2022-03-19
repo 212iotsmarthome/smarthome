@@ -13,11 +13,14 @@ import LEDScreen from "./Navigations/LEDScreen";
 import LEDAdjustScreen from "./Navigations/LEDAdjustScreen";
 import ACScreen from "./Navigations/ACScreen";
 import ACAdjustScreen from "./Navigations/ACAdjustScreen";
-import SmartDoorScreen from "./Navigations/SmartDoorScreen";
+import SDScreen from "./Navigations/SDScreen";
 import SDAdjustScreen from "./Navigations/SDAdjustScreen";
-import AutoCurtainScreen from "./Navigations/AutoCurtainScreen";
-
+import AUScreen from "./Navigations/AUScreen";
 import AUAdjustScreen from "./Navigations/AUAdjustScreen";
+import ESScreen from "./Navigations/ESScreen";
+import ESAdjustScreen from "./Navigations/ESAdjustScreen";
+import AddDeviceScreen from "./Navigations/AddDeviceScreen";
+import PersonalScreen from "./Navigations/PersonalScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -73,8 +76,8 @@ export default function App() {
           />
 
           <Stack.Screen
-            name="SmartDoorScreen"
-            component={SmartDoorScreen}
+            name="SDScreen"
+            component={SDScreen}
             options={{ headerShown: false }}
           />
 
@@ -85,14 +88,38 @@ export default function App() {
           />
 
           <Stack.Screen
-            name="AutoCurtainScreen"
-            component={AutoCurtainScreen}
+            name="AUScreen"
+            component={AUScreen}
             options={{ headerShown: false }}
           />
 
           <Stack.Screen
             name="AUAdjustScreen"
             component={AUAdjustScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="ESScreen"
+            component={ESScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="ESAdjustScreen"
+            component={ESAdjustScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="AddDeviceScreen"
+            component={AddDeviceScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="PersonalScreen"
+            component={PersonalScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

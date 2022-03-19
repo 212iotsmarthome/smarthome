@@ -17,7 +17,7 @@ export default function HomeScreen({ navigation }) {
         <TopHeadTypo smalltext={"Hello, " + username} largetext="Home" />
       </View>
 
-      <AvatarButton />
+      <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
 
       <Image
         style={{
@@ -73,14 +73,14 @@ export default function HomeScreen({ navigation }) {
             subtitle="Secure your home"
             name="door-open"
             type="material-community"
-            onPress={() => navigation.navigate("SmartDoorScreen")}
+            onPress={() => navigation.navigate("SDScreen")}
           />
           <IOTDeviceGroupCard
             title="Auto Curtain"
             subtitle="Your privacy"
             name="window-open"
             type="material-community"
-            onPress={() => navigation.navigate("AutoCurtainScreen")}
+            onPress={() => navigation.navigate("AUScreen")}
           />
         </View>
 
@@ -99,12 +99,14 @@ export default function HomeScreen({ navigation }) {
             subtitle="At any time"
             name="camera-control"
             type="material-community"
+            onPress={() => navigation.navigate("ESScreen")}
           />
           <IOTDeviceGroupCard
             title="Add Device"
             subtitle="Add smartness"
             name="add-circle-outline"
             type="material"
+            onPress={() => navigation.navigate("AddDeviceScreen")}
           />
         </View>
       </ScrollView>

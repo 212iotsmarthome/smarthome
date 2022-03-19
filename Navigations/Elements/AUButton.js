@@ -71,7 +71,7 @@ const AUButton = ({
         </Text>
       </View>
 
-      <View
+      {/* <View
         style={{
           height: "70%",
           width: "0.3%",
@@ -126,7 +126,7 @@ const AUButton = ({
             }}
           ></ActivityIndicator>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </TouchableOpacity>
   );
 };
