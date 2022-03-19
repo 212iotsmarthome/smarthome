@@ -88,7 +88,6 @@ export default function LEDScreen({ navigation }) {
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo smalltext={"Control Center"} largetext="LED" />
       </View>
-
       <LEDDiv length={LEDs.length} />
     </ScrollView>
   );
