@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from './firebase';
-import { useNavigation } from "@react-navigation/native";
 import * as RootNavigation from "../RootNavigation";
 
 export const AuthContext = React.createContext();
@@ -32,8 +31,17 @@ export default function AuthProvider({ children }) {
     return unsubscibed;
   }, [RootNavigation, auth]);
 
+  const changePassword = (newPassword) => {
+    var thisUser = auth.currentUser;
+    thisUser.updatePassword(newPassword).then(() => {
+      // Update successful.
+    }).catch( error => {
+      // An error happened.
+    });
+  }
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, changePassword }}>
       {isLoading ? <></> : children}
     </AuthContext.Provider>
   );

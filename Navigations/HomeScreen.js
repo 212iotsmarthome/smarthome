@@ -30,6 +30,7 @@ export default function HomeScreen({ navigation }) {
       <AvatarButton />
 
       <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
+      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/>
 
       <Image
         style={{
@@ -41,6 +42,7 @@ export default function HomeScreen({ navigation }) {
           marginBottom: 30,
         }}
         source={require("../assets/livingroom.png")}
+        onPress={() => navigation.navigate("CP")}
       />
 
       <ScrollView style={{ marginBottom: 60 }}>

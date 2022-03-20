@@ -21,8 +21,8 @@ import ACAdjustScreen from "./Navigations/ACAdjustScreen";
 import SmartDoorScreen from "./Navigations/SmartDoorScreen";
 import SDAdjustScreen from "./Navigations/SDAdjustScreen";
 import AutoCurtainScreen from "./Navigations/AutoCurtainScreen";
-
 import AUAdjustScreen from "./Navigations/AUAdjustScreen";
+import ChangePassword from "./Navigations/ChangePassword";
 
 const Stack = createNativeStackNavigator();
 LogBox.ignoreLogs(['Setting a timer for a long period of time'])
@@ -75,6 +75,12 @@ export default function App() {
           <Stack.Screen
             name="ACAdjustScreen"
             component={ACAdjustScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="CP"
+            component={ChangePassword}
             options={{ headerShown: false }}
           />
 
