@@ -18,8 +18,6 @@ export default function HomeScreen({ navigation }) {
   const { user, setUser } = React.useContext(AuthContext);
   const { deviceList, setStatus } = React.useContext(AppContext);
 
-  console.log(user.control);
-  console.log(deviceList);
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>

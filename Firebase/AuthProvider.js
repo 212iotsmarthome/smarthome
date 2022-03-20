@@ -13,9 +13,9 @@ export default function AuthProvider({ children }) {
     const getUser = async (target_email) => {
       const data = await userCollectionRef.get();
       const list = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      const {email, name, createAt, ID, control} = list.find(x => x.email === target_email)
-      setUser({email, name, createAt, ID, control})
-      return {email, name, createAt, ID, control}
+      const {email, name, createAt, ID, control, address} = list.find(x => x.email === target_email)
+      setUser({email, name, createAt, ID, control, address})
+      return {email, name, createAt, ID, control, address}
     };
     
     const unsubscibed = auth.onAuthStateChanged(async (user) => {
