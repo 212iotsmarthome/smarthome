@@ -4,17 +4,22 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
+  // ActivityIndicator,
 } from "react-native";
 
 import { Icon } from "react-native-elements";
+import { Picker } from "@react-native-picker/picker";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
 
-export default function LEDAdjustScreen({ navigation, route }) {
+export default function AUAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
+  const actList = ["Close", "Half-open", "Full-open"];
+
+  const AU = route.params;
+
+  const [selectedAction, setSelectedAction] = React.useState("");
   const [isConnected, setIsConnected] = React.useState(true);
   const [isClosed, setIsClosed] = React.useState(false);
   const [isMoving, setIsMoving] = React.useState(false);
@@ -22,7 +27,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Auto Curtain Adjustment" largetext={LED.name} />
+        <TopHeadTypo smalltext="Auto Curtain Adjustment" largetext={AU.name} />
 
         <Image
           style={{
@@ -70,47 +75,28 @@ export default function LEDAdjustScreen({ navigation, route }) {
               width: "30%",
 
               position: "absolute",
-              right: "0%",
+              right: "8%",
               alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                // setIsMoving(true);
-                // setTimeout(() => {
-                //   setIsClosed(!isClosed);
-                // }, 500);
-
-                // setTimeout(() => {
-                //   setIsMoving(false);
-                // }, 3000);
-                setIsClosed(!isClosed);
-              }}
+            <Picker
+              mode="dropdown"
+              selectedValue={selectedAction}
               style={{
-                width: "90%",
-                height: "100%",
-                justifyContent: "center",
+                height: 50,
+                width: 145,
               }}
+              onValueChange={(itemValue, itemPosition) =>
+                setSelectedAction(itemValue)
+              }
             >
-              <Icon
-                name={isClosed ? "window-closed" : "window-open"}
-                type="material-community"
-                color={isClosed ? "#29ABE2" : "#cc0000"}
-                size={36}
-              />
-
-              {/* <ActivityIndicator
-                color="#29ABE2"
-                size={40}
-                animating={isMoving ? true : false}
-                style={{
-                  position: "absolute",
-                  top: "0%",
-                  left: "25%",
-                  backgroundColor: isMoving ? "#F1F9FD" : null,
-                }}
-              ></ActivityIndicator> */}
-            </TouchableOpacity>
+              {actList.map((act, index) => {
+                return (
+                  <Picker.Item label={act + "  "} value={index} key={index} />
+                );
+              })}
+            </Picker>
           </View>
         </View>
 
@@ -127,6 +113,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: AU, type: "AU" })
+          }
         >
           <View style={{ width: "70%" }}>
             <Text

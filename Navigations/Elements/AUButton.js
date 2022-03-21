@@ -71,6 +71,16 @@ const AUButton = ({
         </Text>
       </View>
 
+      <View style={{ position: "absolute", right: "7%" }}>
+        <Icon
+          type="material"
+          name="delete-outline"
+          size={28}
+          color="#29ABE2"
+          onPress={() => {}}
+        />
+      </View>
+
       {/* <View
         style={{
           height: "70%",
