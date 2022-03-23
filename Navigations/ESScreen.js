@@ -2,38 +2,38 @@ import React from "react";
 import { View, Text, ScrollView } from "react-native";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import AUButton from "./Elements/AUButton";
+import ESButton from "./Elements/ESButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 
-export default function SDScreen({ navigation }) {
+export default function ESScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
-  const [AUs, setAUs] = React.useState([
+  const [ESs, setESs] = React.useState([
     {
       id: 4000001,
-      type: "AU-05A",
-      name: "Phòng ngủ",
+      type: "ES-01A",
+      name: "Phòng khách",
     },
   ]);
 
-  function AUDiv(props) {
+  function ESDiv(props) {
     const length = props.length;
     if (length == 0) return <NoDeviceFoundGray />;
 
     return (
       <View>
-        <Text
+        {/* <Text
           style={{ left: "70%", marginBottom: 10, color: "#aaa", fontSize: 12 }}
         >
           Lock/Unlock
-        </Text>
+        </Text> */}
 
         <View style={{ marginBottom: 60, width: "100%" }}>
-          {AUs.map((AU) => (
-            <AUButton
-              type={AU.type}
-              name={AU.name}
-              key={AU.id}
-              onMainPress={() => navigation.navigate("AUAdjustScreen", AU)}
+          {ESs.map((ES) => (
+            <ESButton
+              type={ES.type}
+              name={ES.name}
+              key={ES.id}
+              onMainPress={() => navigation.navigate("ESAdjustScreen", ES)}
             />
           ))}
         </View>
@@ -44,10 +44,10 @@ export default function SDScreen({ navigation }) {
   return (
     <ScrollView style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext={"Control Center"} largetext="Auto Curtain" />
+        <TopHeadTypo smalltext={"Control Center"} largetext="EnviSensor™" />
       </View>
 
-      <AUDiv length={AUs.length} />
+      <ESDiv length={ESs.length} />
     </ScrollView>
   );
 }

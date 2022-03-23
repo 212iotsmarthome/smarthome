@@ -21,12 +21,6 @@ export default function LEDScreen({ navigation }) {
 
     return (
       <View>
-        <Text
-          style={{ left: "74%", marginBottom: 10, color: "#aaa", fontSize: 12 }}
-        >
-          On/Off
-        </Text>
-
         <View style={{ marginBottom: 60, width: "100%" }}>
           {LEDs.map((LED) => (
             <LEDButton

@@ -4,30 +4,24 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  // ActivityIndicator,
+  Switch,
+  TextInput,
 } from "react-native";
-
-import { Icon } from "react-native-elements";
-import { Picker } from "@react-native-picker/picker";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
 
-export default function AUAdjustScreen({ navigation, route }) {
+export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const actList = ["Close", "Half-open", "Full-open"];
-
-  const AU = route.params;
-
-  const [selectedAction, setSelectedAction] = React.useState("");
+  const LED = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
-  const [isClosed, setIsClosed] = React.useState(false);
-  const [isMoving, setIsMoving] = React.useState(false);
+  const [isOn, setIsOn] = React.useState(false);
+  const [temp, setTemp] = React.useState("25");
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Auto Curtain Adjustment" largetext={AU.name} />
+        <TopHeadTypo smalltext="EnviSensor™ Adjustment" largetext={LED.name} />
 
         <Image
           style={{
@@ -35,16 +29,16 @@ export default function AUAdjustScreen({ navigation, route }) {
             marginRight: "auto",
             marginTop: "10%",
             marginBottom: "10%",
-            height: "22%",
+            height: "20%",
             width: "40%",
             resizeMode: "contain",
           }}
-          source={require("../assets/smart-curtain.png")}
+          source={require("../assets/envi-sensor.png")}
         />
 
-        <View
+        <TouchableOpacity
           style={{
-            height: 70,
+            height: 120,
             width: "82%",
             backgroundColor: "#F1F9FD",
             borderRadius: 20,
@@ -66,7 +60,11 @@ export default function AUAdjustScreen({ navigation, route }) {
                 fontWeight: "bold",
               }}
             >
-              Open/Close
+              Flammable gas alarm
+            </Text>
+            <Text style={{ fontSize: 12.5 }}>
+              The alarm goes off when the flammable gas concentration crosses
+              the threshhold, or when the temperature reaches 80°C.
             </Text>
           </View>
 
@@ -75,47 +73,37 @@ export default function AUAdjustScreen({ navigation, route }) {
               width: "30%",
 
               position: "absolute",
-              right: "8%",
+              right: "0%",
               alignItems: "center",
-              justifyContent: "center",
             }}
           >
-            <Picker
-              mode="dropdown"
-              selectedValue={selectedAction}
+            <Switch
               style={{
-                height: 50,
-                width: 145,
+                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
+                height: 80,
               }}
-              onValueChange={(itemValue, itemPosition) =>
-                setSelectedAction(itemValue)
-              }
-            >
-              {actList.map((act, index) => {
-                return (
-                  <Picker.Item label={act + "  "} value={index} key={index} />
-                );
-              })}
-            </Picker>
+              thumbColor={isOn ? "#29ABE2" : "#eee"}
+              trackColor={{ true: "#C8E6EC", false: "#ccc" }}
+              value={isOn}
+              onValueChange={() => setIsOn(!isOn)}
+            />
           </View>
-        </View>
+        </TouchableOpacity>
 
-        <TouchableOpacity
+        <View
           style={{
-            height: 70,
+            height: 60,
             width: "82%",
             borderRadius: 20,
             paddingLeft: 20,
 
             marginRight: "auto",
             marginLeft: "auto",
+            marginTop: 15,
 
             justifyContent: "center",
             alignItems: "flex-start",
           }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen", { obj: AU, type: "AU" })
-          }
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -124,10 +112,17 @@ export default function AUAdjustScreen({ navigation, route }) {
                 color: "black",
               }}
             >
-              Set time
+              Sensor
             </Text>
           </View>
-        </TouchableOpacity>
+        </View>
+
+        <View style={{ marginLeft: "auto", marginRight: "auto", width: "73%" }}>
+          <Text>{"        "}Temperature:</Text>
+          <Text>{"        "}Humidity:</Text>
+          <Text>{"        "}Brightness:</Text>
+          <Text>{"        "}Flammable gas:</Text>
+        </View>
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
