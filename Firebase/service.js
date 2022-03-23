@@ -7,7 +7,6 @@ import {
 } from 'firebase/firestore'
 import { db } from "./firebase";
 
-
 export const addDocument = async (collectionParam, data) => {
   try {
     const docRef = await addDoc(collection(db, collectionParam), data);
