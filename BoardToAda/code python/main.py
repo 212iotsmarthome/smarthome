@@ -234,14 +234,15 @@ def processData(data, index):
     else:
         try:
             temp_device_info = json.loads(data)
+            # kiem tra su thay doi input cua cac device va gui
+            DeviceHandle(temp_device_info, index)
+            # load vao device_info
+            device_info[index] = temp_device_info
+            # gui input cua sensor (ko can kiem tra)
+            SensorHandle(index)
         except:
-            return
-        # kiem tra su thay doi input cua cac device va gui
-        DeviceHandle(temp_device_info, index)
-        # load vao device_info
-        device_info[index] = temp_device_info
-        # gui input cua sensor (ko can kiem tra)
-        SensorHandle(index)
+            pass
+
 
 
 # serial_messages = ""
@@ -353,10 +354,13 @@ def SendToBoard(feed_id, payload):
         bytes = ser[i].inWaiting()
         if bytes > 0:
             trash_data = ser[i].read(bytes)
-
+    try:
+        payload_json = json.loads(payload)
+    except:
+        return
     global device_info
     if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
-        payload_json = json.loads(payload)
+
         # payload_json se co dang kieu: {"board1":{"0":1, "1":0}, "board2": {"0":1, "1":1}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
