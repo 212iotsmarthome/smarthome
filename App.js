@@ -28,6 +28,9 @@ import AddDeviceScreen from "./Navigations/AddDeviceScreen";
 import PersonalScreen from "./Navigations/PersonalScreen";
 import SetTimeScreen from "./Navigations/SetTimeScreen";
 
+import ChangePassword from "./Navigations/ChangePassword";
+
+
 const Stack = createNativeStackNavigator();
 LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
@@ -139,6 +142,7 @@ export default function App() {
           </AppProvider>
         </AuthProvider>
       </NavigationContainer>
+
     </>
   );
 }
