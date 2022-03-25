@@ -1,5 +1,6 @@
 import { View, Image, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
+import axios from 'axios';
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
@@ -11,11 +12,24 @@ import { AppContext } from "../Firebase/AppProvider";
 import Credit from "./Elements/Credit";
 
 export default function HomeScreen({ navigation }) {
-  const [username, setUsername] = React.useState("Lorem");
   const [isConnected, setIsConnected] = React.useState(true);
-
   const { user, setUser } = React.useContext(AuthContext);
   const { deviceList, setStatus } = React.useContext(AppContext);
+
+  async function postName(name) {
+    axios
+      .post("http://192.168.1.9:8000/post_name", {
+        name
+      })
+      .then(function (response) {
+        // handle success
+        alert(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        // handle error
+        alert(error.message);
+    });
+	}
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -24,6 +38,10 @@ export default function HomeScreen({ navigation }) {
       </View>
       <AvatarButton />
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
+      <IOTButton
+        text="Sign Up"
+        onPress={() => postName(user.name)}
+      />
       <Image
         style={{
           marginLeft: "auto",
