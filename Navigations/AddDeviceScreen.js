@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { Text, View } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
+import { addDevice } from "../controller/controller";
+import Credit from "./Elements/Credit";
 import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";
-import Credit from "./Elements/Credit";
+import TopHeadTypo from "./Elements/TopHeadTypo";
 
 export default function AddScreen({ navigation }) {
+  const [deviceCode, setDeviceCode] = useState("");
+  const [deviceName, setDeviceName] = useState("");
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
@@ -23,7 +26,14 @@ export default function AddScreen({ navigation }) {
       </Text>
 
       <View style={{ marginVertical: "10%" }}>
-        <IOTTextInput placeholder="Device code" />
+        <IOTTextInput
+          placeholder="Device code"
+          value={deviceCode}
+          onChangeText={
+            (text) => {
+              setDeviceCode(text);
+            }
+          } />
         <Text
           style={{
             marginLeft: "auto",
@@ -37,12 +47,25 @@ export default function AddScreen({ navigation }) {
           body. It's a 7-character code.
         </Text>
 
-        <IOTTextInput placeholder="Set device name" secureTextEntry={true} />
+        <IOTTextInput
+          value={deviceName}
+          placeholder="Set device name"
+          secureTextEntry={false}
+          onChangeText={
+            (text) => {
+              setDeviceName(text);
+            }
+          } />
       </View>
 
       <IOTButton
         text="Add Device"
-        onPress={() => navigation.navigate("HomeScreen")}
+        onPress={() => {
+          addDevice(deviceCode, deviceName);
+          // navigation.navigate("HomeScreen")
+          setDeviceCode("");
+          setDeviceName("");
+        }}
       />
 
       <Credit />

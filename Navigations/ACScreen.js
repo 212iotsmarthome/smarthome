@@ -9,9 +9,17 @@ import { AppContext } from "../Firebase/AppProvider";
 
 export default function ACScreen({ navigation }) {
   const { user } = React.useContext(AuthContext);
-  const { status, selectDevice, setCurSelection} = React.useContext(AppContext);
+  const { status, selectDevice, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
-  const [ACs, setACs] = React.useState(selectDevice);
+  // const [ACs, setACs] = React.useState(selectDevice);
+  const [ACs, setACs] = React.useState([
+    {
+      type: 'AC-12',
+      name: "Phong Khach",
+      ID: '2000001'
+    }
+  ]);
+
 
   function ACDiv(props) {
     const length = props.length;

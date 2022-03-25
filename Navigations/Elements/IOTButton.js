@@ -17,15 +17,15 @@ const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
         style={
           type == "dark"
             ? {
-                height: 50,
-                width: "90%",
-                backgroundColor: "#29ABE2",
-                borderRadius: 25,
-                shadowColor: "black",
-                elevation: 5,
-              }
+              height: 50,
+              width: "90%",
+              backgroundColor: "#29ABE2",
+              borderRadius: 25,
+              shadowColor: "black",
+              elevation: 5,
+            }
             : type == "white"
-            ? {
+              ? {
                 height: 50,
                 width: "90%",
                 backgroundColor: "#FFF",
@@ -33,23 +33,22 @@ const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
                 shadowColor: "grey",
                 elevation: 5,
               }
-            : {}
+              : {}
         }
-        onPress={onPress}
       >
         <Text
           style={
             type == "dark"
               ? {
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  alignSelf: "center",
-                  fontSize: 18,
-                  color: "white",
-                  fontWeight: "bold",
-                }
+                marginTop: "auto",
+                marginBottom: "auto",
+                alignSelf: "center",
+                fontSize: 18,
+                color: "white",
+                fontWeight: "bold",
+              }
               : type == "white"
-              ? {
+                ? {
                   marginTop: "auto",
                   marginBottom: "auto",
                   alignSelf: "center",
@@ -57,7 +56,7 @@ const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
                   color: "#29ABE2",
                   fontWeight: "bold",
                 }
-              : {}
+                : {}
           }
         >
           {text}
