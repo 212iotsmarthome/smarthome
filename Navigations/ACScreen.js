@@ -19,11 +19,11 @@ export default function ACScreen({ navigation }) {
 
     return (
       <View>
-        <Text
+        {/* <Text
           style={{ left: "74%", marginBottom: 10, color: "#aaa", fontSize: 12 }}
         >
           On/Off
-        </Text>
+        </Text> */}
 
         <View style={{ marginBottom: 60, width: "100%" }}>
           {ACs.map((AC) => (

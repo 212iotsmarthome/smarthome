@@ -9,7 +9,6 @@ import { AuthContext } from "../Firebase/AuthProvider";
 import { AppContext } from "../Firebase/AppProvider";
 
 import Credit from "./Elements/Credit";
-import { handleSignOut } from "../Firebase/utility";
 
 export default function HomeScreen({ navigation }) {
   const [username, setUsername] = React.useState("Lorem");
@@ -25,10 +24,11 @@ export default function HomeScreen({ navigation }) {
       </View>
 
 
-      <AvatarButton />
+      <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
 
       <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
       <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/>
+
 
       <Image
         style={{
@@ -71,7 +71,7 @@ export default function HomeScreen({ navigation }) {
             type="material-community"
             onPress={() => {
               setStatus(2);
-              navigation.navigate("ACScreen")
+              navigation.navigate("ACScreen");
             }}
           />
         </View>
@@ -93,7 +93,7 @@ export default function HomeScreen({ navigation }) {
             type="material-community"
             onPress={() => {
               setStatus(5);
-              navigation.navigate("SmartDoorScreen");
+              navigation.navigate("SDScreen");
             }}
           />
           <IOTDeviceGroupCard
@@ -101,7 +101,7 @@ export default function HomeScreen({ navigation }) {
             subtitle="Your privacy"
             name="window-open"
             type="material-community"
-            onPress={() => navigation.navigate("AutoCurtainScreen")}
+            onPress={() => navigation.navigate("AUScreen")}
           />
         </View>
 
@@ -120,12 +120,14 @@ export default function HomeScreen({ navigation }) {
             subtitle="At any time"
             name="camera-control"
             type="material-community"
+            onPress={() => navigation.navigate("ESScreen")}
           />
           <IOTDeviceGroupCard
             title="Add Device"
             subtitle="Add smartness"
             name="add-circle-outline"
             type="material"
+            onPress={() => navigation.navigate("AddDeviceScreen")}
           />
         </View>
       </ScrollView>
