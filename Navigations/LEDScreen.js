@@ -19,6 +19,17 @@ export default function LEDScreen({ navigation }) {
     const length = props.length;
     if (length == 0) return <NoDeviceFoundGray />;
 
+    async function postName(e) {
+      e.preventDefault()
+      try {
+        await axios.post("http://localhost:4000/post_name", {
+          name
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     return (
       <View>
         <View style={{ marginBottom: 60, width: "100%" }}>
