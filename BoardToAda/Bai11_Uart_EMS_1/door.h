@@ -19,6 +19,9 @@ void open_door();
 void close_door();
 void stop_door();
 void setDoor(int value);
+char get_lock_value();
+//0 la dong, 1 la mo. 
+void set_lock(int value);
 
 
 #ifdef	__cplusplus

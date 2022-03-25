@@ -17,8 +17,6 @@ export default function HomeScreen({ navigation }) {
   const { user, setUser } = React.useContext(AuthContext);
   const { deviceList, setStatus } = React.useContext(AppContext);
 
-  console.log(user.control);
-  console.log(deviceList);
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
@@ -26,6 +24,9 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
+
+      {/* <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
+      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/> */}
 
       <Image
         style={{
@@ -37,6 +38,7 @@ export default function HomeScreen({ navigation }) {
           marginBottom: 30,
         }}
         source={require("../assets/livingroom.png")}
+        onPress={() => navigation.navigate("CP")}
       />
 
       <ScrollView style={{ marginBottom: 60 }}>

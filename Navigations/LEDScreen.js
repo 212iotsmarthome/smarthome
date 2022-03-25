@@ -1,11 +1,10 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
+import { ScrollView, View } from "react-native";
+import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 import LEDButton from "./Elements/LEDButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
-import { AuthContext } from "../Firebase/AuthProvider";
-import { AppContext } from "../Firebase/AppProvider";
+import TopHeadTypo from "./Elements/TopHeadTypo";
 
 export default function LEDScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};

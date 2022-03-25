@@ -7,7 +7,6 @@ import serial.tools.list_ports
 
 # from Adafruit_IO import Client, Feed, Data
 
-# AIO_FEED_IDS = ["bbc-led","bbc-dht11","bbc-conditioner","bbc-ldr","bbc-door","bbc-curtain","bbc-gas"]
 AIO_FEED_ID_DEVICES = {
     "LED": "bbc-led",
     "curtain": "bbc-curtain",
@@ -16,7 +15,7 @@ AIO_FEED_ID_DEVICES = {
     "buzzer": "bbc-buzzer"
 }
 AIO_FEED_ID_SENSORS = "bbc-sensor"
-# AIO_FEED_IDS_TEST = "bbc-curtain"
+
 AIO_USERNAME = "namdiep239"
 AIO_KEY = "aio_cSFh41uOGJgJ3IyiK0f0evTUtDOw"
 
@@ -29,14 +28,15 @@ LED, curtain, conditioner, buzzer la thuoc tinh output, do minh dieu khien
 '''
 device_info = []
 for i in range(0, NUM_OF_DEVICE):
-    device_info.append({"deviceID": "string",
-                        "DHT11": {"humid": 0, "temperature": 0},
-                        "LDR": {"1": 0, "2": 0},
+    device_info.append({"deviceID": "board1",
+                        "DHT11": {"0": {"humid": 71.0, "temperature": 27.0}},
+                        "LDR": {"1": 72, "2": 706},
                         "LED": {"0": 0, "1": 0},
-                        "curtain": 0,
-                        "door": 0,
-                        "conditioner": {"power": 0, "temp": 22},
-                        "gas": 0, "buzzer": 0})
+                        "curtain": {"0": 0},
+                        "door": {"0": {"motor": 1, "lock": 0}},
+                        "conditioner": {"0": {"power": 0, "temp": 22}},
+                        "gas": {"0": 1},
+                        "buzzer": {"0": 0}})
 
 '''
 moi khi gui command, ong hay set bien nay ve 0. cho cho toi khi device gui ve OK, nghia la
@@ -96,12 +96,12 @@ def set_mul_led(ser, mode0, mode1):
 
 
 '''
-gui serial command de dong mo cua. 1 de mo cua, 0 de dong cua.
+gui serial command de dong mo cua. open: 1 de mo cua, 0 de dong cua; lock: 1 de mo khoa, 0 de khoa.
 '''
 
 
-def set_door(ser, open):
-    command = f'!setDoor:{open}*'
+def set_door(ser, open, lock):
+    command = f'!setDoor:{open}:{lock}*'
     print(command)
     ser.write(command.encode())
 
@@ -124,6 +124,7 @@ def getPort():
     for i in range(0, N):
         port = ports[i]
         strPort = str(port)
+        print(strPort)
         # print(strPort)  -> COM3 - USB-SERIAL CH340 (COM3)
         # dung lenh sau neu ket noi board that
         # if "USB Serial Device" in strPort:
@@ -163,12 +164,14 @@ new_led_data = 0
 new_conditioner_data = 0
 new_curtain_data = 0
 new_door_data = 0
+new_buzzer_data = 0
 
 LED_json = {"value": {}}
 cond_json = {"value": {}}
 curtain_json = {"value": {}}
 door_json = {"value": {}}
 sensor_json = {"value": {}}
+buzzer_json = {"value": {}}
 '''
  DeviceHandle: Kiem tra su thay doi input cua cac thiet bi duoc dieu khien (LED, may lanh,
 rem, cua). Neu input thay doi thi moi publish len Ada server -> tranh viec gui qua 
@@ -177,8 +180,8 @@ nhieu lan
 
 
 def DeviceHandle(temp_info, index):
-    global new_led_data, new_door_data, new_curtain_data, new_conditioner_data
-    global LED_json, cond_json, curtain_json, door_json
+    global new_led_data, new_door_data, new_curtain_data, new_conditioner_data, new_buzzer_data
+    global LED_json, cond_json, curtain_json, door_json, buzzer_json
     if temp_info["LED"] != device_info[index]["LED"]:
         new_led_data = 1
         # LED_json = {"value": {"0": temp_info["LED"]["0"], "1": temp_info["LED"]["1"]}}
@@ -193,10 +196,13 @@ def DeviceHandle(temp_info, index):
     if temp_info["door"] != device_info[index]["door"]:
         new_door_data = 1
         # client.publish(AIO_FEED_ID_DEVICES["door"], temp_info["door"])
+    if temp_info["buzzer"] != device_info[index]["buzzer"]:
+        new_buzzer_data = 1
     LED_json["value"][temp_info["deviceID"]] = temp_info["LED"]
     cond_json["value"][temp_info["deviceID"]] = temp_info["conditioner"]
     curtain_json["value"][temp_info["deviceID"]] = temp_info["curtain"]
     door_json["value"][temp_info["deviceID"]] = temp_info["door"]
+    buzzer_json["value"][temp_info["deviceID"]] = temp_info["buzzer"]
 
 
 '''
@@ -226,13 +232,17 @@ def processData(data, index):
         device_ready = 1
         print("device ready")
     else:
-        temp_device_info = json.loads(data)
-        # kiem tra su thay doi input cua cac device va gui
-        DeviceHandle(temp_device_info, index)
-        # load vao device_info
-        device_info[index] = temp_device_info
-        # gui input cua sensor (ko can kiem tra)
-        SensorHandle(index)
+        try:
+            temp_device_info = json.loads(data)
+            # kiem tra su thay doi input cua cac device va gui
+            DeviceHandle(temp_device_info, index)
+            # load vao device_info
+            device_info[index] = temp_device_info
+            # gui input cua sensor (ko can kiem tra)
+            SensorHandle(index)
+        except:
+            pass
+
 
 
 # serial_messages = ""
@@ -241,50 +251,76 @@ Kiem tra du lieu serial duoc truyen qua UART, neu co du lieu
 tien hanh processData
 '''
 
+serial_messages = []
+for i in range(0, NUM_OF_DEVICE):
+    serial_messages.append("")
+
 
 def readSerial(ser, index):
     bytesToRead = ser.inWaiting()
-    serial_messages = ""
+    global serial_messages
     if bytesToRead > 0:
-        serial_messages = serial_messages + ser.read(bytesToRead).decode("UTF-8")
+        serial_messages[index] = serial_messages[index] + ser.read(bytesToRead).decode("UTF-8")
         # print(serial_messages)
-        while ("!" in serial_messages) and ("*" in serial_messages):
-            start = serial_messages.find("!")
-            end = serial_messages.find("*")
-            processData(serial_messages[start:end + 1], index)
-            if end == len(serial_messages):
-                serial_messages = ""
+        while ("!" in serial_messages[index]) and ("*" in serial_messages[index]):
+            start = serial_messages[index].find("!")
+            end = serial_messages[index].find("*")
+            if end < start:
+                serial_messages[index] = serial_messages[index][end + 1:]
+                end = serial_messages[index].find("*")
+                if end == -1:
+                    return
+            processData(serial_messages[index][start:end + 1], index)
+            if end == len(serial_messages[index]):
+                serial_messages[index] = ""
             else:
-                serial_messages = serial_messages[end + 1:]
+                serial_messages[index] = serial_messages[index][end + 1:]
     else:
         pass
 
 
 def send_to_ada():
-    global new_led_data, new_door_data, new_curtain_data, new_conditioner_data
+    global new_led_data, new_door_data, new_curtain_data, new_conditioner_data, new_buzzer_data
     if new_led_data == 1:
         print(f'send to {AIO_FEED_ID_DEVICES["LED"]}', LED_json)
         new_led_data = 0
-        # client.publish(AIO_FEED_ID_DEVICES["LED"], json.dumps(LED_json))
+        client.publish(AIO_FEED_ID_DEVICES["LED"], json.dumps(LED_json))
     if new_conditioner_data == 1:
         print(f'send to {AIO_FEED_ID_DEVICES["conditioner"]}', cond_json)
         new_conditioner_data = 0
-        # client.publish(AIO_FEED_ID_DEVICES["conditioner"], json.dumps(cond_json))
+        client.publish(AIO_FEED_ID_DEVICES["conditioner"], json.dumps(cond_json))
     if new_curtain_data == 1:
         print(f'send to {AIO_FEED_ID_DEVICES["curtain"]}', curtain_json)
         new_curtain_data = 0
-        # client.publish(AIO_FEED_ID_DEVICES["curtain"], temp_info["curtain"])
+        client.publish(AIO_FEED_ID_DEVICES["curtain"], json.dumps(curtain_json))
     if new_door_data == 1:
         print(f'send to {AIO_FEED_ID_DEVICES["door"]}', door_json)
         new_door_data = 0
-        # client.publish(AIO_FEED_ID_DEVICES["door"], temp_info["door"])
+        client.publish(AIO_FEED_ID_DEVICES["door"], json.dumps(door_json))
+    if new_buzzer_data == 1:
+        print(f'send to {AIO_FEED_ID_DEVICES["buzzer"]}', buzzer_json)
+        client.publish(AIO_FEED_ID_DEVICES["buzzer"], json.dumps(buzzer_json))
+        new_buzzer_data = 0
+        # buzzer
+    client.publish(AIO_FEED_ID_SENSORS, json.dumps(sensor_json))
     print(f'send to {AIO_FEED_ID_SENSORS}', sensor_json)
+
+
+def print_send_json():
+    print(f'send to {AIO_FEED_ID_DEVICES["LED"]}', LED_json)
+    print(f'send to {AIO_FEED_ID_DEVICES["conditioner"]}', cond_json)
+    print(f'send to {AIO_FEED_ID_DEVICES["curtain"]}', curtain_json)
+    print(f'send to {AIO_FEED_ID_DEVICES["door"]}', door_json)
+    print(f'send to {AIO_FEED_ID_DEVICES["buzzer"]}', buzzer_json)
+    print(f'send to {AIO_FEED_ID_SENSORS}', sensor_json)
+
+
 
 
 isMicrobitConnected = False
 ser = []
 for i in range(0, NUM_OF_DEVICE):
-    ser.append(serial.Serial(port="COM2", baudrate=9600))  # baudrate=115200
+    ser.append(serial.Serial(port="COM3", baudrate=9600))  # baudrate=115200
 
 
 # if getPort() != "None":
@@ -314,49 +350,68 @@ def disconnected(client):
 
 
 def SendToBoard(feed_id, payload):
-    if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
+    for i in range(0, NUM_OF_DEVICE):
+        bytes = ser[i].inWaiting()
+        if bytes > 0:
+            trash_data = ser[i].read(bytes)
+    try:
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1":{"0":3, "1":3}, "device2": {"0":3, "1":3}}
+    except:
+        return
+    global device_info
+    if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
+
+        # payload_json se co dang kieu: {"board1":{"0":1, "1":0}, "board2": {"0":1, "1":1}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
                     set_mul_led(ser[index], payload_json[key]["0"], payload_json[key]["1"])
+                    # cap nhat device_info de ko bi gui 2 lan
+                    device_info[index]["LED"] = payload_json[key]
                     break
 
     elif (feed_id == AIO_FEED_ID_DEVICES["curtain"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": 0, "device2": 1}
+        # payload_json se co dang kieu: {"board1": {"0":0}, "board2": {"0":1}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
-                    set_curtain(ser[index], payload_json[key])
+                    set_curtain(ser[index], payload_json[key]["0"])
+                    # cap nhat device_info de ko bi gui 2 lan
+                    device_info[index]["curtain"] = payload_json[key]
                     break
 
     elif (feed_id == AIO_FEED_ID_DEVICES["conditioner"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": {"power": 1, "temp": 22}, "device2": {"power": 0, "temp": 22}}
+        # payload_json se co dang kieu: {"board1": {"0":{"power": 1, "temp": 22}}, "board2": {"0":{"power": 0, "temp": 22}}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
-                    set_conditioner(ser[index], payload_json[key]["power"], payload_json[key]["temp"])
+                    set_conditioner(ser[index], payload_json[key]["0"]["power"], payload_json[key]["0"]["temp"])
+                    # cap nhat device_info de ko bi gui 2 lan
+                    device_info[index]["conditioner"] = payload_json[key]
                     break
 
     elif (feed_id == AIO_FEED_ID_DEVICES["door"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": 0, "device2": 1}
+        # payload_json se co dang kieu: {"board1": {"0":{"motor":0, "lock":1}}, "board2": {"0":{"motor":0, "lock":1}}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
-                    set_door(ser[index], payload_json[key])
+                    set_door(ser[index], payload_json[key]["0"]["motor"], payload_json[key]["0"]["lock"])
+                    # cap nhat device_info de ko bi gui 2 lan
+                    device_info[index]["door"] = payload_json[key]
                     break
 
     elif (feed_id == AIO_FEED_ID_DEVICES["buzzer"]):
         payload_json = json.loads(payload)
-        # payload_json se co dang kieu: {"device1": 0, "device2": 1}
+        # payload_json se co dang kieu: {"board1": {"0":0}, "board2": {"0":1}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
                 if device_info[index]["deviceID"] == key:
-                    set_buzzer(ser[index], payload_json[key])
+                    set_buzzer(ser[index], payload_json[key]["0"])
+                    # cap nhat device_info de ko bi gui 2 lan
+                    device_info[index]["buzzer"] = payload_json[key]
                     break
 
 
@@ -387,7 +442,8 @@ while True:
     i = (i + 1) % 5
     if i == 0:
         send_to_ada()
-        print("----------------")
+        # print_send_json()
+        print("--------------------------------")
     time.sleep(1)
 
     # value = random.randint(0,100)

@@ -1,21 +1,19 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import {
-  View,
-  Text,
-  ScrollView,
   Image,
   RefreshControl,
+  ScrollView,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
-import IOTButton from "./Elements/IOTButton";
-
-import DateTimePicker from "@react-native-community/datetimepicker";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { DataTable } from "react-native-paper";
-import { Picker } from "@react-native-picker/picker";
 import { Icon } from "react-native-elements";
+import { DataTable } from "react-native-paper";
+import IOTButton from "./Elements/IOTButton";
+import TopHeadTypo from "./Elements/TopHeadTypo";
 
 // import { AuthContext } from "../Firebase/AuthProvider";
 // import { AppContext } from "../Firebase/AppProvider";
@@ -78,13 +76,15 @@ export default function SetTimeScreen({ navigation, route }) {
   };
 
   const [refreshing, setRefreshing] = React.useState(false);
-  const [date, setDate] = React.useState(new Date());
   const [isShow, setShow] = React.useState(false);
+
+  const [date, setDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState("");
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    //get method
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
@@ -100,7 +100,16 @@ export default function SetTimeScreen({ navigation, route }) {
         <View style={{ marginVertical: "10%" }}>
           <TopHeadTypo
             smalltext={
-              "Set Time - " + (Devicejson.type == "AU" ? "Auto Curtain" : "K")
+              "Set Time - " +
+              (Devicejson.type == "LED"
+                ? "LED"
+                : Devicejson.type == "AC"
+                ? "Air Conditioner"
+                : Devicejson.type == "SD"
+                ? "Smart Door"
+                : Devicejson.type == "AU"
+                ? "Auto Curtain"
+                : "EnviSensor™")
             }
             largetext={Devicejson.obj.name}
           />

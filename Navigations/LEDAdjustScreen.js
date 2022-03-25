@@ -3,8 +3,9 @@ import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
 import { Slider } from "@miblanchard/react-native-slider";
 
 import { AppContext } from "../Firebase/AppProvider";
-import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
+import TopHeadTypo from "./Elements/TopHeadTypo";
+import { controlLED } from "../controller/controller";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -15,7 +16,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [brightness, setBrightness] = React.useState(1);
 
   const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
-  console.log(selectedDevice, selectedDeviceInfo);
+  // console.log(selectedDevice, selectedDeviceInfo);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -131,6 +132,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: LED, type: "LED" })
+          }
         >
           <View style={{ width: "100%" }}>
             <Text
@@ -142,13 +146,23 @@ export default function LEDAdjustScreen({ navigation, route }) {
               Set time
             </Text>
           </View>
+
+          <View
+            style={{
+              width: "30%",
+              position: "absolute",
+              right: "0%",
+              alignItems: "center",
+            }}
+          ></View>
         </TouchableOpacity>
       </View>
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton
           text="Save"
           onPress={() => {
-            navigation.navigate("LEDScreen");
+            controlLED(LED.ID, isOn, isAuto, brightness);
+            navigation.goBack();
           }}
         />
       </View>
