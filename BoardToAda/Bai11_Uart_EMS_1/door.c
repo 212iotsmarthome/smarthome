@@ -50,7 +50,7 @@ void check_door() {
     }
     if (door_moving > 0) {
         door_moving++;
-        if (door_moving > 50) {
+        if (door_moving > 15) {
             door_moving = 0;
             stop_door();
         }
@@ -63,24 +63,26 @@ char get_door_value() {
 
 void open_door() {
     if (is_door_open == CLOSE) {
-        PWM_turn_on();
-        DOOR_LAT_1 = 1;
-        DOOR_LAT_2 = 0;
-        door_moving = 1;
-    }
-}
-
-void close_door() {
-    if (is_door_open == OPEN) {
-        PWM_turn_on();
+//        PWM_turn_on();
         DOOR_LAT_1 = 0;
         DOOR_LAT_2 = 1;
         door_moving = 1;
     }
 }
 
+void close_door() {
+    if (is_door_open == OPEN) {
+//        PWM_turn_on();
+        DOOR_LAT_1 = 1;
+        DOOR_LAT_2 = 0;
+        door_moving = 1;
+    }
+}
+
 void stop_door() {
-    PWM_turn_off();
+//    PWM_turn_off();
+    DOOR_LAT_1 = 0;
+    DOOR_LAT_2 = 0;
 }
 
 void setDoor(int value) {

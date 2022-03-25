@@ -51,7 +51,9 @@ void main(void)
     lcd_clear();
     LcdClearS();
     delay_ms(1000);
-    set_DC_speed(0.8);
+    set_DC_speed(1);
+//    open_door();
+//    close_door();
     
 	while (1)
 	{
@@ -82,7 +84,7 @@ void main(void)
         Uart_Processing();      //handle uart receive message
         
         if (k == 0) {       //run every 5 seconds.
-//            scene = (scene + 1) % 6;
+            scene = (scene + 1) % 6;
             send_All_Info();
         }
         
@@ -120,10 +122,6 @@ void button_check() {
 
 void init_system(void)
 {
-    PORTDbits.RD1 = 0;
-    TRISDbits.RD1 = 0;
-    TRISCbits.RC2 = 0;      //output RC2
-    LATCbits.LATC2 = 0;
     TRISB = 0x00;		//setup PORTB is output
     TRISA = 0x00;
     init_lcd();

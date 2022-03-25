@@ -232,7 +232,10 @@ def processData(data, index):
         device_ready = 1
         print("device ready")
     else:
-        temp_device_info = json.loads(data)
+        try:
+            temp_device_info = json.loads(data)
+        except:
+            return
         # kiem tra su thay doi input cua cac device va gui
         DeviceHandle(temp_device_info, index)
         # load vao device_info
@@ -264,6 +267,8 @@ def readSerial(ser, index):
             if end < start:
                 serial_messages[index] = serial_messages[index][end + 1:]
                 end = serial_messages[index].find("*")
+                if end == -1:
+                    return
             processData(serial_messages[index][start:end + 1], index)
             if end == len(serial_messages[index]):
                 serial_messages[index] = ""
@@ -314,7 +319,7 @@ def print_send_json():
 isMicrobitConnected = False
 ser = []
 for i in range(0, NUM_OF_DEVICE):
-    ser.append(serial.Serial(port=getPort(), baudrate=9600))  # baudrate=115200
+    ser.append(serial.Serial(port="COM3", baudrate=9600))  # baudrate=115200
 
 
 # if getPort() != "None":
