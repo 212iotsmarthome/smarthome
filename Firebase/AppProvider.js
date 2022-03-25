@@ -12,9 +12,9 @@ export default function AppProvider({ children }) {
     // Condition 1: Take devices in control
     const controlCondition = React.useMemo(() => {
         return {
-        fieldName: "ID",
-        operator: "in",
-        compareValue: user.control
+            fieldName: "ID",
+            operator: "in",
+            compareValue: user.control
         }
     }, [user.control]);
 
@@ -23,13 +23,13 @@ export default function AppProvider({ children }) {
 
     // Get the selected Workspace
     let selectDevice;
-    if(status != 3){
-        selectDevice = React.useMemo(() => deviceList.filter(item => item.type === status) || [{}], [deviceList , status]);
+    if (status != 3) {
+        selectDevice = React.useMemo(() => deviceList.filter(item => item.type === status) || [{}], [deviceList, status]);
     }
-    else{
-        selectDevice = React.useMemo(() => deviceList.filter(item => (item.type === status || item.type === status + 1 || item.type === status + 2)) || [{}], [deviceList , status]);
+    else {
+        selectDevice = React.useMemo(() => deviceList.filter(item => (item.type === status || item.type === status + 1 || item.type === status + 2)) || [{}], [deviceList, status]);
     }
-    
+
     const tempList = selectDevice.map(myFunction);
     function myFunction(value, index, array) {
         return value.ID;
@@ -37,15 +37,15 @@ export default function AppProvider({ children }) {
 
     // Condition 2: Take all people listed in memberIDList 
     const selectDeviceCondition = React.useMemo(() => (
-    {
-        fieldName: "ID",
-        operator: "in",
-        compareValue: tempList
-    }
+        {
+            fieldName: "ID",
+            operator: "in",
+            compareValue: tempList
+        }
     ), [status]);
 
     let table = "";
-    switch(status) {
+    switch (status) {
         case 1:
             table = "LED";
             break;
@@ -79,17 +79,17 @@ export default function AppProvider({ children }) {
 
     return (
         <AppContext.Provider
-        value={{
-            status,
-            setStatus,
-            curSelection, 
-            setCurSelection,
-            deviceList,
-            selectDevice,
-            selectedDeviceInfo,
-            selectedDevice,
-        }}>
-        {children}
+            value={{
+                status,
+                setStatus,
+                curSelection,
+                setCurSelection,
+                deviceList,
+                selectDevice,
+                selectedDeviceInfo,
+                selectedDevice,
+            }}>
+            {children}
         </AppContext.Provider>
     )
 }

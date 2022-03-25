@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
+import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
 import { Slider } from "react-native-elements";
-
 import { AppContext } from "../Firebase/AppProvider";
-import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
+import TopHeadTypo from "./Elements/TopHeadTypo";
+import { controlLED } from "../controller/controller";
+
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -14,8 +15,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [isAuto, setIsAuto] = React.useState(false);
   const [brightness, setBrightness] = React.useState(0);
 
-  const { selectedDevice, selectedDeviceInfo} = React.useContext(AppContext);
-  console.log(selectedDevice, selectedDeviceInfo);
+  const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  // console.log(selectedDevice, selectedDeviceInfo);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -112,8 +113,11 @@ export default function LEDAdjustScreen({ navigation, route }) {
               elevation: 8,
             }}
             value={brightness}
-            onValueChange={console.log(!isOn || isAuto)}
-            // disabled={true}
+            onValueChange={
+              (brightness) => {
+                setBrightness(brightness);
+              }
+            }
           />
         </View>
 
@@ -131,8 +135,11 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: LED, type: "LED" })
+          }
         >
-          <View style={{ width: "70%" }}>
+          <View style={{ width: "70%" }} >
             <Text
               style={{
                 fontSize: 18,
@@ -146,7 +153,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
           <View
             style={{
               width: "30%",
-
               position: "absolute",
               right: "0%",
               alignItems: "center",
@@ -155,10 +161,11 @@ export default function LEDAdjustScreen({ navigation, route }) {
         </TouchableOpacity>
       </View>
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" 
-        onPress={() => {
-          navigation.navigate("LEDScreen");
-        }}/>
+        <IOTButton text="Save"
+          onPress={() => {
+            controlLED(LED.ID, isOn, isAuto, brightness);
+            // navigation.navigate("LEDScreen");
+          }} />
       </View>
     </View>
   );
