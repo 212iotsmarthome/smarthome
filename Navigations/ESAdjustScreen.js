@@ -1,22 +1,21 @@
 import React from "react";
 import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  Switch,
-  TextInput,
+  Image, Switch, Text, TouchableOpacity, View
 } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
+import { controlAlarm } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
+import TopHeadTypo from "./Elements/TopHeadTypo";
+
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const LED = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
-  const [temp, setTemp] = React.useState("25");
+  const [temp, setTemp] = React.useState("--");
+  const [humid, setHumid] = React.useState("--");
+  const [brightness, setBrightness] = React.useState("--");
+  const [flammable, setFlammable] = React.useState(false);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -29,8 +28,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
             marginRight: "auto",
             marginTop: "10%",
             marginBottom: "10%",
-            height: "20%",
-            width: "40%",
+            height: "18%",
+            width: "30%",
             resizeMode: "contain",
           }}
           source={require("../assets/envi-sensor.png")}
@@ -90,6 +89,33 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={{
+            height: 60,
+            width: "82%",
+            borderRadius: 20,
+            paddingLeft: 20,
+
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginTop: 10,
+
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+        >
+          <View style={{ width: "100%" }}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: "black",
+              }}
+            >
+              Set time
+            </Text>
+          </View>
+        </TouchableOpacity>
+
         <View
           style={{
             height: 60,
@@ -99,7 +125,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
 
             marginRight: "auto",
             marginLeft: "auto",
-            marginTop: 15,
 
             justifyContent: "center",
             alignItems: "flex-start",
@@ -108,25 +133,46 @@ export default function LEDAdjustScreen({ navigation, route }) {
           <View style={{ width: "70%" }}>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: 14,
                 color: "black",
               }}
             >
-              Sensor
+              Sensors:
             </Text>
           </View>
         </View>
 
-        <View style={{ marginLeft: "auto", marginRight: "auto", width: "73%" }}>
-          <Text>{"        "}Temperature:</Text>
-          <Text>{"        "}Humidity:</Text>
-          <Text>{"        "}Brightness:</Text>
-          <Text>{"        "}Flammable gas:</Text>
+        <View
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            width: "73%",
+            marginTop: -10,
+          }}
+        >
+          <Text>
+            {"        "}Temperature:{"  "}
+            {temp}°C
+          </Text>
+          <Text>
+            {"        "}Humidity:{"  "}
+            {humid}%
+          </Text>
+          <Text>
+            {"        "}Brightness:{"  "}
+            {brightness} Lux
+          </Text>
+          <Text>
+            {"        "}Flammable gas:{"  "}
+            {flammable ? "Yes" : "No"}
+          </Text>
         </View>
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" />
+        <IOTButton text="Save" onPress={() => {
+          controlAlarm(LED.id, isOn);
+        }} />
       </View>
     </View>
   );

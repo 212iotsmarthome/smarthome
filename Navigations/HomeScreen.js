@@ -36,12 +36,11 @@ export default function HomeScreen({ navigation }) {
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
-      <AvatarButton />
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
-      <IOTButton
-        text="Sign Up"
-        onPress={() => postName(user.name)}
-      />
+
+      {/* <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
+      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/> */}
+
       <Image
         style={{
           marginLeft: "auto",

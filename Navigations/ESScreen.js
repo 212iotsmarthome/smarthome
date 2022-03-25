@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
+import { ScrollView, View } from "react-native";
 import ESButton from "./Elements/ESButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
+import TopHeadTypo from "./Elements/TopHeadTypo";
+
 
 export default function ESScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
