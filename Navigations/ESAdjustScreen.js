@@ -5,17 +5,17 @@ import {
 import { controlAlarm } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
 
 
 export default function LEDAdjustScreen({ navigation, route }) {
-  // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("--");
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
+  const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -171,7 +171,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton text="Save" onPress={() => {
-          controlAlarm(LED.id, isOn);
+          controlAlarm(LED.id, LED, isOn);
         }} />
       </View>
     </View>

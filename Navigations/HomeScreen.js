@@ -1,10 +1,8 @@
-import { View, Image, TouchableOpacity, ScrollView } from "react-native";
-import React from "react";
-import axios from 'axios';
+import { View, Image, TouchableOpacity, ScrollView, BackHandler, Alert } from "react-native";
+import React, {useEffect} from "react";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
-import IOTButton from "./Elements/IOTButton";
 import AvatarButton from "./Elements/AvatarButton";
 import { AuthContext } from "../Firebase/AuthProvider";
 import { AppContext } from "../Firebase/AppProvider";
@@ -13,23 +11,25 @@ import Credit from "./Elements/Credit";
 
 export default function HomeScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
-  const { user, setUser } = React.useContext(AuthContext);
-  const { deviceList, setStatus } = React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
+  const { setStatus } = React.useContext(AppContext);
 
-  async function postName(name) {
-    axios
-      .post("http://192.168.1.9:8000/post_name", {
-        name
-      })
-      .then(function (response) {
-        // handle success
-        alert(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        // handle error
-        alert(error.message);
-    });
-	}
+  // const backHome = () => {
+  //   Alert.alert("Hold on!", "Are you sure you want to go back?", [
+  //     {
+  //       text: "Cancel",
+  //       onPress: () => null,
+  //       style: "cancel"
+  //     },
+  //     { text: "YES", onPress: () => BackHandler.exitApp() }
+  //   ]);
+  //   return true;
+  // };
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener("hardwareBackPress", backHome);
+  //   return () => BackHandler.removeEventListener("hardwareBackPress", backHome);
+  // }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -103,7 +103,7 @@ export default function HomeScreen({ navigation }) {
             name="door-open"
             type="material-community"
             onPress={() => {
-              setStatus(5);
+              setStatus(7);
               navigation.navigate("SDScreen");
             }}
           />
@@ -112,7 +112,10 @@ export default function HomeScreen({ navigation }) {
             subtitle="Your privacy"
             name="window-open"
             type="material-community"
-            onPress={() => navigation.navigate("AUScreen")}
+            onPress={() => {
+              setStatus(6);
+              navigation.navigate("AUScreen");
+            }}
           />
         </View>
 
@@ -131,7 +134,10 @@ export default function HomeScreen({ navigation }) {
             subtitle="At any time"
             name="camera-control"
             type="material-community"
-            onPress={() => navigation.navigate("ESScreen")}
+            onPress={() => {
+              setStatus(3);
+              navigation.navigate("ESScreen");
+            }}
           />
           <IOTDeviceGroupCard
             title="Add Device"

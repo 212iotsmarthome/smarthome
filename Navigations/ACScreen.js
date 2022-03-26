@@ -1,25 +1,13 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
-
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import ACButton from "./Elements/ACButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
-import { AuthContext } from "../Firebase/AuthProvider";
 import { AppContext } from "../Firebase/AppProvider";
 
 export default function ACScreen({ navigation }) {
-  const { user } = React.useContext(AuthContext);
-  const { status, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
-  // const [ACs, setACs] = React.useState(selectDevice);
-  const [ACs, setACs] = React.useState([
-    {
-      type: 'AC-12',
-      name: "Phong Khach",
-      ID: '2000001'
-    }
-  ]);
-
 
   function ACDiv(props) {
     const length = props.length;
@@ -34,14 +22,14 @@ export default function ACScreen({ navigation }) {
         </Text> */}
 
         <View style={{ marginBottom: 60, width: "100%" }}>
-          {ACs.map((AC) => (
+          {selectName.map((AC) => (
             <ACButton
-              type={AC.type}
+              type={"AC"}
               name={AC.name}
               key={AC.ID}
               onMainPress={() => {
                 setCurSelection(AC.ID);
-                navigation.navigate("ACAdjustScreen", AC);
+                navigation.navigate("ACAdjustScreen");
               }}
             />
           ))}
@@ -56,7 +44,7 @@ export default function ACScreen({ navigation }) {
         <TopHeadTypo smalltext={"Control Center"} largetext="Air Conditioner" />
       </View>
 
-      <ACDiv length={ACs.length} />
+      <ACDiv length={selectDevice.length} />
     </ScrollView>
   );
 }

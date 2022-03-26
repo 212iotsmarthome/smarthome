@@ -1,19 +1,13 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
-
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import AUButton from "./Elements/AUButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
+import { AppContext } from "../Firebase/AppProvider";
 
-export default function SDScreen({ navigation }) {
+export default function AUScreen({ navigation }) {
+  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
-  const [AUs, setAUs] = React.useState([
-    {
-      id: 4000001,
-      type: "AU-05A",
-      name: "Phòng ngủ",
-    },
-  ]);
 
   function AUDiv(props) {
     const length = props.length;
@@ -28,12 +22,15 @@ export default function SDScreen({ navigation }) {
         </Text> */}
 
         <View style={{ marginBottom: 60, width: "100%" }}>
-          {AUs.map((AU) => (
+          {selectName.map((AU) => (
             <AUButton
-              type={AU.type}
+              type={"Auto Curtain"}
               name={AU.name}
-              key={AU.id}
-              onMainPress={() => navigation.navigate("AUAdjustScreen", AU)}
+              key={AU.ID}
+              onMainPress={() => {
+                setCurSelection(AU.ID);
+                navigation.navigate("AUAdjustScreen");
+              }}
             />
           ))}
         </View>
@@ -47,7 +44,7 @@ export default function SDScreen({ navigation }) {
         <TopHeadTypo smalltext={"Control Center"} largetext="Auto Curtain" />
       </View>
 
-      <AUDiv length={AUs.length} />
+      <AUDiv length={selectName.length} />
     </ScrollView>
   );
 }

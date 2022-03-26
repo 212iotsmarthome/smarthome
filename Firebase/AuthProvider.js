@@ -19,22 +19,25 @@ export default function AuthProvider({ children }) {
     };
 
     const unsubscibed = auth.onAuthStateChanged(async (user) => {
+      console.log(1);
       if (user) {
-        setIsLoading(false);
         await getUser(user.email);
+        setIsLoading(false);
         RootNavigation.navigate("HomeScreen");
         return;
       }
-      setIsLoading(false);
-      RootNavigation.navigate("WelcomeScreen");
+      else{
+        setIsLoading(false);
+        RootNavigation.navigate("WelcomeScreen");
+      }
     });
     return unsubscibed;
-  }, [RootNavigation, auth]);
+  }, [auth, isLoading]);
 
   const changePassword = (newPassword) => {
     var thisUser = auth.currentUser;
     thisUser.updatePassword(newPassword).then(() => {
-      // Update successful.
+      // Update successful
     }).catch( error => {
       // An error happened.
     });
@@ -42,7 +45,7 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ user, changePassword }}>
-      {isLoading ? <></> : children}
+      {children}
     </AuthContext.Provider>
   );
 }

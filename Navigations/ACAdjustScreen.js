@@ -1,24 +1,22 @@
 import React from "react";
-import {
-  Image, Switch, Text, TextInput, TouchableOpacity, View
-} from "react-native";
+import { Image, Switch, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { controlAC } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
 
-export default function LEDAdjustScreen({ navigation, route }) {
-  // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
+export default function LEDAdjustScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("25");
+  const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo
           smalltext="Air Conditioner Adjustment"
-          largetext={LED.name}
+          largetext={selectedName.name}
         />
 
         <Image
@@ -183,7 +181,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
           <View
             style={{
               width: "30%",
-
               position: "absolute",
               right: "0%",
               alignItems: "center",
@@ -194,7 +191,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton text="Save" onPress={() => {
-          controlAC(LED.ID, isOn, temp);
+          // controlAC(selectedDevice.index, selectedDevice.boardID, isOn, temp);
+          console.log(selectedDevice.index, selectedDevice.boardID, isOn, temp);
+          navigation.goBack();
         }} />
       </View>
     </View>
