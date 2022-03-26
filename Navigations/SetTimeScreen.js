@@ -271,7 +271,7 @@ export default function SetTimeScreen({ navigation, route }) {
 
             {ScheduleList.map((sched, index) => {
               return (
-                <DataTable.Row>
+                <DataTable.Row key={index}>
                   <DataTable.Cell>
                     {(sched.Time.getHours() < 10
                       ? "0" + sched.Time.getHours()

@@ -5,7 +5,7 @@ import { Slider } from "@miblanchard/react-native-slider";
 import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import { controlLED } from "../controller/controller";
+import { controlLED } from "../Controller/controller";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -113,7 +113,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
               elevation: 8,
             }}
             value={brightness}
-            onValueChange={setBrightness}
+            onValueChange={(b) => setBrightness(b[0])}
             disabled={!isOn}
           />
         </View>

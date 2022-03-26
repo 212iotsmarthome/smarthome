@@ -1,12 +1,9 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
-import {
-  Image, Text, TouchableOpacity, View
-} from "react-native";
-import { controlCurtain } from "../controller/controller";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import { controlCurtain } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-
 
 export default function AUAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -126,9 +123,12 @@ export default function AUAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" onPress={() => {
-          controlCurtain(AU.id, selectedAction);
-        }} />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlCurtain(AU.id, selectedAction);
+          }}
+        />
       </View>
     </View>
   );

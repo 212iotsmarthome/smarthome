@@ -56,14 +56,21 @@ export default function ACScreen({ navigation }) {
         {user.email}
       </Text>
 
-      <PersonalButton name="View log" subtext="" icon="format-list-text" />
-      <PersonalButton name="Edit contact" icon="at" backgroundColor="white" />
+      <PersonalButton
+        name="View log"
+        subtext=""
+        icon="format-list-text"
+        onPress={() => navigation.navigate("LogScreen")}
+      />
 
       <PersonalButton
         name="Change password"
         icon="asterisk"
         backgroundColor="white"
+        onPress={() => navigation.navigate("ChangePasswordScreen")}
       />
+
+      <PersonalButton name="About us" icon="at" backgroundColor="white" />
 
       <PersonalButton
         name="Log out"

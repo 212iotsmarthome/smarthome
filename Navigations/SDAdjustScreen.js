@@ -1,10 +1,9 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { controlDoor } from "../controller/controller";
+import { controlDoor } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -167,9 +166,12 @@ export default function LEDAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" onPress={() => {
-          controlDoor(LED.id, isLocked, isOpen)
-        }} />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlDoor(LED.id, isLocked, isOpen);
+          }}
+        />
       </View>
     </View>
   );

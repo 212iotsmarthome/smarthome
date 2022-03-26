@@ -1,8 +1,13 @@
 import React from "react";
 import {
-  Image, Switch, Text, TextInput, TouchableOpacity, View
+  Image,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { controlAC } from "../controller/controller";
+import { controlAC } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
@@ -146,8 +151,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
                 parseInt(temp) > 30
                   ? setTemp("30")
                   : parseInt(temp) < 16
-                    ? setTemp("16")
-                    : setTemp(String(parseInt(temp)));
+                  ? setTemp("16")
+                  : setTemp(String(parseInt(temp)));
                 console.log(temp);
               }}
               keyboardType="number-pad"
@@ -193,9 +198,12 @@ export default function LEDAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" onPress={() => {
-          controlAC(LED.ID, isOn, temp);
-        }} />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlAC(LED.ID, isOn, temp);
+          }}
+        />
       </View>
     </View>
   );
