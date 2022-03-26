@@ -3,15 +3,17 @@ import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import {
   Image,
-  RefreshControl, ScrollView, Text, TouchableOpacity, View
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Icon } from "react-native-elements";
 import { DataTable } from "react-native-paper";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-
-
 
 // import { AuthContext } from "../Firebase/AuthProvider";
 // import { AppContext } from "../Firebase/AppProvider";
@@ -62,12 +64,12 @@ export default function SetTimeScreen({ navigation, route }) {
     Devicejson.type == "LED"
       ? ["Turn off", "Turn on"]
       : Devicejson.type == "AC"
-        ? ["Turn off", "Turn on"]
-        : Devicejson.type == "SD"
-          ? ["Open door", "Close door", "Unlock door", "Lock door"]
-          : Devicejson.type == "AU"
-            ? ["Close", "Half-open", "Full-open"]
-            : ["Set alarm on", "Set alarm off"];
+      ? ["Turn off", "Turn on"]
+      : Devicejson.type == "SD"
+      ? ["Open door", "Close door", "Unlock door", "Lock door"]
+      : Devicejson.type == "AU"
+      ? ["Close", "Half-open", "Full-open"]
+      : ["Set alarm on", "Set alarm off"];
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -75,7 +77,7 @@ export default function SetTimeScreen({ navigation, route }) {
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [isShow, setShow] = React.useState(false);
-  
+
   const [date, setDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState("");
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
@@ -98,7 +100,16 @@ export default function SetTimeScreen({ navigation, route }) {
         <View style={{ marginVertical: "10%" }}>
           <TopHeadTypo
             smalltext={
-              "Set Time - " + (Devicejson.type == "AU" ? "Auto Curtain" : "K")
+              "Set Time - " +
+              (Devicejson.type == "LED"
+                ? "LED"
+                : Devicejson.type == "AC"
+                ? "Air Conditioner"
+                : Devicejson.type == "SD"
+                ? "Smart Door"
+                : Devicejson.type == "AU"
+                ? "Auto Curtain"
+                : "EnviSensor™")
             }
             largetext={Devicejson.obj.name}
           />
@@ -283,7 +294,7 @@ export default function SetTimeScreen({ navigation, route }) {
                       name="delete"
                       size={18}
                       color="#c00"
-                      onPress={() => { }}
+                      onPress={() => {}}
                     />
                   </DataTable.Cell>
                 </DataTable.Row>

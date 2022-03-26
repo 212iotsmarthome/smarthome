@@ -6,22 +6,21 @@ import LEDButton from "./Elements/LEDButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
-
 export default function LEDScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
 
   const { user } = React.useContext(AuthContext);
-  const { status, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { status, selectDevice, setCurSelection } =
+    React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
   // const [LEDs, setLEDs] = React.useState(selectDevice);
   const [LEDs, setLEDs] = React.useState([
     {
-      type: "led-2",
-      name: "Phong Khach",
-      ID: "10000001"
-    }
+      ID: "1000001",
+      name: "Phòng khách",
+      type: "LED-01A",
+    },
   ]);
-
 
   function LEDDiv(props) {
     const length = props.length;

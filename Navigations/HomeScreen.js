@@ -23,12 +23,10 @@ export default function HomeScreen({ navigation }) {
         <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
 
-
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
 
-      <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
-      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/>
-
+      {/* <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
+      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/> */}
 
       <Image
         style={{
