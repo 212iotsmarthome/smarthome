@@ -70,7 +70,12 @@ export default function ACScreen({ navigation }) {
         onPress={() => navigation.navigate("ChangePasswordScreen")}
       />
 
-      <PersonalButton name="About us" icon="at" backgroundColor="white" />
+      <PersonalButton
+        name="About us"
+        icon="at"
+        backgroundColor="white"
+        onPress={() => navigation.navigate("AboutUsScreen")}
+      />
 
       <PersonalButton
         name="Log out"
