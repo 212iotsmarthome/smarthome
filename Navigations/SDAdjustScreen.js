@@ -5,7 +5,6 @@ import { controlDoor } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
-
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const LED = route.params;

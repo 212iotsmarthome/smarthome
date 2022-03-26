@@ -35,6 +35,7 @@ const IOTButton = ({ text = "My Button", type = "dark", onPress }) => {
               }
               : {}
         }
+        onPress={onPress}
       >
         <Text
           style={

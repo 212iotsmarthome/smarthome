@@ -6,7 +6,7 @@ import Credit from "./Elements/Credit";
 
 
 export default function WCScreen({ navigation }) {
-  
+
   return (
     <View style={{ height: "100%", backgroundColor: "#f8f8f8" }}>
       <View style={{ marginTop: "10%" }}>
@@ -31,12 +31,15 @@ export default function WCScreen({ navigation }) {
 
       <IOTButton
         text="Log In"
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() => {
+
+          navigation.navigate("LoginScreen")
+        }}
       />
-      <IOTButton 
-        text="Sign Up" 
-        type="white" 
-        onPress={() => navigation.navigate("SignUpScreen")} 
+      <IOTButton
+        text="Sign Up"
+        type="white"
+        onPress={() => navigation.navigate("SignUpScreen")}
       />
       <Credit />
     </View>
