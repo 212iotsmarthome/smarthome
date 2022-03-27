@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
 import { controlAlarm } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
@@ -6,13 +6,17 @@ import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
 
 export default function LEDAdjustScreen({ navigation, route }) {
-  const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("--");
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
-  const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  const { control, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  // const [loading, setLoading] = useState(true);
+
+  // React.useEffect(() => {
+  //   setLoading(false);
+  // }, [selectedDeviceInfo])
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>

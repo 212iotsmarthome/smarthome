@@ -1,6 +1,6 @@
 import {
     getFirestore, collection, onSnapshot,
-    addDoc, deleteDoc, doc,
+    addDoc, updateDoc, deleteDoc, doc,
     query, where,
     orderBy, serverTimestamp,
     getDoc,

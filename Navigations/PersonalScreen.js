@@ -9,7 +9,7 @@ import { handleSignOut } from "../Firebase/utility";
 
 export default function ACScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
-  const { user, setUser } = React.useContext(AuthContext);
+  const { user } = React.useContext(AuthContext);
 
   return (
     <ScrollView

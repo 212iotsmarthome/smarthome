@@ -1,39 +1,43 @@
 import React, { useState } from 'react';
 import useFirebase from './useFirestore';
 import { AuthContext } from './AuthProvider';
+import { db } from './firebase';
 
 export const AppContext = React.createContext();
 
 export default function AppProvider({ children }) {
-    const [status, setStatus] = useState(0);
-    const [curSelection, setCurSelection] = useState("");
-    const [reload, setReload] = useState(true);
+    const [ status, setStatus ] = useState(0);
+    const [ curSelection, setCurSelection ] = useState("");
     const { user } = React.useContext(AuthContext);
 
     // GetID
     function getID(value, index, array) { return value.ID; }
 
+    // Condition 1: Take devices in control
+    const devCondition = React.useMemo(() => {
+        return {
+            fieldName: "ID",
+            operator: "!=",
+            compareValue: ""
+        }
+    }, [db]);
+
+    // Get workspaceList from workspace with Condition 1
+    const devList = useFirebase("Device", devCondition).map(getID);
+
     // User Control
-    const control = React.useMemo(() => user.control || [], [user.control]);
+    const control = React.useMemo(() => user.control || [], [user, db]);
     const idList = control.map(getID);
-    
-    const hotReload = () => {
-        if(reload === true){
-            setReload(false);
-        }
-        else{
-            setReload(true);
-        }
-    }
     
     // Condition 1: Take devices in control
     const controlCondition = React.useMemo(() => {
+        console.log(1);
         return {
             fieldName: "ID",
             operator: "in",
             compareValue: idList
         }
-    }, [user.control, reload]);
+    }, [control]);
 
     // Get workspaceList from workspace with Condition 1
     const deviceList = useFirebase("Device", controlCondition);
@@ -61,12 +65,6 @@ export default function AppProvider({ children }) {
         return temp;
     }, [selectDevice]);
 
-    // Condition 2: Take all people listed in memberIDList 
-    const selectDeviceCondition = React.useMemo(() => ({
-        fieldName: "ID",
-        operator: "in",
-        compareValue: tempList
-    }), [status]);
     /*
     1: LED,
     2: AC,
@@ -86,8 +84,6 @@ export default function AppProvider({ children }) {
             table = "AC";
             break;
         case 3:
-        case 4:
-        case 5:
             table = "EnviSensor";
             break;
         case 6:
@@ -103,19 +99,24 @@ export default function AppProvider({ children }) {
 
     // Get current selected Device
     const selectedDevice = React.useMemo(() => deviceList.find(item => item.ID === curSelection) || [], [selectDevice, curSelection]);
-    const selectedControlDevice = React.useMemo(() => control.find(item => item.ID === curSelection) , [selectDevice, curSelection]);
     const selectedName = React.useMemo(() => selectName.find(item => item.ID === curSelection) , [selectDevice, curSelection]);
+    const selectedDeviceCondition = React.useMemo(() => ({
+        fieldName: "ID",
+        operator: "==",
+        compareValue: curSelection
+    }), [curSelection]);
 
     // Get selectDeviceList from type with Condition 2
-    const selectedDeviceInfo = useFirebase(table, selectDeviceCondition);
+    const selectedDeviceInfo = useFirebase(table, selectedDeviceCondition);
 
     return (
         <AppContext.Provider
             value={{
+                devList,
+                control,
                 status,
                 setStatus,
                 curSelection,
-                control,
                 setCurSelection,
                 deviceList,
                 selectDevice,
@@ -123,8 +124,6 @@ export default function AppProvider({ children }) {
                 selectedDeviceInfo,
                 selectedDevice,
                 selectedName,
-                selectedControlDevice,
-                hotReload
             }}>
             {children}
         </AppContext.Provider>
