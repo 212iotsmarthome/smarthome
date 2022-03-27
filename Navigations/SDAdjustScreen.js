@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { controlDoor } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
-export default function LEDAdjustScreen({ navigation, route }) {
-  // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
+import { controlDoor } from "../Controller/controller";
+
+export default function SDAdjustScreen({ navigation, route }) {
+  const SD = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
   const [isLocked, setIsLocked] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isLocked) setIsOpen(false);
   }, [isLocked]);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Smart Door Adjustment" largetext={LED.name} />
+        <TopHeadTypo smalltext="Smart Door Adjustment" largetext={SD.name} />
 
         <Image
           style={{
@@ -159,6 +159,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: SD, type: "SD" })
+          }
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -177,7 +180,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlDoor(LED.id, isLocked, isOpen);
+            controlDoor(SD.id, isLocked, isOpen);
+            navigation.goBack();
           }}
         />
       </View>

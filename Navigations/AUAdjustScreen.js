@@ -127,6 +127,7 @@ export default function AUAdjustScreen({ navigation, route }) {
           text="Save"
           onPress={() => {
             controlCurtain(AU.id, selectedAction);
+            navigation.goBack();
           }}
         />
       </View>

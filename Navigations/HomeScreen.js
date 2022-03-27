@@ -1,9 +1,8 @@
-import { View, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Image, StyleSheet, ScrollView } from "react-native";
 import React from "react";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
-import IOTButton from "./Elements/IOTButton";
 import AvatarButton from "./Elements/AvatarButton";
 import { AuthContext } from "../Firebase/AuthProvider";
 import { AppContext } from "../Firebase/AppProvider";
@@ -11,9 +10,6 @@ import { AppContext } from "../Firebase/AppProvider";
 import Credit from "./Elements/Credit";
 
 export default function HomeScreen({ navigation }) {
-  const [username, setUsername] = React.useState("Lorem");
-  const [isConnected, setIsConnected] = React.useState(true);
-
   const { user, setUser } = React.useContext(AuthContext);
   const { deviceList, setStatus } = React.useContext(AppContext);
 
@@ -24,9 +20,6 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
-
-      {/* <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
-      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/> */}
 
       <Image
         style={{
@@ -42,16 +35,7 @@ export default function HomeScreen({ navigation }) {
       />
 
       <ScrollView style={{ marginBottom: 60 }}>
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="LED"
             subtitle="Control lights"
@@ -74,16 +58,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="Smart Door"
             subtitle="Secure your home"
@@ -103,16 +78,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="EnviSensor™"
             subtitle="At any time"
@@ -134,3 +100,14 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  cardrow: {
+    marginVertical: 0,
+    width: "85%",
+    height: 135,
+    alignSelf: "center",
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+});

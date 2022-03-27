@@ -62,7 +62,7 @@ export default function SetTimeScreen({ navigation, route }) {
 
   const actList =
     Devicejson.type == "LED"
-      ? ["Turn off", "Turn on"]
+      ? ["Turn off", "Low brightness", "Medium brightness", "High brightness"]
       : Devicejson.type == "AC"
       ? ["Turn off", "Turn on"]
       : Devicejson.type == "SD"
@@ -305,7 +305,7 @@ export default function SetTimeScreen({ navigation, route }) {
       </ScrollView>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Add" />
+        <IOTButton text="Add" onPress={() => navigation.goBack()} />
       </View>
     </View>
   );

@@ -4,9 +4,9 @@ import { controlAlarm } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
-export default function LEDAdjustScreen({ navigation, route }) {
-  // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
+export default function ESAdjustScreen({ navigation, route }) {
+  // const ESinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
+  const ES = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("--");
@@ -17,7 +17,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="EnviSensor™ Adjustment" largetext={LED.name} />
+        <TopHeadTypo smalltext="EnviSensor™ Adjustment" largetext={ES.name} />
 
         <Image
           style={{
@@ -100,6 +100,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: ES, type: "ES" })
+          }
         >
           <View style={{ width: "100%" }}>
             <Text
@@ -170,7 +173,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAlarm(LED.id, isOn);
+            controlAlarm(ES.id, isOn);
+            navigation.goBack();
           }}
         />
       </View>

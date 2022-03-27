@@ -11,9 +11,9 @@ import { controlAC } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
-export default function LEDAdjustScreen({ navigation, route }) {
-  // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
+export default function ACAdjustScreen({ navigation, route }) {
+  // const ACinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
+  const AC = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("25");
@@ -23,7 +23,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo
           smalltext="Air Conditioner Adjustment"
-          largetext={LED.name}
+          largetext={AC.name}
         />
 
         <Image
@@ -173,6 +173,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() => {
+            navigation.navigate("SetTimeScreen", { obj: AC, type: "AC" });
+          }}
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -201,7 +204,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAC(LED.ID, isOn, temp);
+            controlAC(AC.ID, isOn, temp);
+            navigation.goBack();
           }}
         />
       </View>

@@ -83,8 +83,6 @@ export default function ACScreen({ navigation }) {
         backgroundColor="white"
         onPress={() => handleSignOut(() => {})}
       />
-
-      {/* <View style={{ height: 5, backgroundColor: "#eee" }} /> */}
     </ScrollView>
   );
 }
