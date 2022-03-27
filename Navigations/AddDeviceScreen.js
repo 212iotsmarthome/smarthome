@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Text, View } from "react-native";
-import { addDevice } from "../controller/controller";
+import { addDevice } from "../Controller/controller";
 import Credit from "./Elements/Credit";
 import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";
@@ -29,11 +29,10 @@ export default function AddScreen({ navigation }) {
         <IOTTextInput
           placeholder="Device code"
           value={deviceCode}
-          onChangeText={
-            (text) => {
-              setDeviceCode(text);
-            }
-          } />
+          onChangeText={(text) => {
+            setDeviceCode(text);
+          }}
+        />
         <Text
           style={{
             marginLeft: "auto",
@@ -51,11 +50,10 @@ export default function AddScreen({ navigation }) {
           value={deviceName}
           placeholder="Set device name"
           secureTextEntry={false}
-          onChangeText={
-            (text) => {
-              setDeviceName(text);
-            }
-          } />
+          onChangeText={(text) => {
+            setDeviceName(text);
+          }}
+        />
       </View>
 
       <IOTButton

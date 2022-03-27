@@ -144,8 +144,8 @@ export default function LEDAdjustScreen({ navigation }) {
                 parseInt(temp) > 30
                   ? setTemp("30")
                   : parseInt(temp) < 16
-                    ? setTemp("16")
-                    : setTemp(String(parseInt(temp)));
+                  ? setTemp("16")
+                  : setTemp(String(parseInt(temp)));
                 console.log(temp);
               }}
               keyboardType="number-pad"

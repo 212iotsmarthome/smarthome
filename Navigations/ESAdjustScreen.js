@@ -1,12 +1,9 @@
 import React from "react";
-import {
-  Image, Switch, Text, TouchableOpacity, View
-} from "react-native";
-import { controlAlarm } from "../controller/controller";
+import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
+import { controlAlarm } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
-
 
 export default function LEDAdjustScreen({ navigation, route }) {
   const [isConnected, setIsConnected] = React.useState(true);
@@ -170,9 +167,12 @@ export default function LEDAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" onPress={() => {
-          controlAlarm(LED.id, LED, isOn);
-        }} />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlAlarm(LED.id, isOn);
+          }}
+        />
       </View>
     </View>
   );

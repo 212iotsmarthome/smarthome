@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { controlDoor } from "../controller/controller";
+import { controlDoor } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
-
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -13,6 +12,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [isLocked, setIsLocked] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+
+  useEffect(() => {
+    if (isLocked) setIsOpen(false);
+  }, [isLocked]);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -70,7 +73,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
             }}
           >
             <TouchableOpacity
-              onPress={() => setIsLocked(!isLocked)}
+              onPress={() => {
+                setIsLocked(!isLocked);
+                // if (isLocked == true) setIsOpen(false);
+              }}
               style={{
                 width: "90%",
                 height: "100%",
@@ -106,7 +112,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             <Text
               style={{
                 fontSize: 18,
-                color: "black",
+                color: isLocked ? "#ccc" : "black",
               }}
             >
               Open/Close door
@@ -129,11 +135,12 @@ export default function LEDAdjustScreen({ navigation, route }) {
                 height: "100%",
                 justifyContent: "center",
               }}
+              disabled={isLocked}
             >
               <Icon
                 name={isOpen ? "door-open" : "door-closed"}
                 type="material-community"
-                color={isOpen ? "#cc0000" : "#29ABE2"}
+                color={isLocked ? "#ccc" : isOpen ? "#cc0000" : "#29ABE2"}
                 size={36}
               />
             </TouchableOpacity>
