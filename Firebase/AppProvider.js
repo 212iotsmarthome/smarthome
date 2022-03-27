@@ -12,7 +12,6 @@ export default function AppProvider({ children }) {
 
     // GetID
     function getID(value, index, array) { return value.ID; }
-    function getName(value, index, array) { return value.name; }
 
     // User Control
     const control = React.useMemo(() => user.control || [], [user.control]);
@@ -48,26 +47,36 @@ export default function AppProvider({ children }) {
         selectDevice = React.useMemo(() => deviceList.filter(item => (item.type === status || item.type === status + 1 || item.type === status + 2)) || [{}], [deviceList, status]);
     }
 
+    // Display in First Page
     const tempList = selectDevice.map(getID);
     const selectName = React.useMemo(() => {
         let temp = [];
-        let temp_1 = selectDevice.map(getID);
         for(let i = 0; i < control.length; i++){
-            if(temp_1.includes(control[i].ID)){
-                temp.push(control[i])
+            if(tempList.includes(control[i].ID)){
+                let result = control[i];
+                result.type = selectDevice.find(x => x.ID === control[i].ID).type;
+                temp.push(result)
             }
         }
-        console.log(deviceList)
         return temp;
     }, [selectDevice]);
-    
+
     // Condition 2: Take all people listed in memberIDList 
     const selectDeviceCondition = React.useMemo(() => ({
         fieldName: "ID",
         operator: "in",
         compareValue: tempList
     }), [status]);
-
+    /*
+    1: LED,
+    2: AC,
+    3: LHR,
+    4: DHT,
+    5: Gas,
+    6: Curtain,
+    7: Door,
+    8: Buzzer
+    */
     let table = "";
     switch (status) {
         case 1:

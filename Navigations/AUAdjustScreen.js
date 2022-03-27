@@ -10,7 +10,7 @@ export default function AUAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const actList = ["Close", "Half-open", "Full-open"];
 
-  const [selectedAction, setSelectedAction] = React.useState("");
+  const [selectedAction, setSelectedAction] = React.useState(0);
   const [isConnected, setIsConnected] = React.useState(true);
   const [isClosed, setIsClosed] = React.useState(false);
   const [isMoving, setIsMoving] = React.useState(false);
@@ -124,8 +124,8 @@ export default function AUAdjustScreen({ navigation, route }) {
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton text="Save" onPress={() => {
-          // controlCurtain(selectedDevice.id, selectedDevice.boardId, selectedAction);
-          console.log(selectedDevice.id, selectedDevice.boardID, selectedAction);
+          // controlCurtain(selectedDevice.index, selectedDevice.boardId, selectedAction);
+          console.log(selectedDevice.index, selectedDevice.boardID, selectedAction);
           navigation.goBack();
         }} />
       </View>

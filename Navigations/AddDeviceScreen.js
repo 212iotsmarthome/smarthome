@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Text, View } from "react-native";
-import { addDevice } from "../Controller/controller";
+import { addDevice } from "../controller/controller";
 import Credit from "./Elements/Credit";
 import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";

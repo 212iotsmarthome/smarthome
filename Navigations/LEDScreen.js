@@ -7,7 +7,7 @@ import TopHeadTypo from "./Elements/TopHeadTypo";
 
 export default function LEDScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { selectName, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
 
   function LEDDiv(props) {
@@ -39,7 +39,7 @@ export default function LEDScreen({ navigation }) {
         <TopHeadTypo smalltext={"Control Center"} largetext="LED" />
       </View>
 
-      <LEDDiv length={selectDevice.length} />
+      <LEDDiv length={selectName.length} />
     </ScrollView>
   );
 }

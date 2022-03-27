@@ -13,12 +13,12 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const getUser = async (target_email) => {
       const data = await userCollectionRef.get();
-      const list = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      const { email, name, createAt, ID, control, address } = list.find(
+      const list = data.docs.map((doc) => ({ ...doc.data(), uid: doc.id }));
+      const { email, name, createAt, ID, control, address, uid } = list.find(
         (x) => x.email === target_email
       );
-      setUser({ email, name, createAt, ID, control, address });
-      return { email, name, createAt, ID, control, address };
+      setUser({ email, name, createAt, ID, control, address, uid });
+      return { email, name, createAt, ID, control, address, uid };
     };
 
     const unsubscibed = auth.onAuthStateChanged(async (user) => {

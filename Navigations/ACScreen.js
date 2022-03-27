@@ -6,7 +6,7 @@ import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import { AppContext } from "../Firebase/AppProvider";
 
 export default function ACScreen({ navigation }) {
-  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { selectName, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
 
   function ACDiv(props) {
@@ -44,7 +44,7 @@ export default function ACScreen({ navigation }) {
         <TopHeadTypo smalltext={"Control Center"} largetext="Air Conditioner" />
       </View>
 
-      <ACDiv length={selectDevice.length} />
+      <ACDiv length={selectName.length} />
     </ScrollView>
   );
 }

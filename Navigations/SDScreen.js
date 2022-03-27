@@ -8,7 +8,7 @@ import { AppContext } from "../Firebase/AppProvider";
 
 export default function SDScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
-  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { selectName, setCurSelection } = React.useContext(AppContext);
 
   function SDDiv(props) {
     const length = props.length;

@@ -5,14 +5,14 @@ import { Slider } from "@miblanchard/react-native-slider";
 import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import { controlLED } from "../Controller/controller";
+import { controlLED } from "../controller/controller";
 
-export default function LEDAdjustScreen({ navigation, route }) {
+export default function LEDAdjustScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [brightness, setBrightness] = React.useState(1);
-  const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
 
   const getValue = () => {
     if(!isOn){
@@ -35,7 +35,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="LED Adjustment" largetext={selectedDevice.name} />
+        <TopHeadTypo smalltext="LED Adjustment" largetext={selectedName.name} />
 
         <Image
           style={{
@@ -147,7 +147,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             alignItems: "flex-start",
           }}
           onPress={() =>
-            navigation.navigate("SetTimeScreen", { obj: LED, type: "LED" })
+            navigation.navigate("SetTimeScreen", { obj: selectedDeviceInfo, type: "LED" })
           }
         >
           <View style={{ width: "100%" }}>
@@ -170,6 +170,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             }}
           ></View>
         </TouchableOpacity>
+
       </View>
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton

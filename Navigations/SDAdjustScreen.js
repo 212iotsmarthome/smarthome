@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { controlDoor } from "../Controller/controller";
+import { controlDoor } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";

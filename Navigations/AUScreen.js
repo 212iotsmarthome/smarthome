@@ -6,7 +6,7 @@ import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import { AppContext } from "../Firebase/AppProvider";
 
 export default function AUScreen({ navigation }) {
-  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { selectName, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
 
   function AUDiv(props) {

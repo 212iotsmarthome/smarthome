@@ -125,3 +125,25 @@ export const addSensor = async (data) => {
       console.error("Error adding document: ", e);
     }
 }
+
+export const addDevicetoSensor = async (data) => {
+    collectionParam  = "EnviSensor";
+    try {
+        const temp = await addDocument("Device", {
+            boardID: data.boardID,
+            feedName: data.feedName,
+            index: data.index,
+            ID: data.ID,
+            type: data.type,
+            name: data.name,
+        })
+        const temp2 = await addDocument(collectionParam, {
+            ID: data.ID,
+            buzzerOn: false,
+            callList: [],
+        })
+        return [temp, temp2];
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+}

@@ -5,7 +5,7 @@ import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
 
-export default function LEDAdjustScreen({ navigation }) {
+export default function ACAdjustScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("25");

@@ -3,7 +3,6 @@ const axios = require('axios');
 const path = 'http://192.168.1.9:3002';
 
 const controlAlarm = (_id, _boardId, _value) => {
-    console.log(_id, _isOn)
     axios.put(path + '/controlAlarm', {
         id: _id,
         boardId: _boardId,
@@ -35,7 +34,6 @@ const controlCurtain = (_id, _boardId, _action) => {
 }
 
 const controlLED = (_id, _boardId, _value) => {
-    console.log(_id, _boardId, _value);
     axios.put(path + '/controlLED', {
         id: _id,
         boardId: _boardId,
