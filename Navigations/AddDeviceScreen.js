@@ -25,8 +25,13 @@ export default function AddScreen({ navigation }) {
             })
         }
         else{
+            let result = [];
+            for(let i = 0; i < user.control.length; i++){
+              result.push({ID: user.control[i].ID, name: user.control[i].name});
+            }
+            result.push({ID: dC, name: dN});
             await editDocumentById("User", user.id, {
-                control: [...user.control, {ID: dC, name: dN}]
+                control: result
             })
         }
         getUser(user.email);
