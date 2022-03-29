@@ -124,7 +124,7 @@ export default function AUAdjustScreen({ navigation, route }) {
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton text="Save" onPress={() => {
-          // controlCurtain(selectedDevice.index, selectedDevice.boardId, selectedAction);
+          // controlCurtain(selectedDevice.index, selectedDevice.boardID, selectedAction);
           console.log(selectedDevice.index, selectedDevice.boardID, selectedAction);
           navigation.goBack();
         }} />

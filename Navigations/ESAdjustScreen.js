@@ -175,7 +175,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
           text="Save"
           onPress={() => {
             // controlAlarm(LED.id, isOn);
-            console.log()
           }}
         />
       </View>

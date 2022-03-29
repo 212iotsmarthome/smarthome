@@ -18,15 +18,15 @@ export default function AddScreen({ navigation }) {
   const checkIf = async (dC, dN) => {
     if(devList.includes(dC)){
       try {
-        console.log(control);
-        if(control == []){
+        console.log(user.control);
+        if(user.control == []){
             await editDocumentById("User", user.id, {
                 control: [{ID: dC, name: dN}]
             })
         }
         else{
             await editDocumentById("User", user.id, {
-                control: [...control, {ID: dC, name: dN}]
+                control: [...user.control, {ID: dC, name: dN}]
             })
         }
         getUser(user.email);

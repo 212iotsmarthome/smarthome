@@ -26,18 +26,22 @@ export default function AppProvider({ children }) {
     const devList = useFirebase("Device", devCondition).map(getID);
 
     // User Control
-    const control = React.useMemo(() => user.control || [], [user, db]);
-    const idList = control.map(getID);
+    const control = React.useMemo(() => {
+        if(user.control){
+            return user.control;
+        }
+        return [{ID: "sample", name: "sample"}];
+    }, [user.control]);
+    const idList = control?.map(getID);
     
     // Condition 1: Take devices in control
     const controlCondition = React.useMemo(() => {
-        console.log(1);
         return {
             fieldName: "ID",
             operator: "in",
             compareValue: idList
         }
-    }, [control]);
+    }, [user, db]);
 
     // Get workspaceList from workspace with Condition 1
     const deviceList = useFirebase("Device", controlCondition);
@@ -49,6 +53,7 @@ export default function AppProvider({ children }) {
     }
     else {
         selectDevice = React.useMemo(() => deviceList.filter(item => (item.type === status || item.type === status + 1 || item.type === status + 2)) || [{}], [deviceList, status]);
+        console.log(control)
     }
 
     // Display in First Page
@@ -59,7 +64,7 @@ export default function AppProvider({ children }) {
             if(tempList.includes(control[i].ID)){
                 let result = control[i];
                 result.type = selectDevice.find(x => x.ID === control[i].ID).type;
-                temp.push(result)
+                temp.push(result);
             }
         }
         return temp;
@@ -113,7 +118,6 @@ export default function AppProvider({ children }) {
         <AppContext.Provider
             value={{
                 devList,
-                control,
                 status,
                 setStatus,
                 curSelection,

@@ -12,7 +12,7 @@ import Credit from "./Elements/Credit";
 export default function HomeScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
   const { user } = React.useContext(AuthContext);
-  const { setStatus, control } = React.useContext(AppContext);
+  const { setStatus, selectName } = React.useContext(AppContext);
 
   // const backHome = () => {
   //   Alert.alert("Hold on!", "Are you sure you want to go back?", [
@@ -31,15 +31,16 @@ export default function HomeScreen({ navigation }) {
   //   return () => BackHandler.removeEventListener("hardwareBackPress", backHome);
   // }, []);
 
+  useEffect(() => {
+    console.log(user.control, selectName, 3);
+  }, []);
+
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
-
-      {/* <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
-      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/> */}
 
       <Image
         style={{
