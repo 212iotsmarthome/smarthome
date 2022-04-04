@@ -111,8 +111,23 @@ export default function AppProvider({ children }) {
         compareValue: curSelection
     }), [curSelection]);
 
-    // Get selectDeviceList from type with Condition 2
+    // Get selectedDeviceList from type with Condition 2
     const selectedDeviceInfo = useFirebase(table, selectedDeviceCondition);
+
+    const scheduleList = selectedDeviceInfo?.reduce(
+        (previousValue, currentValue) => previousValue.concat(currentValue.scheduleList),
+        []
+    );
+      
+    // Get selectedDeviceSchedule
+    const selectedDeviceScheduleCondition = React.useMemo(() => ({
+        fieldName: "ScheduleID",
+        operator: "in",
+        compareValue: scheduleList
+    }), [selectedDeviceInfo]);
+
+    // Get selectedDeviceList from type with Condition 2
+    const selectedDeviceSchedule = useFirebase("Schedule", selectedDeviceScheduleCondition);
 
     return (
         <AppContext.Provider
@@ -125,7 +140,9 @@ export default function AppProvider({ children }) {
                 deviceList,
                 selectDevice,
                 selectName,
+                scheduleList,
                 selectedDeviceInfo,
+                selectedDeviceSchedule,
                 selectedDevice,
                 selectedName,
             }}>

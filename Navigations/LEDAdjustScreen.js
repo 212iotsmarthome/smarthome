@@ -6,6 +6,7 @@ import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { controlLED } from "../controller/controller";
+import { addLog } from "../Firebase/AUD";
 
 export default function LEDAdjustScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -178,6 +179,7 @@ export default function LEDAdjustScreen({ navigation }) {
           onPress={() => {
             // controlLED(selectedDevice.index, selectedDevice.boardID, getValue());
             console.log(selectedDevice.index, selectedDevice.boardID, getValue());
+            addLog({content: `Hello ${getValue()}`, deviceID: selectedDevice.ID})
             navigation.goBack();
           }}
         />

@@ -1,3 +1,4 @@
+import { serverTimestamp } from "firebase/firestore";
 import { addDocument, deleteDocumentById,  editDocumentById } from "./service";
 
 export const addLED = async (data) => {
@@ -126,3 +127,44 @@ export const addSensor = async (data) => {
     }
 }
 
+const switchTable = (status) => {
+    let table = "";
+    switch (status) {
+        case 1:
+            table = "LED";
+            break;
+        case 2:
+            table = "AC";
+            break;
+        case 3:
+            table = "EnviSensor";
+            break;
+        case 6:
+            table = "SmartCurtain";
+            break;
+        case 7:
+            table = "SmartDoor";
+            break;
+        default:
+            table = "Device";
+            break;
+    }
+    return table;
+}
+
+export const addLog = async (data) => {
+    collectionParam  = "Log";
+    try {
+        const temp = await addDocument("Log", {
+            content: data.content,
+            deviceID: data.deviceID,
+            time: serverTimestamp()
+        })
+        // const temp2 = await editDocumentById(switchTable(data.status), data.deviceID, {
+        //     scheduleList: [...data.scheduleList, temp]
+        // })
+        return temp;
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+}
