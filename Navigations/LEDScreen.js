@@ -4,6 +4,7 @@ import { AppContext } from "../Firebase/AppProvider";
 import LEDButton from "./Elements/LEDButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import BackButton from "./Elements/BackButton";
 
 export default function LEDScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -37,6 +38,7 @@ export default function LEDScreen({ navigation }) {
     <ScrollView style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo smalltext={"Control Center"} largetext="LED" />
+        {/* <BackButton onPress={() => navigation.goBack()} /> */}
       </View>
 
       <LEDDiv length={selectName.length} />

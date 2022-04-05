@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import SDButton from "./Elements/SDButton";
@@ -16,12 +16,6 @@ export default function SDScreen({ navigation }) {
 
     return (
       <View>
-        {/* <Text
-          style={{ left: "70%", marginBottom: 10, color: "#aaa", fontSize: 12 }}
-        >
-          Lock/Unlock
-        </Text> */}
-
         <View style={{ marginBottom: 60, width: "100%" }}>
           {selectName.map((SD) => (
             <SDButton

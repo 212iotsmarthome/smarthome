@@ -32,7 +32,7 @@ export default function ACScreen({ navigation }) {
       <Text style={style.bigtext}>{"Chung Đông Phong"}</Text>
       <Text style={style.smalltext}>{"1911837"}</Text>
 
-      <Text style={style.bigtext}>{"Nguyễnn Phúc Thịnh"}</Text>
+      <Text style={style.bigtext}>{"Nguyễn Phúc Thịnh"}</Text>
       <Text style={style.smalltext}>{"1910565"}</Text>
 
       <Text style={style.bigtext}>{"Nguyễn Minh Nghĩa"}</Text>

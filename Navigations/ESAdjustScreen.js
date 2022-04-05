@@ -104,6 +104,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: ES, type: "ES" })
+          }
         >
           <View style={{ width: "100%" }}>
             <Text
@@ -174,7 +177,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            // controlAlarm(LED.id, isOn);
+            controlAlarm(ES.id, isOn);
+            navigation.goBack();
           }}
         />
       </View>

@@ -56,16 +56,7 @@ export default function HomeScreen({ navigation }) {
       />
 
       <ScrollView style={{ marginBottom: 60 }}>
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="LED"
             subtitle="Control lights"
@@ -88,16 +79,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="Smart Door"
             subtitle="Secure your home"
@@ -120,16 +102,7 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="EnviSensor™"
             subtitle="At any time"
@@ -154,3 +127,14 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  cardrow: {
+    marginVertical: 0,
+    width: "85%",
+    height: 135,
+    alignSelf: "center",
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+});

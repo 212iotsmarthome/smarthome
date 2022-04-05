@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import PersonalButton from "./Elements/PersonalButton";
@@ -81,10 +81,23 @@ export default function ACScreen({ navigation }) {
         name="Log out"
         icon="logout"
         backgroundColor="white"
-        onPress={() => handleSignOut(() => {})}
+        onPress={() =>
+          Alert.alert("Warning", "Do you want to log out?", [
+            {
+              text: "Cancel",
+              onPress: () => {},
+              style: "cancel",
+            },
+            {
+              text: "OK",
+              onPress: () => {
+                handleSignOut(() => {});
+                console.log("Log Out from: " + user.email);
+              },
+            },
+          ])
+        }
       />
-
-      {/* <View style={{ height: 5, backgroundColor: "#eee" }} /> */}
     </ScrollView>
   );
 }

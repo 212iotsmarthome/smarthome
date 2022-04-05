@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { controlDoor } from "../controller/controller";
@@ -6,14 +6,14 @@ import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
 
-export default function LEDAdjustScreen({ navigation, route }) {
+export default function LEDAdjustScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const [isConnected, setIsConnected] = React.useState(true);
   const [isLocked, setIsLocked] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isLocked) setIsOpen(false);
   }, [isLocked]);
 
@@ -160,6 +160,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: SD, type: "SD" })
+          }
         >
           <View style={{ width: "70%" }}>
             <Text
