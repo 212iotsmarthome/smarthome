@@ -30,7 +30,7 @@ device_info = []
 for i in range(0, NUM_OF_DEVICE):
     device_info.append({"deviceID": "board1",
                         "DHT11": {"0": {"humid": 71.0, "temperature": 27.0}},
-                        "LDR": {"1": 72, "2": 706},
+                        "LDR": {"1": 72},
                         "LED": {"0": 0, "1": 0},
                         "curtain": {"0": 0},
                         "door": {"0": {"motor": 1, "lock": 0}},

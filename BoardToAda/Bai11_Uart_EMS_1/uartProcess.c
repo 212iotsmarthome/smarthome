@@ -75,7 +75,7 @@ void Uart_Processing() {
 }
 //{"deviceID":"board1",
 //"DHT11": {"0":{"humid":90.12, "temperature": 90.12}}, 
-//"LDR":{"0":1023, "1":1023}, 
+//"LDR":{"1":1023}, 
 //"LED":{"0":3, "1":3}, 
 //"curtain":{"0":2}, "door":{"0":{"motor":0, "lock":1}}, 
 //"conditioner":{"0":{"power":1, "temp":22}}, 
@@ -88,8 +88,6 @@ void send_All_Info() {
     UartSendNumPercent(get_DHT11_temperature());
     UartSendString("}}, \"LDR\":{\"1\":");
     UartSendNum(read_adc_value(1));
-    UartSendString(", \"2\":");
-    UartSendNum(read_adc_value(2));
     UartSendString("}, \"LED\":{\"0\":");
     UartSendNum(get_Led(0));
     UartSendString(", \"1\":");

@@ -66,7 +66,7 @@ void open_door() {
 //        PWM_turn_on();
         DOOR_LAT_1 = 0;
         DOOR_LAT_2 = 1;
-        door_moving = 1;
+        door_moving = 5;
     }
 }
 

@@ -2,14 +2,14 @@
 #include <p18f4620.h>
 unsigned int adc_value[ADC_CHANNEL];
 //LIST OUT CHANNEL THAT U NEED TO USE BY SETTING IT TO 1.
-unsigned char analog_channel_using[ADC_CHANNEL] = {0, 1, 1, 0, 0, 0, 0};
+unsigned char analog_channel_using[ADC_CHANNEL] = {0, 1, 0, 0, 0, 0, 0};
 void init_adc(void)
 {
 	//Analog pin MUST BE INPUT PIN (0 -> output, 1 -> input)
     // pin RA0, RA1, RA2, RA3, RA5, RE0, RE1 la cac chan analog input.
     TRISAbits.RA0 = 1;
     TRISAbits.RA1 = 1;
-    TRISAbits.RA2 = 1;
+//    TRISAbits.RA2 = 1;
 //    TRISAbits.RA3 = 1;
 //    TRISAbits.RA5 = 1;
 //    TRISEbits.RE0 = 1;
@@ -18,8 +18,9 @@ void init_adc(void)
      * 5: Vref- = Vss
      4: Vref+ = Vdd
      3-0: A/D Port configuration control bits:
-     1000: AN0 -> AN2 la analog.*/
-	ADCON1 = 0b00001100;
+     1101: AN0 -> AN1 la analog.*/
+    //sua lai cho nay neu thay doi so cong analog
+	ADCON1 = 0b00001101;
     
     /*ADCON0
      *  5-2: chon kenh analog - truoc khi doc du lieu analog, ta phai chon 1 kenh de doc no
@@ -41,8 +42,8 @@ void init_adc(void)
     
     /*ADCON2
      * 7: Dinh dang ket qua trong 2 thanh ghi ADRESH va ADRESL
-     * 0 - canh trai
-     * 1 - canh phai
+     * 0 - canh trai        -> Big endian
+     * 1 - canh phai        -> Little endian
      * 5-3: A/D Acquistion Time Select Bit: chon thoi gian nap tu
      * Holding capacitor
      * 001 - 2 Tad.

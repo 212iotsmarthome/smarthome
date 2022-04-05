@@ -160,8 +160,8 @@ void display_Scene() {
             LcdPrintNumPercentS(1, 8, get_DHT11_humidity());
             break;
         case SCENE_ADC:
-            LcdPrintNumS(0, 0, read_adc_value(1));
-            LcdPrintNumS(0, 8, read_adc_value(2));
+            LcdPrintStringS(0, 0, "LDR: ");
+            LcdPrintNumS(0, 8, read_adc_value(1));
             break;
         case  SCENE_LED_STATE:
             LcdPrintNumS(0, 0, get_Led(0));
