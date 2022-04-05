@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useFirebase from './useFirestore';
 import { AuthContext } from './AuthProvider';
 import { db } from './firebase';
+import { documentId } from 'firebase/firestore';
 
 export const AppContext = React.createContext();
 
@@ -121,7 +122,7 @@ export default function AppProvider({ children }) {
       
     // Get selectedDeviceSchedule
     const selectedDeviceScheduleCondition = React.useMemo(() => ({
-        fieldName: "ScheduleID",
+        fieldName: documentId(),
         operator: "in",
         compareValue: scheduleList
     }), [selectedDeviceInfo]);

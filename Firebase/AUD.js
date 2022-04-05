@@ -155,7 +155,7 @@ const switchTable = (status) => {
 export const addLog = async (data) => {
     collectionParam  = "Log";
     try {
-        const temp = await addDocument("Log", {
+        const temp = await addDocument(collectionParam, {
             content: data.content,
             deviceID: data.deviceID,
             time: serverTimestamp()
@@ -164,6 +164,23 @@ export const addLog = async (data) => {
         //     scheduleList: [...data.scheduleList, temp]
         // })
         return temp;
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+}
+
+export const addSchedule = async (data) => {
+    collectionParam  = "Schedule";
+    try {
+        const temp = await addDocument(collectionParam, {
+            Action: data.Action,
+            Daily: data.Daily,
+            time: serverTimestamp()
+        })
+        const temp2 = await editDocumentById(switchTable(data.status), data.deviceID, {
+            scheduleList: [...data.scheduleList, temp]
+        })
+        return [temp, temp2];
     } catch (e) {
       console.error("Error adding document: ", e);
     }
