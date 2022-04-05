@@ -1,47 +1,40 @@
 import React from "react";
-import {
-  Image,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { controlAC } from "../Controller/controller";
+import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
+import { controlAlarm } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
-export default function ACAdjustScreen({ navigation, route }) {
-  // const ACinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const AC = route.params;
+export default function ESAdjustScreen({ navigation, route }) {
+  // const ESinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
+  const ES = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
-  const [temp, setTemp] = React.useState("25");
+  const [temp, setTemp] = React.useState("--");
+  const [humid, setHumid] = React.useState("--");
+  const [brightness, setBrightness] = React.useState("--");
+  const [flammable, setFlammable] = React.useState(false);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo
-          smalltext="Air Conditioner Adjustment"
-          largetext={AC.name}
-        />
+        <TopHeadTypo smalltext="EnviSensor™ Adjustment" largetext={ES.name} />
 
         <Image
           style={{
             marginLeft: "auto",
             marginRight: "auto",
             marginTop: "10%",
-            marginBottom: "5%",
-            height: "28%",
-            width: "45%",
+            marginBottom: "10%",
+            height: "18%",
+            width: "30%",
             resizeMode: "contain",
           }}
-          source={require("../assets/air-conditioner.png")}
+          source={require("../assets/envi-sensor.png")}
         />
 
         <TouchableOpacity
           style={{
-            height: 70,
+            height: 120,
             width: "82%",
             backgroundColor: "#F1F9FD",
             borderRadius: 20,
@@ -63,7 +56,11 @@ export default function ACAdjustScreen({ navigation, route }) {
                 fontWeight: "bold",
               }}
             >
-              Power
+              Flammable gas alarm
+            </Text>
+            <Text style={{ fontSize: 12.5 }}>
+              The alarm goes off when the flammable gas concentration crosses
+              the threshhold, or when the temperature reaches 80°C.
             </Text>
           </View>
 
@@ -89,7 +86,7 @@ export default function ACAdjustScreen({ navigation, route }) {
           </View>
         </TouchableOpacity>
 
-        <View
+        <TouchableOpacity
           style={{
             height: 60,
             width: "82%",
@@ -98,86 +95,16 @@ export default function ACAdjustScreen({ navigation, route }) {
 
             marginRight: "auto",
             marginLeft: "auto",
-            marginVertical: 15,
+            marginTop: 10,
 
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: ES, type: "ES" })
+          }
         >
-          <View style={{ width: "70%" }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: "black",
-              }}
-            >
-              Temperature
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                color: "gray",
-              }}
-            >
-              Range: 16-30°C.
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: "30%",
-
-              position: "absolute",
-              right: "2%",
-              alignItems: "center",
-            }}
-          >
-            <TextInput
-              style={{
-                width: "100%",
-                height: 45,
-                borderRadius: 10,
-                borderWidth: 1,
-                fontSize: 18,
-                color: "#222",
-                textAlign: "center",
-              }}
-              value={temp.toString()}
-              onFocus={() => setTemp("")}
-              onChangeText={(s) => {
-                setTemp(parseInt(s));
-              }}
-              onSubmitEditing={() => {
-                parseInt(temp) > 30
-                  ? setTemp("30")
-                  : parseInt(temp) < 16
-                  ? setTemp("16")
-                  : setTemp(String(parseInt(temp)));
-                console.log(temp);
-              }}
-              keyboardType="number-pad"
-            />
-          </View>
-        </View>
-        <TouchableOpacity
-          style={{
-            height: 70,
-            width: "82%",
-            borderRadius: 20,
-            paddingLeft: 20,
-
-            marginRight: "auto",
-            marginLeft: "auto",
-            marginVertical: 5,
-
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-          onPress={() => {
-            navigation.navigate("SetTimeScreen", { obj: AC, type: "AC" });
-          }}
-        >
-          <View style={{ width: "70%" }}>
+          <View style={{ width: "100%" }}>
             <Text
               style={{
                 fontSize: 18,
@@ -187,24 +114,66 @@ export default function ACAdjustScreen({ navigation, route }) {
               Set time
             </Text>
           </View>
-
-          <View
-            style={{
-              width: "30%",
-
-              position: "absolute",
-              right: "0%",
-              alignItems: "center",
-            }}
-          ></View>
         </TouchableOpacity>
+
+        <View
+          style={{
+            height: 60,
+            width: "82%",
+            borderRadius: 20,
+            paddingLeft: 20,
+
+            marginRight: "auto",
+            marginLeft: "auto",
+
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+        >
+          <View style={{ width: "70%" }}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: "black",
+              }}
+            >
+              Sensors:
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            width: "73%",
+            marginTop: -10,
+          }}
+        >
+          <Text>
+            {"        "}Temperature:{"  "}
+            {temp}°C
+          </Text>
+          <Text>
+            {"        "}Humidity:{"  "}
+            {humid}%
+          </Text>
+          <Text>
+            {"        "}Brightness:{"  "}
+            {brightness} Lux
+          </Text>
+          <Text>
+            {"        "}Flammable gas:{"  "}
+            {flammable ? "Yes" : "No"}
+          </Text>
+        </View>
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAC(AC.ID, isOn, temp);
+            controlAlarm(ES.id, isOn);
             navigation.goBack();
           }}
         />

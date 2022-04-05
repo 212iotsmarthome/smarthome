@@ -1,28 +1,38 @@
 import { Text, View, TouchableOpacity, Alert } from "react-native";
 
-const IOTButton = ({
+const DeleteButton = ({
   text = "My Button",
   type = "dark",
-  onPress = () => Alert.alert("Alert", "Not assigned yet", []),
+  onPress = () =>
+    Alert.alert("Not assigned yet", "In development", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]),
 }) => {
   return (
     <View
       style={{
         marginVertical: 0,
-        width: "60%",
-        height: 65,
         alignSelf: "center",
         alignItems: "center",
         overflow: "hidden",
+        position: "absolute",
+        top: 48,
+        right: 40,
       }}
     >
       <TouchableOpacity
         style={
           type == "dark"
             ? {
-                height: 50,
-                width: "90%",
-                backgroundColor: "#29ABE2",
+                height: 40,
+                margin: 10,
+                width: "95%",
+                backgroundColor: "#d00",
                 borderRadius: 25,
                 shadowColor: "black",
                 elevation: 5,
@@ -30,7 +40,7 @@ const IOTButton = ({
             : type == "white"
             ? {
                 height: 50,
-                width: "90%",
+                width: "95%",
                 backgroundColor: "#FFF",
                 borderRadius: 25,
                 shadowColor: "grey",
@@ -50,6 +60,7 @@ const IOTButton = ({
                   fontSize: 18,
                   color: "white",
                   fontWeight: "bold",
+                  margin: 10,
                 }
               : type == "white"
               ? {
@@ -57,8 +68,9 @@ const IOTButton = ({
                   marginBottom: "auto",
                   alignSelf: "center",
                   fontSize: 18,
-                  color: "#29ABE2",
+                  color: "red",
                   fontWeight: "bold",
+                  margin: 10,
                 }
               : {}
           }
@@ -70,4 +82,4 @@ const IOTButton = ({
   );
 };
 
-export default IOTButton;
+export default DeleteButton;

@@ -1,59 +1,25 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
+import { ScrollView, View } from "react-native";
+import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 import LEDButton from "./Elements/LEDButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
+import TopHeadTypo from "./Elements/TopHeadTypo";
+import BackButton from "./Elements/BackButton";
 
 export default function LEDScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
 
+  const { user } = React.useContext(AuthContext);
+  const { status, selectDevice, setCurSelection } =
+    React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
+  // const [LEDs, setLEDs] = React.useState(selectDevice);
   const [LEDs, setLEDs] = React.useState([
     {
-      id: 1000001,
-      type: "LED-21A",
+      ID: "1000001",
       name: "Phòng khách",
-    },
-    {
-      id: 1000002,
-      type: "LED-21A",
-      name: "Phòng khách 2",
-    },
-    {
-      id: 1100002,
-      type: "LED-8K",
-      name: "Phòng ngủ",
-    },
-    {
-      id: 1000004,
-      type: "LED-21A",
-      name: "Restroom",
-    },
-    {
-      id: 1000005,
-      type: "LED-21A",
-      name: "Phòng khách",
-    },
-    {
-      id: 1000006,
-      type: "LED-21A",
-      name: "Phòng khách 2",
-    },
-    {
-      id: 1100007,
-      type: "LED-8K",
-      name: "Phòng ngủ",
-    },
-    {
-      id: 1000008,
-      type: "LED-21A",
-      name: "Restroom",
-    },
-    {
-      id: 1000009,
-      type: "LED-21A",
-      name: "Restroom",
+      type: "LED-01A",
     },
   ]);
 
@@ -63,19 +29,16 @@ export default function LEDScreen({ navigation }) {
 
     return (
       <View>
-        <Text
-          style={{ left: "74%", marginBottom: 10, color: "#aaa", fontSize: 12 }}
-        >
-          On/Off
-        </Text>
-
         <View style={{ marginBottom: 60, width: "100%" }}>
           {LEDs.map((LED) => (
             <LEDButton
               type={LED.type}
               name={LED.name}
-              key={LED.id}
-              onMainPress={() => navigation.navigate("LEDAdjustScreen", LED)}
+              key={LED.ID}
+              onMainPress={() => {
+                setCurSelection(LED.ID);
+                navigation.navigate("LEDAdjustScreen", LED);
+              }}
             />
           ))}
         </View>
@@ -87,6 +50,7 @@ export default function LEDScreen({ navigation }) {
     <ScrollView style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo smalltext={"Control Center"} largetext="LED" />
+        {/* <BackButton onPress={() => navigation.goBack()} /> */}
       </View>
 
       <LEDDiv length={LEDs.length} />

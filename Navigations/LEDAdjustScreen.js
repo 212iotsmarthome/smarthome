@@ -1,9 +1,11 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
-import { Slider } from "react-native-elements";
+import { Slider } from "@miblanchard/react-native-slider";
 
-import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
+import TopHeadTypo from "./Elements/TopHeadTypo";
+import { controlLED } from "../Controller/controller";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -11,7 +13,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [isAuto, setIsAuto] = React.useState(false);
-  const [brightness, setBrightness] = React.useState(0);
+  const [brightness, setBrightness] = React.useState(1);
+
+  const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  // console.log(selectedDevice, selectedDeviceInfo);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -81,9 +86,41 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </TouchableOpacity>
 
-        <View
+        <View style={{ width: "73%", alignSelf: "center", marginTop: 10 }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: isOn ? "black" : "#aaa",
+              marginBottom: 10,
+              marginTop: "5%",
+            }}
+          >
+            {"Brightness: " +
+              (brightness == 1 ? "Low" : brightness == 2 ? "Medium" : "High")}
+          </Text>
+
+          <Slider
+            width="100%"
+            maximumValue={3}
+            minimumValue={1}
+            step={1}
+            minimumTrackTintColor={isOn ? "#29ABE2" : "#ccc"}
+            thumbStyle={{
+              height: 30,
+              width: 30,
+              borderRadius: 15,
+              backgroundColor: "white",
+              elevation: 8,
+            }}
+            value={brightness}
+            onValueChange={(b) => setBrightness(b[0])}
+            disabled={!isOn}
+          />
+        </View>
+
+        <TouchableOpacity
           style={{
-            height: 60,
+            height: 70,
             width: "82%",
             borderRadius: 20,
             paddingLeft: 20,
@@ -95,79 +132,39 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: LED, type: "LED" })
+          }
         >
-          <View style={{ width: "70%" }}>
+          <View style={{ width: "100%" }}>
             <Text
               style={{
                 fontSize: 18,
-                color: isOn ? "black" : "#aaa",
+                color: "black",
               }}
             >
-              Auto mode
+              Set time
             </Text>
           </View>
 
           <View
             style={{
               width: "30%",
-
               position: "absolute",
               right: "0%",
               alignItems: "center",
             }}
-          >
-            <Switch
-              style={{
-                transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
-                height: 80,
-              }}
-              thumbColor={isOn ? (isAuto ? "#29ABE2" : "#eee") : "#eee"}
-              trackColor={
-                isOn
-                  ? { true: "#C8E6EC", false: "#ccc" }
-                  : { true: "#ccc", false: "#ccc" }
-              }
-              value={isAuto}
-              onValueChange={() => setIsAuto(!isAuto)}
-              disabled={!isOn}
-            />
-          </View>
-        </View>
-
-        <View style={{ width: "73%", alignSelf: "center" }}>
-          <Text
-            style={{
-              fontSize: 18,
-              color: isOn && !isAuto ? "black" : "#aaa",
-              marginBottom: 10,
-              marginTop: "5%",
-            }}
-          >
-            {"Brightness: " + brightness}
-          </Text>
-
-          <Slider
-            width="100%"
-            maximumValue={100}
-            minimumValue={0}
-            step={1}
-            allowTouchTrack
-            trackStyle={{ height: 6 }}
-            minimumTrackTintColor="#29ABE2"
-            thumbStyle={{
-              height: 30,
-              width: 30,
-              backgroundColor: "white",
-              elevation: 8,
-            }}
-            value={brightness}
-            onValueChange={console.log(!isOn || isAuto)}
-            disabled={true}
-          />
-        </View>
+          ></View>
+        </TouchableOpacity>
       </View>
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlLED(LED.ID, isOn, isAuto, brightness);
+            navigation.goBack();
+          }}
+        />
       </View>
     </View>
   );

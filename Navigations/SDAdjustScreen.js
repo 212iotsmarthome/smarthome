@@ -1,21 +1,25 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
+import TopHeadTypo from "./Elements/TopHeadTypo";
 
-export default function LEDAdjustScreen({ navigation, route }) {
-  // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
+import { controlDoor } from "../Controller/controller";
+
+export default function SDAdjustScreen({ navigation, route }) {
+  const SD = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
   const [isLocked, setIsLocked] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isLocked) setIsOpen(false);
+  }, [isLocked]);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Smart Door Adjustment" largetext={LED.name} />
+        <TopHeadTypo smalltext="Smart Door Adjustment" largetext={SD.name} />
 
         <Image
           style={{
@@ -23,7 +27,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             marginRight: "auto",
             marginTop: "10%",
             marginBottom: "10%",
-            height: "25%",
+            height: "22%",
             width: "40%",
             resizeMode: "contain",
           }}
@@ -68,7 +72,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
             }}
           >
             <TouchableOpacity
-              onPress={() => setIsLocked(!isLocked)}
+              onPress={() => {
+                setIsLocked(!isLocked);
+                // if (isLocked == true) setIsOpen(false);
+              }}
               style={{
                 width: "90%",
                 height: "100%",
@@ -85,6 +92,60 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </View>
 
+        <View
+          style={{
+            height: 70,
+            width: "82%",
+            borderRadius: 20,
+            paddingLeft: 20,
+
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginTop: 5,
+
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+        >
+          <View style={{ width: "70%" }}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: isLocked ? "#ccc" : "black",
+              }}
+            >
+              Open/Close door
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: "30%",
+
+              position: "absolute",
+              right: "0%",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setIsOpen(!isOpen)}
+              style={{
+                width: "90%",
+                height: "100%",
+                justifyContent: "center",
+              }}
+              disabled={isLocked}
+            >
+              <Icon
+                name={isOpen ? "door-open" : "door-closed"}
+                type="material-community"
+                color={isLocked ? "#ccc" : isOpen ? "#cc0000" : "#29ABE2"}
+                size={36}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
         <TouchableOpacity
           style={{
             height: 70,
@@ -94,11 +155,13 @@ export default function LEDAdjustScreen({ navigation, route }) {
 
             marginRight: "auto",
             marginLeft: "auto",
-            marginVertical: 5,
 
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() =>
+            navigation.navigate("SetTimeScreen", { obj: SD, type: "SD" })
+          }
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -114,7 +177,13 @@ export default function LEDAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlDoor(SD.id, isLocked, isOpen);
+            navigation.goBack();
+          }}
+        />
       </View>
     </View>
   );

@@ -64,7 +64,17 @@ const SDButton = ({
         </Text>
       </View>
 
-      <View
+      <View style={{ position: "absolute", right: "7%" }}>
+        <Icon
+          type="material"
+          name="delete-outline"
+          size={28}
+          color="#29ABE2"
+          onPress={() => {}}
+        />
+      </View>
+
+      {/* <View
         style={{
           height: "70%",
           width: "0.3%",
@@ -98,7 +108,7 @@ const SDButton = ({
             size={36}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </TouchableOpacity>
   );
 };

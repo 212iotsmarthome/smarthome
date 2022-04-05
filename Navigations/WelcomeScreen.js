@@ -31,8 +31,11 @@ export default function WCScreen({ navigation }) {
         text="Log In"
         onPress={() => navigation.navigate("LoginScreen")}
       />
-      <IOTButton text="Sign Up" type="white" />
-
+      <IOTButton
+        text="Sign Up"
+        type="white"
+        onPress={() => navigation.navigate("SignUpScreen")}
+      />
       <Credit />
     </View>
   );
