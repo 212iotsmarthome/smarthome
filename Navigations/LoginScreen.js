@@ -1,3 +1,5 @@
+import React from "react";
+import { AuthContext } from "../Firebase/AuthProvider";
 import { Text, View } from "react-native";
 import { useState } from "react";
 import TopHeadTypo from "./Elements/TopHeadTypo";
@@ -9,6 +11,7 @@ import { handleSignIn } from "../Firebase/utility";
 export default function LIScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { user } = React.useContext(AuthContext);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -32,6 +35,7 @@ export default function LIScreen({ navigation }) {
       </View>
 
       <IOTButton text="Log In" onPress={() => {
+        console.log(user);
         handleSignIn(email, password)
         // navigation.navigate("HomeScreen")
       }} />

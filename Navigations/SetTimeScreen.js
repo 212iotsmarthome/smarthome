@@ -14,6 +14,8 @@ import { Icon } from "react-native-elements";
 import { DataTable } from "react-native-paper";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
+import { addSchedule } from "../Firebase/AUD";
 
 // import { AuthContext } from "../Firebase/AuthProvider";
 // import { AppContext } from "../Firebase/AppProvider";
@@ -81,12 +83,24 @@ export default function SetTimeScreen({ navigation, route }) {
   const [date, setDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState("");
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
+  const { status, selectedName, selectedDevice, selectedDeviceInfo, scheduleList, selectedDeviceSchedule } = React.useContext(AppContext);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     //get method
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  React.useEffect(() => {
+    console.log(selectedDeviceInfo);
+    addSchedule({
+      Action: "Turn On",
+      Daily: true,
+      status: status,
+      deviceID: selectedDeviceInfo[0]["id"],
+      scheduleList: scheduleList
+    });
+  }, [])
 
   return (
     <View>

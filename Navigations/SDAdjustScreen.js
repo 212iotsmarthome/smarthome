@@ -1,16 +1,18 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
+import { controlDoor } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
 
-import { controlDoor } from "../Controller/controller";
-
-export default function SDAdjustScreen({ navigation, route }) {
-  const SD = route.params;
+export default function LEDAdjustScreen({ navigation, route }) {
+  // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const [isConnected, setIsConnected] = React.useState(true);
   const [isLocked, setIsLocked] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+  const { selectedName, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
 
   React.useEffect(() => {
     if (isLocked) setIsOpen(false);
@@ -19,7 +21,10 @@ export default function SDAdjustScreen({ navigation, route }) {
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Smart Door Adjustment" largetext={SD.name} />
+        <TopHeadTypo
+          smalltext="Smart Door Adjustment"
+          largetext={selectedName.name}
+        />
 
         <Image
           style={{
@@ -180,7 +185,13 @@ export default function SDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlDoor(SD.id, isLocked, isOpen);
+            // controlDoor(selectedDevice.index, selectedDevice.boardID, isLocked, isOpen);
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isLocked,
+              isOpen
+            );
             navigation.goBack();
           }}
         />

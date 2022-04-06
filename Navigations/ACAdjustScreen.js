@@ -7,23 +7,24 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { controlAC } from "../Controller/controller";
+import { controlAC } from "../controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
 
-export default function ACAdjustScreen({ navigation, route }) {
-  // const ACinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const AC = route.params;
+export default function ACAdjustScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("25");
+  const { selectedName, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo
           smalltext="Air Conditioner Adjustment"
-          largetext={AC.name}
+          largetext={selectedName.name}
         />
 
         <Image
@@ -191,7 +192,6 @@ export default function ACAdjustScreen({ navigation, route }) {
           <View
             style={{
               width: "30%",
-
               position: "absolute",
               right: "0%",
               alignItems: "center",
@@ -204,7 +204,13 @@ export default function ACAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAC(AC.ID, isOn, temp);
+            // controlAC(selectedDevice.index, selectedDevice.boardID, isOn, temp);
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isOn,
+              temp
+            );
             navigation.goBack();
           }}
         />

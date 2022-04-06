@@ -34,5 +34,10 @@
   "devDependencies": {
     "@babel/core": "^7.12.9"
   },
-  "private": true
+  "private": true,
+  "name": "smarthome",
+  "version": "1.0.0",
+  "repository": "https://github.com/212iotsmarthome/smarthome.git",
+  "author": "NoKnight41 <tdmdo2612@gmail.com>",
+  "license": "MIT"
 }
