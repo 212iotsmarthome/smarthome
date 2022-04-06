@@ -5,6 +5,7 @@ import {
   ScrollView,
   BackHandler,
   Alert,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect } from "react";
 

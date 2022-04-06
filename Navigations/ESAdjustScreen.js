@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
-import { controlAlarm } from "../Controller/controller";
+import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import { AppContext } from "../Firebase/AppProvider";
+import { Snackbar } from "react-native-paper";
 
 export default function LEDAdjustScreen({ navigation, route }) {
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("--");
   const [humid, setHumid] = React.useState("--");
@@ -182,9 +183,26 @@ export default function LEDAdjustScreen({ navigation, route }) {
           text="Save"
           onPress={() => {
             // controlAlarm(LED.id, isOn);
+            setVisible(true);
           }}
         />
       </View>
+
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+        //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }

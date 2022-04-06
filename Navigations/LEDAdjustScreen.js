@@ -7,10 +7,12 @@ import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { controlLED } from "../Controller/controller";
 import { addLog } from "../Firebase/AUD";
+import { Snackbar } from "react-native-paper";
 
 export default function LEDAdjustScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const [isConnected, setIsConnected] = React.useState(true);
+  // const [isConnected, setIsConnected] = React.useState(true);
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
   const [brightness, setBrightness] = React.useState(1);
   const { selectedName, selectedDevice, selectedDeviceInfo } =
@@ -179,7 +181,11 @@ export default function LEDAdjustScreen({ navigation }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            // controlLED(selectedDevice.index, selectedDevice.boardID, getValue());
+            controlLED(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              getValue()
+            );
             console.log(
               selectedDevice.index,
               selectedDevice.boardID,
@@ -189,10 +195,27 @@ export default function LEDAdjustScreen({ navigation }) {
               content: `Hello ${getValue()}`,
               deviceID: selectedDevice.ID,
             });
-            navigation.goBack();
+            setVisible(true);
+            // navigation.goBack();
           }}
         />
       </View>
+
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+        //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }

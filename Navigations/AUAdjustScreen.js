@@ -5,11 +5,13 @@ import { controlCurtain } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
+import { Snackbar } from "react-native-paper";
 
 export default function AUAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const actList = ["Close", "Half-open", "Full-open"];
 
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [selectedAction, setSelectedAction] = React.useState(0);
   const [isConnected, setIsConnected] = React.useState(true);
   const [isClosed, setIsClosed] = React.useState(false);
@@ -129,16 +131,37 @@ export default function AUAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            // controlCurtain(selectedDevice.index, selectedDevice.boardID, selectedAction);
+            controlCurtain(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              selectedAction
+            );
             console.log(
               selectedDevice.index,
               selectedDevice.boardID,
               selectedAction
             );
-            navigation.goBack();
+            // navigation.goBack();
+            setVisible(true);
           }}
         />
       </View>
+
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+        //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }
