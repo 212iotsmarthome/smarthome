@@ -1,7 +1,7 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { controlCurtain } from "../controller/controller";
+import { controlCurtain } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";

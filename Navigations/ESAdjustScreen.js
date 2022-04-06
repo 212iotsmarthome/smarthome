@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
-import { controlAlarm } from "../controller/controller";
+import { controlAlarm } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
