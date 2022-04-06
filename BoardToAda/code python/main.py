@@ -218,8 +218,10 @@ def SensorHandle(index):
     sensor_json["value"][device_info[index]["deviceID"]]["LDR"] = device_info[index]["LDR"]
     sensor_json["value"][device_info[index]["deviceID"]]["gas"] = device_info[index]["gas"]
 
+first_run = True
 
 def processData(data, index):
+    global first_run, new_conditioner_data, new_buzzer_data, new_curtain_data, new_door_data, new_led_data
     data = data.replace("!", "")
     data = data.replace("*", "")
     # splitData = data.split(":")
@@ -233,6 +235,13 @@ def processData(data, index):
         print("device ready")
     else:
         try:
+            if first_run:
+                new_door_data = 1
+                new_buzzer_data = 1
+                new_led_data = 1
+                new_curtain_data = 1
+                new_conditioner_data = 1
+                first_run = False
             temp_device_info = json.loads(data)
             # kiem tra su thay doi input cua cac device va gui
             DeviceHandle(temp_device_info, index)
