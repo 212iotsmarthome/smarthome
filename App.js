@@ -20,6 +20,7 @@ import ACScreen from "./Navigations/ACScreen";
 import ACAdjustScreen from "./Navigations/ACAdjustScreen";
 import SDScreen from "./Navigations/SDScreen";
 import SDAdjustScreen from "./Navigations/SDAdjustScreen";
+
 import AUScreen from "./Navigations/AUScreen";
 import AUAdjustScreen from "./Navigations/AUAdjustScreen";
 import ESScreen from "./Navigations/ESScreen";
@@ -28,7 +29,9 @@ import AddDeviceScreen from "./Navigations/AddDeviceScreen";
 import PersonalScreen from "./Navigations/PersonalScreen";
 import SetTimeScreen from "./Navigations/SetTimeScreen";
 
-import ChangePassword from "./Navigations/ChangePassword";
+import ChangePasswordScreen from "./Navigations/ChangePasswordScreen";
+import LogScreen from "./Navigations/LogScreen";
+import AboutUsScreen from "./Navigations/AboutUsScreen";
 
 const Stack = createNativeStackNavigator();
 LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
@@ -135,6 +138,24 @@ export default function App() {
               <Stack.Screen
                 name="SetTimeScreen"
                 component={SetTimeScreen}
+                options={{ headerShown: false }}
+              />
+
+              <Stack.Screen
+                name="ChangePasswordScreen"
+                component={ChangePasswordScreen}
+                options={{ headerShown: false }}
+              />
+
+              <Stack.Screen
+                name="LogScreen"
+                component={LogScreen}
+                options={{ headerShown: false }}
+              />
+
+              <Stack.Screen
+                name="AboutUsScreen"
+                component={AboutUsScreen}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>

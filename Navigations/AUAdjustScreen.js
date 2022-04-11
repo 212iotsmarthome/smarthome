@@ -1,28 +1,30 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
-import {
-  Image, Text, TouchableOpacity, View
-} from "react-native";
-import { controlCurtain } from "../controller/controller";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import { controlCurtain } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-
+import { AppContext } from "../Firebase/AppProvider";
+import { Snackbar } from "react-native-paper";
 
 export default function AUAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const actList = ["Close", "Half-open", "Full-open"];
 
-  const AU = route.params;
-
-  const [selectedAction, setSelectedAction] = React.useState("");
+  const [visible, setVisible] = React.useState(Boolean(false));
+  const [selectedAction, setSelectedAction] = React.useState(0);
   const [isConnected, setIsConnected] = React.useState(true);
   const [isClosed, setIsClosed] = React.useState(false);
   const [isMoving, setIsMoving] = React.useState(false);
+  const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Auto Curtain Adjustment" largetext={AU.name} />
+        <TopHeadTypo
+          smalltext="Auto Curtain Adjustment"
+          largetext={selectedDevice.name}
+        />
 
         <Image
           style={{
@@ -126,10 +128,40 @@ export default function AUAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" onPress={() => {
-          controlCurtain(AU.id, selectedAction);
-        }} />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlCurtain(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              selectedAction
+            );
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              selectedAction
+            );
+            // navigation.goBack();
+            setVisible(true);
+          }}
+        />
       </View>
+
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+        //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }

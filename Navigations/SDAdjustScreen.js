@@ -1,21 +1,33 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { controlDoor } from "../controller/controller";
+import { controlDoor } from "../Controller/controller";
+import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { Snackbar } from "react-native-paper";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
   const [isConnected, setIsConnected] = React.useState(true);
+
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [isLocked, setIsLocked] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+  const { selectedName, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
+
+  React.useEffect(() => {
+    if (isLocked) setIsOpen(false);
+  }, [isLocked]);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="Smart Door Adjustment" largetext={LED.name} />
+        <TopHeadTypo
+          smalltext="Smart Door Adjustment"
+          largetext={selectedName.name}
+        />
 
         <Image
           style={{
@@ -68,7 +80,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
             }}
           >
             <TouchableOpacity
-              onPress={() => setIsLocked(!isLocked)}
+              onPress={() => {
+                setIsLocked(!isLocked);
+                // if (isLocked == true) setIsOpen(false);
+              }}
               style={{
                 width: "90%",
                 height: "100%",
@@ -104,7 +119,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             <Text
               style={{
                 fontSize: 18,
-                color: "black",
+                color: isLocked ? "#ccc" : "black",
               }}
             >
               Open/Close door
@@ -127,11 +142,12 @@ export default function LEDAdjustScreen({ navigation, route }) {
                 height: "100%",
                 justifyContent: "center",
               }}
+              disabled={isLocked}
             >
               <Icon
                 name={isOpen ? "door-open" : "door-closed"}
                 type="material-community"
-                color={isOpen ? "#cc0000" : "#29ABE2"}
+                color={isLocked ? "#ccc" : isOpen ? "#cc0000" : "#29ABE2"}
                 size={36}
               />
             </TouchableOpacity>
@@ -151,6 +167,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
+          onPress={() => navigation.navigate("SetTimeScreen", { type: "SD" })}
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -166,10 +183,42 @@ export default function LEDAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" onPress={() => {
-          controlDoor(LED.id, isLocked, isOpen)
-        }} />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlDoor(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isLocked,
+              isOpen
+            );
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isLocked,
+              isOpen
+            );
+            // navigation.goBack();
+            setVisible(true);
+          }}
+        />
       </View>
+
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+        //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }

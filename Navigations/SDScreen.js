@@ -1,19 +1,14 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import SDButton from "./Elements/SDButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
+import { AppContext } from "../Firebase/AppProvider";
 
 export default function SDScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
-  const [SDs, setSDs] = React.useState([
-    {
-      id: 3000001,
-      type: "SD-05A",
-      name: "Cửa chính",
-    },
-  ]);
+  const { selectName, setCurSelection } = React.useContext(AppContext);
 
   function SDDiv(props) {
     const length = props.length;
@@ -21,19 +16,18 @@ export default function SDScreen({ navigation }) {
 
     return (
       <View>
-        {/* <Text
-          style={{ left: "70%", marginBottom: 10, color: "#aaa", fontSize: 12 }}
-        >
-          Lock/Unlock
-        </Text> */}
-
         <View style={{ marginBottom: 60, width: "100%" }}>
-          {SDs.map((SD) => (
+          {selectName.map((SD) => (
             <SDButton
-              type={SD.type}
+              type={"Door"}
               name={SD.name}
-              key={SD.id}
-              onMainPress={() => navigation.navigate("SDAdjustScreen", SD)}
+              key={SD.ID}
+              onMainPress={
+                () => {
+                  setCurSelection(SD.ID);
+                  navigation.navigate("SDAdjustScreen");
+                }
+              }
             />
           ))}
         </View>
@@ -47,7 +41,7 @@ export default function SDScreen({ navigation }) {
         <TopHeadTypo smalltext={"Control Center"} largetext="Smart Door" />
       </View>
 
-      <SDDiv length={SDs.length} />
+      <SDDiv length={selectName.length} />
     </ScrollView>
   );
 }

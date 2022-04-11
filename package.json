@@ -20,6 +20,7 @@
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
     "firebase": "9.6.7",
+    "local-ipv4-address": "^0.0.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
@@ -34,5 +35,10 @@
   "devDependencies": {
     "@babel/core": "^7.12.9"
   },
-  "private": true
+  "private": true,
+  "name": "smarthome",
+  "version": "1.0.0",
+  "repository": "https://github.com/212iotsmarthome/smarthome.git",
+  "author": "NoKnight41 <tdmdo2612@gmail.com>",
+  "license": "MIT"
 }

@@ -1,9 +1,16 @@
-import { View, Image, TouchableOpacity, ScrollView } from "react-native";
-import React from "react";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  BackHandler,
+  Alert,
+  StyleSheet,
+} from "react-native";
+import React, { useEffect } from "react";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
-import IOTButton from "./Elements/IOTButton";
 import AvatarButton from "./Elements/AvatarButton";
 import { AuthContext } from "../Firebase/AuthProvider";
 import { AppContext } from "../Firebase/AppProvider";
@@ -11,22 +18,37 @@ import { AppContext } from "../Firebase/AppProvider";
 import Credit from "./Elements/Credit";
 
 export default function HomeScreen({ navigation }) {
-  const [username, setUsername] = React.useState("Lorem");
   const [isConnected, setIsConnected] = React.useState(true);
+  const { user } = React.useContext(AuthContext);
+  const { setStatus, selectName } = React.useContext(AppContext);
 
-  const { user, setUser } = React.useContext(AuthContext);
-  const { deviceList, setStatus } = React.useContext(AppContext);
+  // const backHome = () => {
+  //   Alert.alert("Hold on!", "Are you sure you want to go back?", [
+  //     {
+  //       text: "Cancel",
+  //       onPress: () => null,
+  //       style: "cancel"
+  //     },
+  //     { text: "YES", onPress: () => BackHandler.exitApp() }
+  //   ]);
+  //   return true;
+  // };
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener("hardwareBackPress", backHome);
+  //   return () => BackHandler.removeEventListener("hardwareBackPress", backHome);
+  // }, []);
+
+  useEffect(() => {
+    console.log(user.control, selectName, 3);
+  }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
-
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
-
-      {/* <IOTButton text="Log Out" onPress={() => handleSignOut(() => {})}/>
-      <IOTButton text="DD" onPress={() => navigation.navigate("CP")}/> */}
 
       <Image
         style={{
@@ -42,16 +64,7 @@ export default function HomeScreen({ navigation }) {
       />
 
       <ScrollView style={{ marginBottom: 60 }}>
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="LED"
             subtitle="Control lights"
@@ -74,23 +87,14 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="Smart Door"
             subtitle="Secure your home"
             name="door-open"
             type="material-community"
             onPress={() => {
-              setStatus(5);
+              setStatus(7);
               navigation.navigate("SDScreen");
             }}
           />
@@ -99,26 +103,23 @@ export default function HomeScreen({ navigation }) {
             subtitle="Your privacy"
             name="window-open"
             type="material-community"
-            onPress={() => navigation.navigate("AUScreen")}
+            onPress={() => {
+              setStatus(6);
+              navigation.navigate("AUScreen");
+            }}
           />
         </View>
 
-        <View
-          style={{
-            marginVertical: 0,
-            width: "85%",
-            height: 135,
-            alignSelf: "center",
-            flexDirection: "row",
-            marginBottom: 10,
-          }}
-        >
+        <View style={style.cardrow}>
           <IOTDeviceGroupCard
             title="EnviSensor™"
             subtitle="At any time"
             name="camera-control"
             type="material-community"
-            onPress={() => navigation.navigate("ESScreen")}
+            onPress={() => {
+              setStatus(3);
+              navigation.navigate("ESScreen");
+            }}
           />
           <IOTDeviceGroupCard
             title="Add Device"
@@ -134,3 +135,14 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 }
+
+const style = StyleSheet.create({
+  cardrow: {
+    marginVertical: 0,
+    width: "85%",
+    height: 135,
+    alignSelf: "center",
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+});
