@@ -78,12 +78,14 @@ const addDevice = (_code, _name) => {
 const getEnviData = async (_index, _boardID, _type) => {
     let payload = {
         index : _index,
-        boardId: _boardID,
+        boardID: _boardID,
         typ: _type,
     };
-    const res = await axios.get(`${path}/getEnviStatus/`, {
+    const res = await axios.get(path + '/getEnviStatus/', {
         params: payload,
-    });
+    }).then((response) =>
+      response.data.value
+    );
     return res;
 }
 
