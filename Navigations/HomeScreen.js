@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity, ScrollView, BackHandler, Alert } from "react-native";
+import { View, Image, StyleSheet, ScrollView, BackHandler, Alert } from "react-native";
 import React, {useEffect} from "react";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
@@ -30,10 +30,6 @@ export default function HomeScreen({ navigation }) {
   //   BackHandler.addEventListener("hardwareBackPress", backHome);
   //   return () => BackHandler.removeEventListener("hardwareBackPress", backHome);
   // }, []);
-
-  useEffect(() => {
-    console.log(user.control, selectName, 3);
-  }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>

@@ -175,11 +175,11 @@ export default function LEDAdjustScreen({ navigation, route }) {
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         <IOTButton
-          text="Save"
-          onPress={() => {
-            controlAlarm(ES.id, isOn);
-            navigation.goBack();
-          }}
+          // text="Save"
+          // onPress={() => {
+          //   controlAlarm(ES.id, isOn);
+          //   navigation.goBack();
+          // }}
         />
       </View>
     </View>

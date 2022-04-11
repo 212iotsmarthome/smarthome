@@ -123,21 +123,11 @@ export default function AUAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-<<<<<<< HEAD
         <IOTButton text="Save" onPress={() => {
           // controlCurtain(selectedDevice.index, selectedDevice.boardID, selectedAction);
           console.log(selectedDevice.index, selectedDevice.boardID, selectedAction);
           navigation.goBack();
         }} />
-=======
-        <IOTButton
-          text="Save"
-          onPress={() => {
-            controlCurtain(AU.id, selectedAction);
-            navigation.goBack();
-          }}
-        />
->>>>>>> e81d00a8770fd97875fe0313fe05c9c9f0737dbb
       </View>
     </View>
   );

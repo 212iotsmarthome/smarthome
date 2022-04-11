@@ -1,6 +1,7 @@
 const axios = require('axios');
+const url = require('url');
 
-const path = 'http://192.168.1.9:3002';
+const path = 'http://192.168.1.9:3003';
 
 const controlAlarm = (_id, _boardId, _value) => {
     axios.put(path + '/controlAlarm', {
@@ -54,7 +55,6 @@ const controlAC = (_id, _boardId, _isOn, _temp) => {
     });
 }
 
-
 const addDevice = (_code, _name) => {
     axios.post(path + '/addDevice', {
         code: _code,
@@ -64,4 +64,16 @@ const addDevice = (_code, _name) => {
     });
 }
 
-export { controlDoor, controlAlarm, controlCurtain, controlLED, controlAC, addDevice }
+const getEnviData = async (_index, _boardID, _type) => {
+    let payload = {
+        index : _index,
+        boardId: _boardID,
+        typ: _type,
+    };
+    const res = await axios.get(`${path}/getEnviStatus/`, {
+        params: payload,
+    });
+    return res;
+}
+
+export { controlDoor, controlAlarm, controlCurtain, controlLED, controlAC, getEnviData, addDevice }
