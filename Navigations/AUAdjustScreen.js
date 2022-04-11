@@ -1,11 +1,11 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Snackbar } from "react-native-paper";
 import { controlCurtain } from "../Controller/controller";
+import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import { AppContext } from "../Firebase/AppProvider";
-import { Snackbar } from "react-native-paper";
 
 export default function AUAdjustScreen({ navigation, route }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -158,7 +158,7 @@ export default function AUAdjustScreen({ navigation, route }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-        //action
+      //action
       >
         Change saved.
       </Snackbar>
