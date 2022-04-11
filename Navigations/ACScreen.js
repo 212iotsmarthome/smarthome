@@ -1,12 +1,11 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import ACButton from "./Elements/ACButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import { AppContext } from "../Firebase/AppProvider";
 
 export default function ACScreen({ navigation }) {
-  const { user } = React.useContext(AuthContext);
   const { status, selectDevice, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
 

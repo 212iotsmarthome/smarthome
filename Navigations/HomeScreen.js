@@ -1,5 +1,13 @@
-import { View, Image, StyleSheet, ScrollView, BackHandler, Alert } from "react-native";
-import React, {useEffect} from "react";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  BackHandler,
+  Alert,
+  StyleSheet,
+} from "react-native";
+import React, { useEffect } from "react";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";

@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
+import { Image, StyleSheet, Text, View } from "react-native";
 import Credit from "./Elements/Credit";
+import TopHeadTypo from "./Elements/TopHeadTypo";
+
 
 export default function ACScreen({ navigation }) {
   return (

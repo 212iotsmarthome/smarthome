@@ -7,7 +7,7 @@ import { AppContext } from "../Firebase/AppProvider";
 
 export default function AUScreen({ navigation }) {
   const { selectName, setCurSelection } = React.useContext(AppContext);
-  const [ isConnected, setIsConnected] = React.useState(true);
+  const [isConnected, setIsConnected] = React.useState(true);
 
   function AUDiv(props) {
     const length = props.length;

@@ -83,7 +83,14 @@ export default function SetTimeScreen({ navigation, route }) {
   const [date, setDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState("");
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
-  const { status, selectedName, selectedDevice, selectedDeviceInfo, scheduleList, selectedDeviceSchedule } = React.useContext(AppContext);
+  const {
+    status,
+    selectedName,
+    selectedDevice,
+    selectedDeviceInfo,
+    scheduleList,
+    selectedDeviceSchedule,
+  } = React.useContext(AppContext);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -91,16 +98,16 @@ export default function SetTimeScreen({ navigation, route }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  React.useEffect(() => {
-    console.log(selectedDeviceInfo);
-    addSchedule({
-      Action: "Turn On",
-      Daily: true,
-      status: status,
-      deviceID: selectedDeviceInfo[0]["id"],
-      scheduleList: scheduleList
-    });
-  }, [])
+  // React.useEffect(() => {
+  //   console.log(selectedDeviceInfo);
+  //   addSchedule({
+  //     Action: "Turn On",
+  //     Daily: true,
+  //     status: status,
+  //     deviceID: selectedDeviceInfo[0]["id"],
+  //     scheduleList: scheduleList
+  //   });
+  // }, [])
 
   return (
     <View>
@@ -319,7 +326,8 @@ export default function SetTimeScreen({ navigation, route }) {
       </ScrollView>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Add" onPress={() => navigation.goBack()} />
+        {/* <IOTButton text="Add" onPress={() => navigation.goBack()} /> */}
+        <IOTButton text="Add" onPress={() => {}} />
       </View>
     </View>
   );

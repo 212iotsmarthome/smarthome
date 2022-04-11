@@ -1,16 +1,26 @@
 import React from "react";
-import { Image, Switch, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { controlAC } from "../controller/controller";
+import {
+  Image,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { controlAC } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
-
+import { Snackbar } from "react-native-paper";
 
 export default function ACAdjustScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
+
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("25");
-  const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  const { selectedName, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -168,7 +178,10 @@ export default function ACAdjustScreen({ navigation }) {
             alignItems: "flex-start",
           }}
           onPress={() => {
-            navigation.navigate("SetTimeScreen", { obj: AC, type: "AC" });
+            navigation.navigate("SetTimeScreen", {
+              obj: selectedName,
+              type: "AC",
+            });
           }}
         >
           <View style={{ width: "70%" }}>
@@ -194,12 +207,36 @@ export default function ACAdjustScreen({ navigation }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Save" onPress={() => {
-          // controlAC(selectedDevice.index, selectedDevice.boardID, isOn, temp);
-          console.log(selectedDevice.index, selectedDevice.boardID, isOn, temp);
-          navigation.goBack();
-        }} />
+        <IOTButton
+          text="Save"
+          onPress={() => {
+            controlAC(selectedDevice.index, selectedDevice.boardID, isOn, temp);
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isOn,
+              temp
+            );
+            setVisible(true);
+            // navigation.goBack();
+          }}
+        />
       </View>
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+        //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }
