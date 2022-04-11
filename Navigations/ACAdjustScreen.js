@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { controlAC } from "../Controller/controller";
+import { controlAC, getACStatus } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
@@ -21,6 +21,15 @@ export default function ACAdjustScreen({ navigation }) {
   const [temp, setTemp] = React.useState("25");
   const { selectedName, selectedDevice, selectedDeviceInfo } =
     React.useContext(AppContext);
+
+  React.useEffect(() => {
+    let isMounted = true
+    getACStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
+      setTemp(data.temp)
+      setIsOn(data.power == 1 ? true : false)
+    })
+    return () => { isMounted = false };
+  }, [])
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -155,8 +164,8 @@ export default function ACAdjustScreen({ navigation }) {
                 parseInt(temp) > 30
                   ? setTemp("30")
                   : parseInt(temp) < 16
-                  ? setTemp("16")
-                  : setTemp(String(parseInt(temp)));
+                    ? setTemp("16")
+                    : setTemp(String(parseInt(temp)));
                 console.log(temp);
               }}
               keyboardType="number-pad"
@@ -233,7 +242,7 @@ export default function ACAdjustScreen({ navigation }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-        //action
+      //action
       >
         Change saved.
       </Snackbar>

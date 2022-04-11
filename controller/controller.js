@@ -87,4 +87,64 @@ const getEnviData = async (_index, _boardID, _type) => {
     return res;
 }
 
-export { controlDoor, controlAlarm, controlCurtain, controlLED, controlAC, getEnviData, addDevice }
+const getLEDStatus = async (_boardID, _index) => {
+  const brighat = await axios.get(path + '/getLED', {
+    params: {
+      boardID: _boardID,
+      index: _index
+    },
+  }).then((response) =>
+    response.data.value
+  )
+  return brighat
+}
+
+const getACStatus = async (_boardID, _index) => {
+  const status = await axios.get(path + '/getAC', {
+    params: {
+      boardID: _boardID,
+      index: _index
+    },
+  }).then((response) =>
+    response.data.value
+  )
+  return status
+}
+
+const getDoorStatus = async (_boardID, _index) => {
+  const status = await axios.get(path + '/getDoor', {
+    params: {
+      boardID: _boardID,
+      index: _index
+    },
+  }).then((response) =>
+    response.data.value
+  )
+  return status
+}
+
+const getCurtainStatus = async (_boardID, _index) => {
+  const status = await axios.get(path + '/getCurtain', {
+    params: {
+      boardID: _boardID,
+      index: _index
+    },
+  }).then((response) =>
+    response.data.value
+  )
+  return status
+}
+
+export {
+  controlDoor,
+  controlAlarm,
+  controlCurtain,
+  controlLED,
+  controlAC,
+  addDevice,
+  getLEDStatus,
+  getACStatus,
+  getDoorStatus,
+  getCurtainStatus, 
+  getEnviData
+};

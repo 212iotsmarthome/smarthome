@@ -1,9 +1,13 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+<<<<<<< HEAD
 import { Snackbar } from "react-native-paper";
 import { controlCurtain } from "../Controller/controller";
 import { AppContext } from "../Firebase/AppProvider";
+=======
+import { controlCurtain, getCurtainStatus } from "../Controller/controller";
+>>>>>>> a9bc09484395b0926210a72f426276dd80ef4a2e
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
@@ -17,6 +21,16 @@ export default function AUAdjustScreen({ navigation, route }) {
   const [isClosed, setIsClosed] = React.useState(false);
   const [isMoving, setIsMoving] = React.useState(false);
   const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+
+  React.useEffect(() => {
+    let isMounted = true
+    getCurtainStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
+      console.log(data)
+      setSelectedAction(data)
+    })
+    return () => { isMounted = false };
+  }, [])
+
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>

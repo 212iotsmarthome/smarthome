@@ -1,11 +1,12 @@
 import React from "react";
+const axios = require("axios");
 import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
 import { Slider } from "@miblanchard/react-native-slider";
 
 import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import { controlLED } from "../Controller/controller";
+import { controlLED, getLEDStatus } from "../Controller/controller";
 import { addLog } from "../Firebase/AUD";
 import { Snackbar } from "react-native-paper";
 
@@ -17,6 +18,16 @@ export default function LEDAdjustScreen({ navigation }) {
   const [brightness, setBrightness] = React.useState(1);
   const { selectedName, selectedDevice, selectedDeviceInfo } =
     React.useContext(AppContext);
+
+  React.useEffect(() => {
+    let isMounted = true
+    getLEDStatus(selectedDevice.boardID, selectedDevice.index).then((bright) => {
+      setBrightness(bright)
+      if (bright > 0) { setIsOn(true) }
+
+    })
+    return () => { isMounted = false };
+  }, [])
 
   const getValue = () => {
     if (!isOn) {
@@ -212,7 +223,7 @@ export default function LEDAdjustScreen({ navigation }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-        //action
+      //action
       >
         Change saved.
       </Snackbar>

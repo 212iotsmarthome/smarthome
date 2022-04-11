@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { controlDoor } from "../Controller/controller";
+import { controlDoor, getDoorStatus } from "../Controller/controller";
 import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
@@ -17,9 +17,23 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const { selectedName, selectedDevice, selectedDeviceInfo } =
     React.useContext(AppContext);
 
+
   React.useEffect(() => {
+    let isMounted = true
+    getDoorStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
+      setIsOpen(data.motor == 0 ? false : true)
+      setIsLocked(data.lock == 1 ? true : false)
+    })
+    return () => { isMounted = false };
+  }, [])
+
+  React.useEffect(() => {
+    let isMounted = true
     if (isLocked) setIsOpen(false);
+    return () => { isMounted = false };
+
   }, [isLocked]);
+
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -215,7 +229,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-        //action
+      //action
       >
         Change saved.
       </Snackbar>

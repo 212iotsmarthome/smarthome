@@ -28,7 +28,10 @@ export default function WCScreen({ navigation }) {
 
       <IOTButton
         text="Log In"
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() => {
+
+          navigation.navigate("LoginScreen")
+        }}
       />
       <IOTButton
         text="Sign Up"

@@ -66,12 +66,12 @@ export default function SetTimeScreen({ navigation, route }) {
     Devicejson.type == "LED"
       ? ["Turn off", "Low brightness", "Medium brightness", "High brightness"]
       : Devicejson.type == "AC"
-      ? ["Turn off", "Turn on"]
-      : Devicejson.type == "SD"
-      ? ["Open door", "Close door", "Unlock door", "Lock door"]
-      : Devicejson.type == "AU"
-      ? ["Close", "Half-open", "Full-open"]
-      : ["Set alarm on", "Set alarm off"];
+        ? ["Turn off", "Turn on"]
+        : Devicejson.type == "SD"
+          ? ["Open door", "Close door", "Unlock door", "Lock door"]
+          : Devicejson.type == "AU"
+            ? ["Close", "Half-open", "Full-open"]
+            : ["Set alarm on", "Set alarm off"];
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -125,12 +125,12 @@ export default function SetTimeScreen({ navigation, route }) {
               (Devicejson.type == "LED"
                 ? "LED"
                 : Devicejson.type == "AC"
-                ? "Air Conditioner"
-                : Devicejson.type == "SD"
-                ? "Smart Door"
-                : Devicejson.type == "AU"
-                ? "Auto Curtain"
-                : "EnviSensor™")
+                  ? "Air Conditioner"
+                  : Devicejson.type == "SD"
+                    ? "Smart Door"
+                    : Devicejson.type == "AU"
+                      ? "Auto Curtain"
+                      : "EnviSensor™")
             }
             largetext={Devicejson.obj.name}
           />
@@ -315,7 +315,7 @@ export default function SetTimeScreen({ navigation, route }) {
                       name="delete"
                       size={18}
                       color="#c00"
-                      onPress={() => {}}
+                      onPress={() => { }}
                     />
                   </DataTable.Cell>
                 </DataTable.Row>
