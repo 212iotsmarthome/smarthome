@@ -3,17 +3,18 @@ import { ScrollView, View } from "react-native";
 import ESButton from "./Elements/ESButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
 
 
 export default function ESScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
-  const [ESs, setESs] = React.useState([
-    {
-      id: 4000001,
-      type: "ES-01A",
-      name: "Phòng khách",
-    },
-  ]);
+  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
+
+  const getType = (type) => {
+    if(type === 3) return "LDR";
+    if(type === 4) return "DHT11";
+    else return "Gas";
+  }
 
   function ESDiv(props) {
     const length = props.length;
@@ -28,12 +29,15 @@ export default function ESScreen({ navigation }) {
         </Text> */}
 
         <View style={{ marginBottom: 60, width: "100%" }}>
-          {ESs.map((ES) => (
+          {selectName.map((ES) => (
             <ESButton
-              type={ES.type}
+              type={getType(ES.type)}
               name={ES.name}
-              key={ES.id}
-              onMainPress={() => navigation.navigate("ESAdjustScreen", ES)}
+              key={ES.ID}
+              onMainPress={() => {
+                setCurSelection(ES.ID);
+                navigation.navigate("ESAdjustScreen", ES);
+              }}
             />
           ))}
         </View>
@@ -47,7 +51,7 @@ export default function ESScreen({ navigation }) {
         <TopHeadTypo smalltext={"Control Center"} largetext="EnviSensor™" />
       </View>
 
-      <ESDiv length={ESs.length} />
+      <ESDiv length={selectName.length} />
     </ScrollView>
   );
 }

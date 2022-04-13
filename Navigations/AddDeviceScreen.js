@@ -1,14 +1,49 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { addDevice } from "../Controller/controller";
 import Credit from "./Elements/Credit";
 import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AuthContext } from "../Firebase/AuthProvider";
+import { AppContext } from "../Firebase/AppProvider";
+import * as RootNavigation from "../RootNavigation";
+import { editDocumentById } from "../Firebase/service";
 
 export default function AddScreen({ navigation }) {
   const [deviceCode, setDeviceCode] = useState("");
   const [deviceName, setDeviceName] = useState("");
+  const { user, getUser } = React.useContext(AuthContext);
+  const { devList, control } = React.useContext(AppContext);
+
+  const checkIf = async (dC, dN) => {
+    if(devList.includes(dC)){
+      try {
+        console.log(user.control);
+        if(user.control == []){
+            await editDocumentById("User", user.id, {
+                control: [{ID: dC, name: dN}]
+            })
+        }
+        else{
+            let result = [];
+            for(let i = 0; i < user.control.length; i++){
+              result.push({ID: user.control[i].ID, name: user.control[i].name});
+            }
+            result.push({ID: dC, name: dN});
+            await editDocumentById("User", user.id, {
+                control: result
+            })
+        }
+        getUser(user.email);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    }
+    else{
+      alert("Device ID not exist !");
+    }
+  }
+
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
@@ -59,8 +94,8 @@ export default function AddScreen({ navigation }) {
       <IOTButton
         text="Add Device"
         onPress={() => {
-          addDevice(deviceCode, deviceName);
-          // navigation.navigate("HomeScreen")
+          checkIf(deviceCode, deviceName);
+          RootNavigation.navigate("HomeScreen");
           setDeviceCode("");
           setDeviceName("");
         }}

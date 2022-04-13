@@ -1,8 +1,7 @@
-import { View, Image } from "react-native";
-
-import TopHeadTypo from "./Elements/TopHeadTypo";
-import IOTButton from "./Elements/IOTButton";
+import { Image, View } from "react-native";
 import Credit from "./Elements/Credit";
+import IOTButton from "./Elements/IOTButton";
+import TopHeadTypo from "./Elements/TopHeadTypo";
 
 export default function WCScreen({ navigation }) {
   return (
@@ -29,12 +28,17 @@ export default function WCScreen({ navigation }) {
 
       <IOTButton
         text="Log In"
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() => {
+
+          navigation.navigate("LoginScreen")
+        }}
       />
       <IOTButton
         text="Sign Up"
         type="white"
-        onPress={() => navigation.navigate("SignUpScreen")}
+        onPress={() => {
+          navigation.navigate("SignUpScreen");
+        }}
       />
       <Credit />
     </View>

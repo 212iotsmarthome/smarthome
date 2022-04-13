@@ -1,5 +1,13 @@
-import { View, Image, StyleSheet, ScrollView } from "react-native";
-import React from "react";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  BackHandler,
+  Alert,
+  StyleSheet,
+} from "react-native";
+import React, { useEffect } from "react";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
@@ -10,15 +18,32 @@ import { AppContext } from "../Firebase/AppProvider";
 import Credit from "./Elements/Credit";
 
 export default function HomeScreen({ navigation }) {
-  const { user, setUser } = React.useContext(AuthContext);
-  const { deviceList, setStatus } = React.useContext(AppContext);
+  const [isConnected, setIsConnected] = React.useState(true);
+  const { user } = React.useContext(AuthContext);
+  const { setStatus, selectName } = React.useContext(AppContext);
+
+  // const backHome = () => {
+  //   Alert.alert("Hold on!", "Are you sure you want to go back?", [
+  //     {
+  //       text: "Cancel",
+  //       onPress: () => null,
+  //       style: "cancel"
+  //     },
+  //     { text: "YES", onPress: () => BackHandler.exitApp() }
+  //   ]);
+  //   return true;
+  // };
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener("hardwareBackPress", backHome);
+  //   return () => BackHandler.removeEventListener("hardwareBackPress", backHome);
+  // }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
-
       <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
 
       <Image
@@ -65,7 +90,7 @@ export default function HomeScreen({ navigation }) {
             name="door-open"
             type="material-community"
             onPress={() => {
-              setStatus(5);
+              setStatus(7);
               navigation.navigate("SDScreen");
             }}
           />
@@ -74,7 +99,10 @@ export default function HomeScreen({ navigation }) {
             subtitle="Your privacy"
             name="window-open"
             type="material-community"
-            onPress={() => navigation.navigate("AUScreen")}
+            onPress={() => {
+              setStatus(6);
+              navigation.navigate("AUScreen");
+            }}
           />
         </View>
 
@@ -84,7 +112,10 @@ export default function HomeScreen({ navigation }) {
             subtitle="At any time"
             name="camera-control"
             type="material-community"
-            onPress={() => navigation.navigate("ESScreen")}
+            onPress={() => {
+              setStatus(3);
+              navigation.navigate("ESScreen");
+            }}
           />
           <IOTDeviceGroupCard
             title="Add Device"

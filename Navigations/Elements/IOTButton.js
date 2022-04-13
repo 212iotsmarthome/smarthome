@@ -38,7 +38,7 @@ const IOTButton = ({
               }
             : {}
         }
-        onPress={onPress}
+        onPress={() => {onPress();}}
       >
         <Text
           style={

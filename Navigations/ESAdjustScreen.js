@@ -1,23 +1,32 @@
 import React from "react";
 import { Image, Switch, Text, TouchableOpacity, View } from "react-native";
-import { controlAlarm } from "../Controller/controller";
+import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { Snackbar } from "react-native-paper";
 
-export default function ESAdjustScreen({ navigation, route }) {
-  // const ESinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const ES = route.params;
-  const [isConnected, setIsConnected] = React.useState(true);
+export default function LEDAdjustScreen({ navigation, route }) {
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("--");
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
+  const { control, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
+  // const [loading, setLoading] = useState(true);
+
+  // React.useEffect(() => {
+  //   setLoading(false);
+  // }, [selectedDeviceInfo])
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="EnviSensor™ Adjustment" largetext={ES.name} />
+        <TopHeadTypo
+          smalltext="EnviSensor™ Adjustment"
+          largetext={selectedName.name}
+        />
 
         <Image
           style={{
@@ -173,11 +182,27 @@ export default function ESAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAlarm(ES.id, isOn);
-            navigation.goBack();
+            // controlAlarm(LED.id, isOn);
+            setVisible(true);
           }}
         />
       </View>
+
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+        //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }

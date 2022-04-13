@@ -1,4 +1,4 @@
-import { db, auth } from "./firebase";
+import { auth } from "./firebase";
 import { serverTimestamp } from "firebase/firestore";
 import { addDocument } from "./service";
 

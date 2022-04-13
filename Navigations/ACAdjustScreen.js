@@ -7,23 +7,36 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { controlAC } from "../Controller/controller";
+import { controlAC, getACStatus } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
+import { Snackbar } from "react-native-paper";
 
-export default function ACAdjustScreen({ navigation, route }) {
-  // const ACinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const AC = route.params;
+export default function ACAdjustScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
+
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("25");
+  const { selectedName, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
+
+  React.useEffect(() => {
+    let isMounted = true
+    getACStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
+      setTemp(data.temp)
+      setIsOn(data.power == 1 ? true : false)
+    })
+    return () => { isMounted = false };
+  }, [])
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo
           smalltext="Air Conditioner Adjustment"
-          largetext={AC.name}
+          largetext={selectedName.name}
         />
 
         <Image
@@ -151,8 +164,8 @@ export default function ACAdjustScreen({ navigation, route }) {
                 parseInt(temp) > 30
                   ? setTemp("30")
                   : parseInt(temp) < 16
-                  ? setTemp("16")
-                  : setTemp(String(parseInt(temp)));
+                    ? setTemp("16")
+                    : setTemp(String(parseInt(temp)));
                 console.log(temp);
               }}
               keyboardType="number-pad"
@@ -174,7 +187,10 @@ export default function ACAdjustScreen({ navigation, route }) {
             alignItems: "flex-start",
           }}
           onPress={() => {
-            navigation.navigate("SetTimeScreen", { obj: AC, type: "AC" });
+            navigation.navigate("SetTimeScreen", {
+              obj: selectedName,
+              type: "AC",
+            });
           }}
         >
           <View style={{ width: "70%" }}>
@@ -191,7 +207,6 @@ export default function ACAdjustScreen({ navigation, route }) {
           <View
             style={{
               width: "30%",
-
               position: "absolute",
               right: "0%",
               alignItems: "center",
@@ -204,11 +219,33 @@ export default function ACAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAC(AC.ID, isOn, temp);
-            navigation.goBack();
+            controlAC(selectedDevice.index, selectedDevice.boardID, isOn, temp);
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isOn,
+              temp
+            );
+            setVisible(true);
+            // navigation.goBack();
           }}
         />
       </View>
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+      //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }

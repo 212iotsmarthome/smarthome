@@ -14,6 +14,8 @@ import { Icon } from "react-native-elements";
 import { DataTable } from "react-native-paper";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+import { AppContext } from "../Firebase/AppProvider";
+import { addSchedule } from "../Firebase/AUD";
 
 // import { AuthContext } from "../Firebase/AuthProvider";
 // import { AppContext } from "../Firebase/AppProvider";
@@ -64,12 +66,12 @@ export default function SetTimeScreen({ navigation, route }) {
     Devicejson.type == "LED"
       ? ["Turn off", "Low brightness", "Medium brightness", "High brightness"]
       : Devicejson.type == "AC"
-      ? ["Turn off", "Turn on"]
-      : Devicejson.type == "SD"
-      ? ["Open door", "Close door", "Unlock door", "Lock door"]
-      : Devicejson.type == "AU"
-      ? ["Close", "Half-open", "Full-open"]
-      : ["Set alarm on", "Set alarm off"];
+        ? ["Turn off", "Turn on"]
+        : Devicejson.type == "SD"
+          ? ["Open door", "Close door", "Unlock door", "Lock door"]
+          : Devicejson.type == "AU"
+            ? ["Close", "Half-open", "Full-open"]
+            : ["Set alarm on", "Set alarm off"];
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -81,12 +83,31 @@ export default function SetTimeScreen({ navigation, route }) {
   const [date, setDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState("");
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
+  const {
+    status,
+    selectedName,
+    selectedDevice,
+    selectedDeviceInfo,
+    scheduleList,
+    selectedDeviceSchedule,
+  } = React.useContext(AppContext);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     //get method
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  // React.useEffect(() => {
+  //   console.log(selectedDeviceInfo);
+  //   addSchedule({
+  //     Action: "Turn On",
+  //     Daily: true,
+  //     status: status,
+  //     deviceID: selectedDeviceInfo[0]["id"],
+  //     scheduleList: scheduleList
+  //   });
+  // }, [])
 
   return (
     <View>
@@ -104,12 +125,12 @@ export default function SetTimeScreen({ navigation, route }) {
               (Devicejson.type == "LED"
                 ? "LED"
                 : Devicejson.type == "AC"
-                ? "Air Conditioner"
-                : Devicejson.type == "SD"
-                ? "Smart Door"
-                : Devicejson.type == "AU"
-                ? "Auto Curtain"
-                : "EnviSensor™")
+                  ? "Air Conditioner"
+                  : Devicejson.type == "SD"
+                    ? "Smart Door"
+                    : Devicejson.type == "AU"
+                      ? "Auto Curtain"
+                      : "EnviSensor™")
             }
             largetext={Devicejson.obj.name}
           />
@@ -294,7 +315,7 @@ export default function SetTimeScreen({ navigation, route }) {
                       name="delete"
                       size={18}
                       color="#c00"
-                      onPress={() => {}}
+                      onPress={() => { }}
                     />
                   </DataTable.Cell>
                 </DataTable.Row>
@@ -305,7 +326,8 @@ export default function SetTimeScreen({ navigation, route }) {
       </ScrollView>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-        <IOTButton text="Add" onPress={() => navigation.goBack()} />
+        {/* <IOTButton text="Add" onPress={() => navigation.goBack()} /> */}
+        <IOTButton text="Add" onPress={() => {}} />
       </View>
     </View>
   );

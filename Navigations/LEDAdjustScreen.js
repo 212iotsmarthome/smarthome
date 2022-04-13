@@ -1,27 +1,55 @@
 import React from "react";
+const axios = require("axios");
 import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
 import { Slider } from "@miblanchard/react-native-slider";
 
 import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import { controlLED } from "../Controller/controller";
+import { controlLED, getLEDStatus } from "../Controller/controller";
+import { addLog } from "../Firebase/AUD";
+import { Snackbar } from "react-native-paper";
 
-export default function LEDAdjustScreen({ navigation, route }) {
+export default function LEDAdjustScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
-  const LED = route.params;
-  const [isConnected, setIsConnected] = React.useState(true);
+  // const [isConnected, setIsConnected] = React.useState(true);
+  const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
-  const [isAuto, setIsAuto] = React.useState(false);
   const [brightness, setBrightness] = React.useState(1);
+  const { selectedName, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
 
-  const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
-  // console.log(selectedDevice, selectedDeviceInfo);
+  React.useEffect(() => {
+    let isMounted = true
+    getLEDStatus(selectedDevice.boardID, selectedDevice.index).then((bright) => {
+      setBrightness(bright)
+      if (bright > 0) { setIsOn(true) }
+
+    })
+    return () => { isMounted = false };
+  }, [])
+
+  const getValue = () => {
+    if (!isOn) {
+      return 0;
+    } else {
+      if (brightness == 1) {
+        return 1;
+      }
+      if (brightness == 2) {
+        return 2;
+      }
+      if (brightness == 3) {
+        return 3;
+      }
+      return 4;
+    }
+  };
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
-        <TopHeadTypo smalltext="LED Adjustment" largetext={LED.name} />
+        <TopHeadTypo smalltext="LED Adjustment" largetext={selectedName.name} />
 
         <Image
           style={{
@@ -113,7 +141,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
               elevation: 8,
             }}
             value={brightness}
-            onValueChange={(b) => setBrightness(b[0])}
+            onValueChange={(value) => setBrightness(value[0])}
             disabled={!isOn}
           />
         </View>
@@ -133,7 +161,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
             alignItems: "flex-start",
           }}
           onPress={() =>
-            navigation.navigate("SetTimeScreen", { obj: LED, type: "LED" })
+            navigation.navigate("SetTimeScreen", {
+              obj: selectedDeviceInfo,
+              type: "LED",
+            })
           }
         >
           <View style={{ width: "100%" }}>
@@ -161,11 +192,41 @@ export default function LEDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlLED(LED.ID, isOn, isAuto, brightness);
-            navigation.goBack();
+            controlLED(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              getValue()
+            );
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              getValue()
+            );
+            addLog({
+              content: `Hello ${getValue()}`,
+              deviceID: selectedDevice.ID,
+            });
+            setVisible(true);
+            // navigation.goBack();
           }}
         />
       </View>
+
+      <Snackbar
+        style={{
+          borderRadius: 15,
+          bottom: 20,
+          width: "90%",
+          alignSelf: "center",
+          opacity: 0.85,
+        }}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={2000}
+      //action
+      >
+        Change saved.
+      </Snackbar>
     </View>
   );
 }

@@ -1,12 +1,11 @@
 import {
     getFirestore, collection, onSnapshot,
-    addDoc, deleteDoc, doc,
+    addDoc, updateDoc, deleteDoc, doc,
     query, where,
     orderBy, serverTimestamp,
     getDoc,
 } from 'firebase/firestore'
 import { db } from "./firebase";
-
 
 export const addDocument = async (collectionParam, data) => {
   try {
