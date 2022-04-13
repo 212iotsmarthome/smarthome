@@ -45,29 +45,29 @@ void Uart_Processing() {
             index = uart_message[7] - '0';
             value = uart_message[9] - '0';
             set_Led(index, value);
-            UartSendString("!OK*");
+//            UartSendString("!OK*");
         } else if (str_ncmp(uart_message, command_setCurtain, 10) == 0) {
             value = uart_message[11] - '0';
             set_Curtain(value);
-            UartSendString("!OK*");
+//            UartSendString("!OK*");
         } else if (str_ncmp(uart_message, command_getAllInfo, 10) == 0) {
             send_All_Info();
         } else if (str_ncmp(uart_message, command_set_conditioner, 14) == 0){
             value = (uart_message[17] - '0') * 10 + (uart_message[18] - '0');
             set_conditioner_state(uart_message[15] - '0');
             set_conditioner_temp(value);
-            UartSendString("!OK*");
+//            UartSendString("!OK*");
         } else if (str_ncmp(uart_message, command_setMulLed, 9) == 0) {
             set_Led(0, uart_message[10] - '0');
             set_Led(1, uart_message[12] - '0');
-            UartSendString("!OK*");
+//            UartSendString("!OK*");
         }  else if (str_ncmp(uart_message, command_setDoor, 7) == 0) {
             setDoor(uart_message[8] - '0');
             set_lock(uart_message[10] - '0');
-            UartSendString("!OK*");
+//            UartSendString("!OK*");
         }else if (str_ncmp(uart_message, command_setBuzzer, 9) == 0){
             setBuzzer(uart_message[10] - '0');
-            UartSendString("!OK*");
+//            UartSendString("!OK*");
         }else {
             UartSendString("!Something went wrong*");
         }

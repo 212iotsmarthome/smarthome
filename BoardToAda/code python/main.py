@@ -280,7 +280,7 @@ def readSerial(ser, index):
                 if end == -1:
                     return
             processData(serial_messages[index][start:end + 1], index)
-            if end == len(serial_messages[index]):
+            if end == (len(serial_messages[index]) - 1):
                 serial_messages[index] = ""
             else:
                 serial_messages[index] = serial_messages[index][end + 1:]
@@ -428,9 +428,9 @@ def message(client, feed_id, payload):
     print(feed_id + " nhan du lieu: " + payload)
     print(type(payload))
     global device_ready
-    if device_ready:
-        SendToBoard(feed_id, payload)
-        device_ready = 0
+    # if device_ready:
+    SendToBoard(feed_id, payload)
+        # device_ready = 0
 
 
 client = MQTTClient(AIO_USERNAME, AIO_KEY)
