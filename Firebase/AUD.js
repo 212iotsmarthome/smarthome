@@ -152,13 +152,24 @@ const switchTable = (status) => {
     return table;
 }
 
+const getTimeString = () => {
+    var currentdate = new Date(); 
+    var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1)  + "/" 
+                + currentdate.getFullYear() + "@"  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+    return datetime;
+}
+
 export const addLog = async (data) => {
     collectionParam  = "Log";
     try {
         const temp = await addDocument(collectionParam, {
             content: data.content,
             deviceID: data.deviceID,
-            time: serverTimestamp()
+            time: getTimeString()
         })
         // const temp2 = await editDocumentById(switchTable(data.status), data.deviceID, {
         //     scheduleList: [...data.scheduleList, temp]

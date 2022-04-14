@@ -3,14 +3,14 @@ import { Icon } from "react-native-elements";
 
 const LogCard = ({
   time = "00:00",
-  date = "15-01-2001",
   title = "LED Phong khach 1",
   content = "tatasdasdhabasfhjkbgaksfbskjhgashjfvbaskfhjvafhasvfjsakvjkdassssssssssssssssssasfgasdjkhsakjhfskjdskjfhsdkfjhsakfhkjfhdskfjhslk",
 }) => {
+
   return (
     <View style={styles.logContainer}>
       <View>
-        <Text style={styles.time}>{time + " " + date}</Text>
+        <Text style={styles.time}>{time}</Text>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.contentContainer}>
           <Text numberOfLines={2} style={styles.content}>
@@ -26,6 +26,7 @@ const LogCard = ({
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   logContainer: {
     backgroundColor: "#F1F9FD",

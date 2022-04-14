@@ -44,8 +44,20 @@ export default function AppProvider({ children }) {
         }
     }, [user, db]);
 
+    // Condition 1.1: Take logs in all device
+    const logCondition = React.useMemo(() => {
+        return {
+            fieldName: "deviceID",
+            operator: "in",
+            compareValue: idList
+        }
+    }, [user, db]);
+
     // Get workspaceList from workspace with Condition 1
     const deviceList = useFirebase("Device", controlCondition);
+    const logList = useFirebase("Log", logCondition).sort((a, b) => {
+        return a.time - b.time;
+    });
 
     // Get the selected Workspace
     let selectDevice;
@@ -139,9 +151,9 @@ export default function AppProvider({ children }) {
                 curSelection,
                 setCurSelection,
                 deviceList,
-                selectDevice,
                 selectName,
                 scheduleList,
+                logList,
                 selectedDeviceInfo,
                 selectedDeviceSchedule,
                 selectedDevice,
