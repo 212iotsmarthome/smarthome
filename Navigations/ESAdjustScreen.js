@@ -4,6 +4,7 @@ import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { Snackbar } from "react-native-paper";
+import { getEnviData } from "../Controller/controller";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   const [visible, setVisible] = React.useState(Boolean(false));
@@ -12,13 +13,26 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
-  const { control, selectedDevice, selectedDeviceInfo } =
-    React.useContext(AppContext);
+  const {selectedDevice, selectedName } = React.useContext(AppContext);
+  const type = selectedDevice.type;
   // const [loading, setLoading] = useState(true);
 
-  // React.useEffect(() => {
-  //   setLoading(false);
-  // }, [selectedDeviceInfo])
+  React.useEffect(() => {
+    let isMounted = true;
+    getEnviData(selectedDevice.boardID, selectedDevice.index, selectedDevice.type).then((data) => {
+      if(type == 3){
+        setTemp(data.temperature);
+        setHumid(data.humid);
+      }
+      if(type == 4){
+        setBrightness(data);
+      }
+      if(type == 5){
+        setGas(data);
+      }
+    })
+    return () => { isMounted = false };
+  }, [])
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -151,31 +165,56 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </View>
 
-        <View
-          style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            width: "73%",
-            marginTop: -10,
-          }}
-        >
-          <Text>
-            {"        "}Temperature:{"  "}
-            {temp}°C
-          </Text>
-          <Text>
-            {"        "}Humidity:{"  "}
-            {humid}%
-          </Text>
-          <Text>
-            {"        "}Brightness:{"  "}
-            {brightness} Lux
-          </Text>
-          <Text>
-            {"        "}Flammable gas:{"  "}
-            {flammable ? "Yes" : "No"}
-          </Text>
+        {type == 3 &&
+          <View
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              width: "73%",
+              marginTop: -10,
+            }}
+          >
+            <Text>
+              {"        "}Temperature:{"  "}
+              {temp}°C
+            </Text>
+            <Text>
+              {"        "}Humidity:{"  "}
+              {humid}%
+            </Text>
         </View>
+        }
+
+        {type == 4 &&
+          <View
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              width: "73%",
+              marginTop: -10,
+            }}
+          >
+            <Text>
+              {"        "}Brightness:{"  "}
+              {brightness} Lux
+            </Text>
+        </View>
+        }
+        {type == 5 &&
+          <View
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              width: "73%",
+              marginTop: -10,
+            }}
+          >
+            <Text>
+              {"        "}Flammable gas:{"  "}
+              {flammable ? "Yes" : "No"}
+            </Text>
+          </View>
+        }
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>

@@ -66,7 +66,6 @@ export default function AppProvider({ children }) {
     }
     else {
         selectDevice = React.useMemo(() => deviceList.filter(item => (item.type === status || item.type === status + 1 || item.type === status + 2)) || [{}], [deviceList, status]);
-        console.log(control)
     }
 
     // Display in First Page
