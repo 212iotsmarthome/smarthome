@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { controlDoor, getDoorStatus } from "../Controller/controller";
 import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { Snackbar } from "react-native-paper";
@@ -14,8 +15,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [visible, setVisible] = React.useState(Boolean(false));
   const [isLocked, setIsLocked] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
-  const { selectedName, selectedDevice, selectedDeviceInfo } =
-    React.useContext(AppContext);
+  const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
 
 
   React.useEffect(() => {
@@ -33,7 +34,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
     return () => { isMounted = false };
 
   }, [isLocked]);
-
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -201,17 +201,22 @@ export default function LEDAdjustScreen({ navigation, route }) {
           text="Save"
           onPress={() => {
             controlDoor(
+              user.name,
+              user.ID,
+              selectedName.ID,
+              selectedName.name,
               selectedDevice.index,
               selectedDevice.boardID,
               isLocked,
               isOpen
             );
-            console.log(
-              selectedDevice.index,
-              selectedDevice.boardID,
-              isLocked,
-              isOpen
-            );
+            // console.log(
+            //   selectedDevice.index,
+            //   selectedDevice.boardID,
+            //   isLocked,
+            //   isOpen,
+            //   createLog()
+            // );
             // navigation.goBack();
             setVisible(true);
           }}

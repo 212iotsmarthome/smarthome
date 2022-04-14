@@ -6,7 +6,7 @@ import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import { AppContext } from "../Firebase/AppProvider";
 
 export default function ACScreen({ navigation }) {
-  const { status, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { status, selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
   const [isConnected, setIsConnected] = React.useState(true);
 
   function ACDiv(props) {

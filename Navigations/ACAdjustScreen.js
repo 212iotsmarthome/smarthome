@@ -11,6 +11,7 @@ import { controlAC, getACStatus } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 import { Snackbar } from "react-native-paper";
 
 export default function ACAdjustScreen({ navigation }) {
@@ -18,9 +19,10 @@ export default function ACAdjustScreen({ navigation }) {
 
   const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
-  const [temp, setTemp] = React.useState("25");
-  const { selectedName, selectedDevice, selectedDeviceInfo } =
-    React.useContext(AppContext);
+  const [ temp, setTemp ] = React.useState("25");
+  const { selectedName, selectedDevice } = React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
+  
 
   React.useEffect(() => {
     let isMounted = true
@@ -219,7 +221,16 @@ export default function ACAdjustScreen({ navigation }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAC(selectedDevice.index, selectedDevice.boardID, isOn, temp);
+            controlAC(
+              user.name,
+              user.ID,
+              selectedName.ID,
+              selectedName.name,
+              selectedDevice.index, 
+              selectedDevice.boardID, 
+              isOn, 
+              temp
+            );
             console.log(
               selectedDevice.index,
               selectedDevice.boardID,

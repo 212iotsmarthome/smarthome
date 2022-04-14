@@ -22,7 +22,15 @@ import { addSchedule } from "../Firebase/AUD";
 // import { auth } from "../Firebase/firebase";
 
 export default function SetTimeScreen({ navigation, route }) {
-  const Devicejson = route.params;
+  const {
+    status,
+    selectedName,
+    selectedDevice,
+    selectedDeviceInfo,
+    scheduleList,
+    selectedDeviceSchedule,
+  } = React.useContext(AppContext);
+  const Devicejson = {type: status, name: selectedName.name};
   const ScheduleList = [
     {
       Action: "Full-open",
@@ -63,13 +71,13 @@ export default function SetTimeScreen({ navigation, route }) {
   ];
 
   const actList =
-    Devicejson.type == "LED"
-      ? ["Turn off", "Low brightness", "Medium brightness", "High brightness"]
-      : Devicejson.type == "AC"
-        ? ["Turn off", "Turn on"]
-        : Devicejson.type == "SD"
+    Devicejson.type == 1 // LED
+      ? ["Light off", "Low brightness", "Medium brightness", "High brightness"]
+      : Devicejson.type == 2 // AC
+        ? ["AC off", "AC on"]
+        : Devicejson.type == 7 /// Door
           ? ["Open door", "Close door", "Unlock door", "Lock door"]
-          : Devicejson.type == "AU"
+          : Devicejson.type == 6 // Curtain
             ? ["Close", "Half-open", "Full-open"]
             : ["Set alarm on", "Set alarm off"];
 
@@ -83,14 +91,7 @@ export default function SetTimeScreen({ navigation, route }) {
   const [date, setDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState("");
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
-  const {
-    status,
-    selectedName,
-    selectedDevice,
-    selectedDeviceInfo,
-    scheduleList,
-    selectedDeviceSchedule,
-  } = React.useContext(AppContext);
+  
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -98,16 +99,9 @@ export default function SetTimeScreen({ navigation, route }) {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  // React.useEffect(() => {
-  //   console.log(selectedDeviceInfo);
-  //   addSchedule({
-  //     Action: "Turn On",
-  //     Daily: true,
-  //     status: status,
-  //     deviceID: selectedDeviceInfo[0]["id"],
-  //     scheduleList: scheduleList
-  //   });
-  // }, [])
+  React.useEffect(() => {
+    console.log(date);
+  }, [date])
 
   return (
     <View>
@@ -122,17 +116,17 @@ export default function SetTimeScreen({ navigation, route }) {
           <TopHeadTypo
             smalltext={
               "Set Time - " +
-              (Devicejson.type == "LED"
+              (Devicejson.type == 1
                 ? "LED"
-                : Devicejson.type == "AC"
+                : Devicejson.type == 2
                   ? "Air Conditioner"
-                  : Devicejson.type == "SD"
+                  : Devicejson.type == 7
                     ? "Smart Door"
-                    : Devicejson.type == "AU"
+                    : Devicejson.type == 6
                       ? "Auto Curtain"
                       : "EnviSensor™")
             }
-            largetext={Devicejson.obj.name}
+            largetext={Devicejson.name}
           />
         </View>
 
@@ -192,7 +186,9 @@ export default function SetTimeScreen({ navigation, route }) {
               onChange={(event, selectedDate) => {
                 setShow(false);
                 const currentDate = selectedDate || date;
-                setDate(currentDate);
+                currentDate.setTime(currentDate.getTime() + 7*60*60*1000);
+                setDate(convertTZ(currentDate, 7));
+               
               }}
             />
           )}

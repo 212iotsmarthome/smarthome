@@ -175,7 +175,7 @@ export const addSchedule = async (data) => {
         const temp = await addDocument(collectionParam, {
             Action: data.Action,
             Daily: data.Daily,
-            time: serverTimestamp()
+            time: data.Time
         })
         const temp2 = await editDocumentById(switchTable(data.status), data.deviceID, {
             scheduleList: [...data.scheduleList, temp]
