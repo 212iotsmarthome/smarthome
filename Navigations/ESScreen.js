@@ -10,12 +10,6 @@ export default function ESScreen({ navigation }) {
   const [isConnected, setIsConnected] = React.useState(true);
   const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
 
-  const getType = (type) => {
-    if(type === 3) return "LDR";
-    if(type === 4) return "DHT11";
-    else return "Gas";
-  }
-
   function ESDiv(props) {
     const length = props.length;
     if (length == 0) return <NoDeviceFoundGray />;
@@ -31,7 +25,7 @@ export default function ESScreen({ navigation }) {
         <View style={{ marginBottom: 60, width: "100%" }}>
           {selectName.map((ES) => (
             <ESButton
-              type={getType(ES.type)}
+              type={"EnviSensor"}
               name={ES.name}
               key={ES.ID}
               onMainPress={() => {

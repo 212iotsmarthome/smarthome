@@ -1,4 +1,5 @@
 const axios = require('axios');
+import { serverTimestamp } from 'firebase/firestore';
 import { addLog } from '../Firebase/AUD';
 const path = 'http://192.168.1.6:3003';
 
@@ -34,6 +35,7 @@ const controlLED = (_userName, _userID, _id, _name, _index, _boardID, _value) =>
       log = `User ${_userName} (#${_userID}) has set LED with high brightness named ${_name} (#${_id})`;
       return log;
     }
+    return "";
   };
 
   console.log(path);
@@ -49,7 +51,6 @@ const controlLED = (_userName, _userID, _id, _name, _index, _boardID, _value) =>
         content: createLog(),
         deviceID: _id,
       });
-      console.log(createLog());
     });
 };
 
@@ -157,11 +158,13 @@ const addDevice = (_code, _name) => {
 
 
 // Method GET: Get data from Nodejs
-const getEnviData = async (_boardID, _index, _type) => {
+const getEnviData = async (_boardID, _Dindex, _Lindex, _Gindex) => {
+    console.log(_Dindex, _Lindex, _Gindex)
     let payload = {
-        index : _index,
-        boardID: _boardID,
-        typ: _type,
+      boardID: _boardID,
+      Dindex : _Dindex,
+      Lindex: _Lindex,
+      Gindex: _Gindex
     };
     const res = await axios.get(path + '/getEnviStatus', {
         params: payload,

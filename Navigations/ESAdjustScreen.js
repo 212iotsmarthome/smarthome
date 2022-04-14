@@ -13,26 +13,23 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
-  const {selectedDevice, selectedName } = React.useContext(AppContext);
-  const type = selectedDevice.type;
+  const {selectedDevice, selectedName, selectedDeviceInfo } = React.useContext(AppContext);
   // const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     let isMounted = true;
-    getEnviData(selectedDevice.boardID, selectedDevice.index, selectedDevice.type).then((data) => {
-      if(type == 3){
-        setTemp(data.temperature);
-        setHumid(data.humid);
-      }
-      if(type == 4){
-        setBrightness(data);
-      }
-      if(type == 5){
-        setGas(data);
-      }
-    })
-    return () => { isMounted = false };
-  }, [])
+    if(selectedDeviceInfo.length > 0){
+      getEnviData(selectedDevice.boardID, selectedDeviceInfo[0]["DHT_index"], selectedDeviceInfo[0]["LDR_index"], selectedDeviceInfo[0]["Gas_index"]).then((data) => {
+        if (isMounted){
+          setTemp(data.temperature);
+          setHumid(data.humid);
+          setBrightness(data.brightness);
+          setFlammable(data.gas);
+        }
+      })
+      return () => { isMounted = false };
+    }
+  }, [selectedDeviceInfo])
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -109,36 +106,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={{
-            height: 60,
-            width: "82%",
-            borderRadius: 20,
-            paddingLeft: 20,
-
-            marginRight: "auto",
-            marginLeft: "auto",
-            marginTop: 10,
-
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen", { obj: ES, type: "ES" })
-          }
-        >
-          <View style={{ width: "100%" }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: "black",
-              }}
-            >
-              Set time
-            </Text>
-          </View>
-        </TouchableOpacity>
-
         <View
           style={{
             height: 60,
@@ -165,56 +132,31 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </View>
 
-        {type == 3 &&
-          <View
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              width: "73%",
-              marginTop: -10,
-            }}
-          >
-            <Text>
-              {"        "}Temperature:{"  "}
-              {temp}°C
-            </Text>
-            <Text>
-              {"        "}Humidity:{"  "}
-              {humid}%
-            </Text>
+        <View
+          style={{
+            marginLeft: "auto",
+            marginRight: "auto",
+            width: "73%",
+            marginTop: -10,
+          }}
+        >
+          <Text>
+            {"        "}Temperature:{"  "}
+            {temp}°C
+          </Text>
+          <Text>
+            {"        "}Humidity:{"  "}
+            {humid}%
+          </Text>
+          <Text>
+            {"        "}Brightness:{"  "}
+            {brightness} Lux
+          </Text>
+          <Text>
+            {"        "}Flammable gas:{"  "}
+            {flammable ? "Yes" : "No"}
+          </Text>
         </View>
-        }
-
-        {type == 4 &&
-          <View
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              width: "73%",
-              marginTop: -10,
-            }}
-          >
-            <Text>
-              {"        "}Brightness:{"  "}
-              {brightness} Lux
-            </Text>
-        </View>
-        }
-        {type == 5 &&
-          <View
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              width: "73%",
-              marginTop: -10,
-            }}
-          >
-            <Text>
-              {"        "}Flammable gas:{"  "}
-              {flammable ? "Yes" : "No"}
-            </Text>
-          </View>
-        }
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
