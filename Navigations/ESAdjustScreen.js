@@ -5,6 +5,7 @@ import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { Snackbar } from "react-native-paper";
 import { getEnviData } from "../Controller/controller";
+import { changeBuzzer } from "../Firebase/AUD";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   const [visible, setVisible] = React.useState(Boolean(false));
@@ -27,6 +28,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
           setFlammable(data.gas);
         }
       })
+      setIsOn(selectedDeviceInfo[0].setBuzzer);
       return () => { isMounted = false };
     }
   }, [selectedDeviceInfo])
@@ -163,8 +165,9 @@ export default function LEDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            // controlAlarm(LED.id, isOn);
             setVisible(true);
+            console.log(selectedDeviceInfo[0].id);
+            changeBuzzer({value: isOn, ID: selectedDeviceInfo[0].id});
           }}
         />
       </View>

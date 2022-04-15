@@ -47,6 +47,17 @@ export const removeSchedule = async (data) => {
     }
 }
 
+export const changeBuzzer = async (data) => {
+    try {
+        const temp = await editDocumentById("EnviSensor", data.ID, {
+            setBuzzer: data.value
+        })
+        return temp;
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+}
+
 export const addLED = async (data) => {
     collectionParam  = "LED";
     try {
