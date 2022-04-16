@@ -45,7 +45,7 @@ export const deleteDocumentById = async (collectionParam, id) => {
 export const editDocumentById = async (collectionParam, id, data) => {
   try {
     await updateDoc(doc(db, collectionParam, id), data);
-    console.log("update doc: ", id);
+    console.log("Update doc: ", id);
   } catch (e) {
     console.error("Error update: ", e);
   }

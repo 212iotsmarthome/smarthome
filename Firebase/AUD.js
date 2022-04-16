@@ -37,10 +37,16 @@ export const removeLog = async (uid) => {
 
 export const removeSchedule = async (data) => {
   try {
-    const temp = await deleteDocumentById("Schedule", data.ID);
-    const temp2 = await editDocumentById(switchTable(data.status), data.ID, {
-      scheduleList: [...data.scheduleList.filter((value) => value !== data.ID)],
-    });
+    const temp = await deleteDocumentById("Schedule", data.scheduleid);
+    const temp2 = await editDocumentById(
+      switchTable(data.status),
+      data.DeviceID,
+      {
+        scheduleList: [
+          ...data.scheduleList.filter((value) => value !== data.scheduleid),
+        ],
+      }
+    );
     return [temp, temp2];
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -202,21 +208,18 @@ export const addLog = async (data) => {
 };
 
 export const addSchedule = async (data) => {
-  collectionParam = "Schedule";
+  let collectionParam = "Schedule";
   try {
-    const temp = await addDocument(collectionParam, {
+    const addedID = await addDocument(collectionParam, {
       Action: data.Action,
       Daily: data.Daily,
       Time: data.Time,
+      DeviceID: data.DeviceID,
     });
-    const temp2 = await editDocumentById(
-      switchTable(data.status),
-      data.DeviceID,
-      {
-        scheduleList: [...data.scheduleList, temp],
-      }
-    );
-    return [temp, temp2];
+    const temp2 = await editDocumentById(switchTable(data.status), data.uid, {
+      scheduleList: [...data.scheduleList, addedID],
+    });
+    return [addedID, temp2];
   } catch (e) {
     console.error("Error adding document: ", e);
   }
