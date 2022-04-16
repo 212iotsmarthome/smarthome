@@ -1,7 +1,7 @@
-const axios = require('axios');
-import { serverTimestamp } from 'firebase/firestore';
-import { addLog } from '../Firebase/AUD';
-const path = 'http://192.168.1.6:3003';
+const axios = require("axios");
+import { serverTimestamp } from "firebase/firestore";
+import { addLog } from "../Firebase/AUD";
+const path = "http://192.168.1.51:3003";
 
 // const controlAlarm = (_id, _boardId, _value) => {
 //   axios
@@ -15,24 +15,32 @@ const path = 'http://192.168.1.6:3003';
 //     });
 // };
 
-// Method PUT: Put data to Nodejs 
-const controlLED = (_userName, _userID, _id, _name, _index, _boardID, _value) => {
+// Method PUT: Put data to Nodejs
+const controlLED = (
+  _userName,
+  _userID,
+  _id,
+  _name,
+  _index,
+  _boardID,
+  _value
+) => {
   const createLog = () => {
     let log = "";
-    if(_value == 0){
-      log = `User ${_userName} (#${_userID}) has turned off LED named ${_name} (#${_id})`;
+    if (_value == 0) {
+      log = `User ${_userName} has turned off LED named ${_name}`;
       return log;
     }
-    if(_value == 1){
-      log = `User ${_userName} (#${_userID}) has set LED with low brightness named ${_name} (#${_id})`;
+    if (_value == 1) {
+      log = `User ${_userName} has set LED with low brightness named ${_name}`;
       return log;
     }
-    if(_value == 2){
-      log = `User ${_userName} (#${_userID}) has set LED with medium brightness named ${_name} (#${_id})`;
+    if (_value == 2) {
+      log = `User ${_userName} has set LED with medium brightness named ${_name}`;
       return log;
     }
-    if(_value == 3){
-      log = `User ${_userName} (#${_userID}) has set LED with high brightness named ${_name} (#${_id})`;
+    if (_value == 3) {
+      log = `User ${_userName} has set LED with high brightness named ${_name}`;
       return log;
     }
     return "";
@@ -54,14 +62,22 @@ const controlLED = (_userName, _userID, _id, _name, _index, _boardID, _value) =>
     });
 };
 
-const controlAC = (_userName, _userID, _id, _name, _index, _boardID, _isOn, _temp) => {
+const controlAC = (
+  _userName,
+  _userID,
+  _id,
+  _name,
+  _index,
+  _boardID,
+  _isOn,
+  _temp
+) => {
   const createLog = () => {
     let log = "";
-    if(_isOn == false){
-      log = `User ${_userName} (#${_userID}) has turned off Air Conditioner named ${_name} (#${_id})`;
-    }
-    else{
-      log = `User ${_userName} (#${_userID}) has turned on Air Conditioner named ${_name} (#${_id}) at ${_temp} C`;
+    if (_isOn == false) {
+      log = `User ${_userName} has turned off Air Conditioner named ${_name}`;
+    } else {
+      log = `User ${_userName} has turned on Air Conditioner named ${_name} at ${_temp} C`;
     }
     return log;
   };
@@ -82,18 +98,25 @@ const controlAC = (_userName, _userID, _id, _name, _index, _boardID, _isOn, _tem
     });
 };
 
-const controlDoor = (_userName, _userID, _id, _name, _index, _boardID, _isLocked, _isOpen) => {
+const controlDoor = (
+  _userName,
+  _userID,
+  _id,
+  _name,
+  _index,
+  _boardID,
+  _isLocked,
+  _isOpen
+) => {
   const createLog = () => {
     let log = "";
-    if(_isOpen == true){
-      log = `User ${_userName} (#${_userID}) has open Door named ${_name} (#${_id})`;
-    }
-    else{
-      if(_isLocked == true){
-        log = `User ${_userName} (#${_userID}) has locked Door named ${_name} (#${_id})`;
-      }
-      else{
-        log = `User ${_userName} (#${_userID}) has closed Door named ${_name} (#${_id})`;
+    if (_isOpen == true) {
+      log = `User ${_userName} has open Door named ${_name}`;
+    } else {
+      if (_isLocked == true) {
+        log = `User ${_userName} has locked Door named ${_name}`;
+      } else {
+        log = `User ${_userName} has closed Door named ${_name}`;
       }
     }
     return log;
@@ -115,17 +138,25 @@ const controlDoor = (_userName, _userID, _id, _name, _index, _boardID, _isLocked
     });
 };
 
-const controlCurtain = (_userName, _userID, _id, _name, _index, _boardID, _action) => {
+const controlCurtain = (
+  _userName,
+  _userID,
+  _id,
+  _name,
+  _index,
+  _boardID,
+  _action
+) => {
   const createLog = () => {
     let log = "";
-    if(_action == 0){
-      log = `User ${_userName} (#${_userID}) has closed Curtain named ${_name} (#${_id})`;
+    if (_action == 0) {
+      log = `User ${_userName} has closed Curtain named ${_name}`;
     }
-    if(_action == 1){
-      log = `User ${_userName} (#${_userID})) has half-opened Curtain named ${_name} (#${_id})`;
+    if (_action == 1) {
+      log = `User ${_userName} has half-opened Curtain named ${_name}`;
     }
-    if(_action == 2){
-      log = `User ${_userName} (#${_userID}) has full-opened Curtain named ${_name} (#${_id})`;
+    if (_action == 2) {
+      log = `User ${_userName} has full-opened Curtain named ${_name}`;
     }
     return log;
   };
@@ -156,71 +187,70 @@ const addDevice = (_code, _name) => {
     });
 };
 
-
 // Method GET: Get data from Nodejs
 const getEnviData = async (_boardID, _Dindex, _Lindex, _Gindex) => {
-    console.log(_Dindex, _Lindex, _Gindex)
-    let payload = {
-      boardID: _boardID,
-      Dindex : _Dindex,
-      Lindex: _Lindex,
-      Gindex: _Gindex
-    };
-    const res = await axios.get(path + '/getEnviStatus', {
-        params: payload,
-    }).then((response) =>
-      response.data.value
-    )
-    return res;
-}
+  console.log(_Dindex, _Lindex, _Gindex);
+  let payload = {
+    boardID: _boardID,
+    Dindex: _Dindex,
+    Lindex: _Lindex,
+    Gindex: _Gindex,
+  };
+  const res = await axios
+    .get(path + "/getEnviStatus", {
+      params: payload,
+    })
+    .then((response) => response.data.value);
+  return res;
+};
 
 const getLEDStatus = async (_boardID, _index) => {
-  const brighat = await axios.get(path + '/getLED', {
-    params: {
-      boardID: _boardID,
-      index: _index
-    },
-  }).then((response) =>
-    response.data.value
-  )
-  return brighat
-}
+  const brighat = await axios
+    .get(path + "/getLED", {
+      params: {
+        boardID: _boardID,
+        index: _index,
+      },
+    })
+    .then((response) => response.data.value);
+  return brighat;
+};
 
 const getACStatus = async (_boardID, _index) => {
-  const status = await axios.get(path + '/getAC', {
-    params: {
-      boardID: _boardID,
-      index: _index
-    },
-  }).then((response) =>
-    response.data.value
-  )
-  return status
-}
+  const status = await axios
+    .get(path + "/getAC", {
+      params: {
+        boardID: _boardID,
+        index: _index,
+      },
+    })
+    .then((response) => response.data.value);
+  return status;
+};
 
 const getDoorStatus = async (_boardID, _index) => {
-  const status = await axios.get(path + '/getDoor', {
-    params: {
-      boardID: _boardID,
-      index: _index
-    },
-  }).then((response) =>
-    response.data.value
-  )
-  return status
-}
+  const status = await axios
+    .get(path + "/getDoor", {
+      params: {
+        boardID: _boardID,
+        index: _index,
+      },
+    })
+    .then((response) => response.data.value);
+  return status;
+};
 
 const getCurtainStatus = async (_boardID, _index) => {
-  const status = await axios.get(path + '/getCurtain', {
-    params: {
-      boardID: _boardID,
-      index: _index
-    },
-  }).then((response) =>
-    response.data.value
-  )
-  return status
-}
+  const status = await axios
+    .get(path + "/getCurtain", {
+      params: {
+        boardID: _boardID,
+        index: _index,
+      },
+    })
+    .then((response) => response.data.value);
+  return status;
+};
 
 export {
   controlDoor,
@@ -231,6 +261,6 @@ export {
   getLEDStatus,
   getACStatus,
   getDoorStatus,
-  getCurtainStatus, 
-  getEnviData
+  getCurtainStatus,
+  getEnviData,
 };

@@ -2,7 +2,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { removeLog } from "../../Firebase/AUD";
 
-
 const LogCard = ({
   time = "Bug",
   title = "Bug",
@@ -12,7 +11,7 @@ const LogCard = ({
   return (
     <View style={styles.logContainer}>
       <View>
-        <Text style={styles.time}>{time}</Text>
+        <Text style={styles.time}>{String(time.toDate())}</Text>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.contentContainer}>
           <Text numberOfLines={2} style={styles.content}>
@@ -22,7 +21,12 @@ const LogCard = ({
       </View>
       <View>
         <TouchableOpacity>
-          <Icon name="delete-outline" size={30} color="#29ABE2" onPress={() => removeLog(uid)}></Icon>
+          <Icon
+            name="delete-outline"
+            size={30}
+            color="#29ABE2"
+            onPress={() => removeLog(uid)}
+          ></Icon>
         </TouchableOpacity>
       </View>
     </View>
