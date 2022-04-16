@@ -4,13 +4,14 @@ import DeleteButton from "./Elements/DeleteButton";
 import LogCard from "./Elements/LogCard";
 import THTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 
 const LogScreen = () => {
-  const { logList, deviceList } = React.useContext(AppContext);
-  // React.useEffect(() => {
-  //   console.log(deviceList.find(x => x.ID == "1000005"));
-  //   console.log(logList);
-  // })
+  const { logList, deviceList, selectName } = React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
+  React.useEffect(() => {
+    console.log(user.control);
+  })
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={{ marginTop: "10%", marginBottom: 20 }}>
@@ -21,7 +22,7 @@ const LogScreen = () => {
           <LogCard
             key={log.id}
             time={log.Time}
-            title={deviceList.find((x) => x.ID == log.deviceID).name}
+            title={user.control.find((x) => x.ID == log.deviceID).name}
             content={log.content}
             uid={log.id}
           />

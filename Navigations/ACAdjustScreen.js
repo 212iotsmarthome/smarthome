@@ -31,6 +31,7 @@ export default function ACAdjustScreen({ navigation }) {
       setIsOn(data.power == 1 ? true : false)
     })
     return () => { isMounted = false };
+    
   }, [])
 
   return (
