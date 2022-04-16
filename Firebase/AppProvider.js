@@ -58,7 +58,7 @@ export default function AppProvider({ children }) {
   // Get workspaceList from workspace with Condition 1
   const deviceList = useFirebase("Device", controlCondition);
   const logList = useFirebase("Log", logCondition).sort((a, b) => {
-    return a.Time - b.Time;
+    return b.Time - a.Time;
   });
 
   // Get the selected Workspace

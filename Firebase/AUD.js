@@ -35,6 +35,22 @@ export const removeLog = async (uid) => {
   }
 };
 
+export const removeDeviceFromUser = async (userControl, did) => {
+  try {
+    let result = [];
+    for (let i = 0; i < user.control.length; i++) {
+      if (user.control[i].ID != did)
+        result.push({ ID: user.control[i].ID, name: user.control[i].name });
+    }
+
+    await editDocumentById("User", uid, {
+      control: result,
+    });
+  } catch (e) {
+    console.error("Error removing device: ", e);
+  }
+};
+
 export const removeSchedule = async (data) => {
   try {
     const temp = await deleteDocumentById("Schedule", data.scheduleid);
@@ -54,15 +70,15 @@ export const removeSchedule = async (data) => {
 };
 
 export const changeBuzzer = async (data) => {
-    try {
-        const temp = await editDocumentById("EnviSensor", data.ID, {
-            setBuzzer: data.value
-        })
-        return temp;
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-}
+  try {
+    const temp = await editDocumentById("EnviSensor", data.ID, {
+      setBuzzer: data.value,
+    });
+    return temp;
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
 
 export const addLED = async (data) => {
   collectionParam = "LED";

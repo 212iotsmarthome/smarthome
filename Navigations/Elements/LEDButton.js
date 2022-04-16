@@ -5,6 +5,7 @@ import { Icon } from "react-native-elements";
 const LEDButton = ({
   type = "LED",
   name = "My LED",
+  onDeletePress = () => {},
   onMainPress = () =>
     Alert.alert("Not assigned yet", "In development", [
       {
@@ -70,7 +71,7 @@ const LEDButton = ({
           name="delete-outline"
           size={28}
           color="#29ABE2"
-          onPress={() => {}}
+          onPress={onDeletePress}
         />
       </View>
 

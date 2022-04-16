@@ -19,20 +19,20 @@ export default function ACAdjustScreen({ navigation }) {
 
   const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
-  const [ temp, setTemp ] = React.useState("25");
+  const [temp, setTemp] = React.useState("25");
   const { selectedName, selectedDevice } = React.useContext(AppContext);
   const { user } = React.useContext(AuthContext);
-  
 
   React.useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     getACStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
-      setTemp(data.temp)
-      setIsOn(data.power == 1 ? true : false)
-    })
-    return () => { isMounted = false };
-    
-  }, [])
+      setTemp(data.temp);
+      setIsOn(data.power == 1 ? true : false);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -167,9 +167,9 @@ export default function ACAdjustScreen({ navigation }) {
                 parseInt(temp) > 30
                   ? setTemp("30")
                   : parseInt(temp) < 16
-                    ? setTemp("16")
-                    : setTemp(String(parseInt(temp)));
-                console.log(temp);
+                  ? setTemp("16")
+                  : setTemp(String(parseInt(temp)));
+                // console.log(temp);
               }}
               keyboardType="number-pad"
             />
@@ -227,9 +227,9 @@ export default function ACAdjustScreen({ navigation }) {
               user.ID,
               selectedName.ID,
               selectedName.name,
-              selectedDevice.index, 
-              selectedDevice.boardID, 
-              isOn, 
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isOn,
               temp
             );
             console.log(
@@ -254,7 +254,7 @@ export default function ACAdjustScreen({ navigation }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-      //action
+        //action
       >
         Change saved.
       </Snackbar>
