@@ -16,6 +16,7 @@ import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
 import { addSchedule } from "../Firebase/AUD";
+import { getDocument } from "../Firebase/service";
 
 // import { AuthContext } from "../Firebase/AuthProvider";
 // import { AppContext } from "../Firebase/AppProvider";
@@ -30,56 +31,56 @@ export default function SetTimeScreen({ navigation, route }) {
     scheduleList,
     selectedDeviceSchedule,
   } = React.useContext(AppContext);
-  const Devicejson = {type: status, name: selectedName.name};
-  const ScheduleList = [
-    {
-      Action: "Full-open",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 03:24:00"),
-    },
-    {
-      Action: "Close",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 21:50:00"),
-    },
-    {
-      Action: "Full-open",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 03:24:00"),
-    },
-    {
-      Action: "Close",
-      Daily: false,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 21:50:00"),
-    },
-    {
-      Action: "Half-open",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 03:24:00"),
-    },
-    {
-      Action: "Close",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 21:50:00"),
-    },
-  ];
+  const Devicejson = { type: status, name: selectedName.name };
+  // const ScheduleList = [
+  //   {
+  //     Action: "Full-open",
+  //     Daily: true,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 03:24:00"),
+  //   },
+  //   {
+  //     Action: "Close",
+  //     Daily: true,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 21:50:00"),
+  //   },
+  //   {
+  //     Action: "Full-open",
+  //     Daily: true,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 03:24:00"),
+  //   },
+  //   {
+  //     Action: "Close",
+  //     Daily: false,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 21:50:00"),
+  //   },
+  //   {
+  //     Action: "Half-open",
+  //     Daily: true,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 03:24:00"),
+  //   },
+  //   {
+  //     Action: "Close",
+  //     Daily: true,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 21:50:00"),
+  //   },
+  // ];
 
   const actList =
     Devicejson.type == 1 // LED
       ? ["Light off", "Low brightness", "Medium brightness", "High brightness"]
       : Devicejson.type == 2 // AC
-        ? ["AC off", "AC on"]
-        : Devicejson.type == 7 /// Door
-          ? ["Open door", "Close door", "Unlock door", "Lock door"]
-          : Devicejson.type == 6 // Curtain
-            ? ["Close", "Half-open", "Full-open"]
-            : ["Set alarm on", "Set alarm off"];
+      ? ["AC off", "AC on"]
+      : Devicejson.type == 7 /// Door
+      ? ["Open door", "Close door", "Unlock door", "Lock door"]
+      : Devicejson.type == 6 // Curtain
+      ? ["Close", "Half-open", "Full-open"]
+      : ["Set alarm on", "Set alarm off"];
 
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -88,10 +89,12 @@ export default function SetTimeScreen({ navigation, route }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [isShow, setShow] = React.useState(false);
 
+  const [ScheduleList, setScheduleList] = React.useState(
+    selectedDeviceInfo[0].scheduleList
+  );
   const [date, setDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState("");
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
-  
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -100,8 +103,9 @@ export default function SetTimeScreen({ navigation, route }) {
   }, []);
 
   React.useEffect(() => {
-    console.log(date);
-  }, [date])
+    // console.log(selectedDeviceInfo[0].scheduleList);
+    // console.log("HERE");
+  });
 
   return (
     <View>
@@ -119,12 +123,12 @@ export default function SetTimeScreen({ navigation, route }) {
               (Devicejson.type == 1
                 ? "LED"
                 : Devicejson.type == 2
-                  ? "Air Conditioner"
-                  : Devicejson.type == 7
-                    ? "Smart Door"
-                    : Devicejson.type == 6
-                      ? "Auto Curtain"
-                      : "EnviSensor™")
+                ? "Air Conditioner"
+                : Devicejson.type == 7
+                ? "Smart Door"
+                : Devicejson.type == 6
+                ? "Auto Curtain"
+                : "EnviSensor™")
             }
             largetext={Devicejson.name}
           />
@@ -186,9 +190,8 @@ export default function SetTimeScreen({ navigation, route }) {
               onChange={(event, selectedDate) => {
                 setShow(false);
                 const currentDate = selectedDate || date;
-                currentDate.setTime(currentDate.getTime() + 7*60*60*1000);
+                currentDate.setTime(currentDate.getTime() + 7 * 60 * 60 * 1000);
                 setDate(convertTZ(currentDate, 7));
-               
               }}
             />
           )}
@@ -280,23 +283,24 @@ export default function SetTimeScreen({ navigation, route }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            {/* <DataTable.Row>
-            <DataTable.Cell>John</DataTable.Cell>
-            <DataTable.Cell>john@kindacode.com</DataTable.Cell>
-            <DataTable.Cell numeric>33</DataTable.Cell>
-          </DataTable.Row> */}
+            {ScheduleList.map((schedID, index) => {
+              // const sched = getDocument("Schedule", schedID).then((res) =>
+              //   console.log(sched)
+              const sched = getDocument("Schedule", schedID).then(() =>
+                console.log(sched)
+              );
 
-            {ScheduleList.map((sched, index) => {
               return (
                 <DataTable.Row key={index}>
                   <DataTable.Cell>
-                    {(sched.Time.getHours() < 10
+                    {/* {(sched.Time.getHours() < 10
                       ? "0" + sched.Time.getHours()
                       : sched.Time.getHours()) +
                       ":" +
                       (sched.Time.getMinutes() < 10
                         ? "0" + sched.Time.getMinutes()
-                        : sched.Time.getMinutes())}
+                        : sched.Time.getMinutes())} */}
+                    {sched.Time}
                   </DataTable.Cell>
                   <DataTable.Cell>{sched.Action}</DataTable.Cell>
                   <DataTable.Cell>
@@ -311,7 +315,7 @@ export default function SetTimeScreen({ navigation, route }) {
                       name="delete"
                       size={18}
                       color="#c00"
-                      onPress={() => { }}
+                      onPress={() => {}}
                     />
                   </DataTable.Cell>
                 </DataTable.Row>
@@ -323,7 +327,17 @@ export default function SetTimeScreen({ navigation, route }) {
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         {/* <IOTButton text="Add" onPress={() => navigation.goBack()} /> */}
-        <IOTButton text="Add" onPress={() => {}} />
+        <IOTButton
+          text="Add"
+          onPress={() => {
+            addSchedule({
+              Action: selectedAction,
+              Daily: toggleCheckBox,
+              Time: date,
+              DeviceID: selectedName.ID,
+            });
+          }}
+        />
       </View>
     </View>
   );
