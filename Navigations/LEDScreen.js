@@ -2,10 +2,9 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import { AppContext } from "../Firebase/AppProvider";
 import { AuthContext } from "../Firebase/AuthProvider";
-import LEDButton from "./Elements/LEDButton";
+import DeviceButton from "./Elements/DeviceButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import BackButton from "./Elements/BackButton";
 import { removeDeviceFromUser } from "../Firebase/AUD";
 
 export default function LEDScreen({ navigation }) {
@@ -22,7 +21,7 @@ export default function LEDScreen({ navigation }) {
       <View>
         <View style={{ marginBottom: 60, width: "100%" }}>
           {selectName.map((LED) => (
-            <LEDButton
+            <DeviceButton
               type={"LED"}
               name={LED.name}
               key={LED.ID}

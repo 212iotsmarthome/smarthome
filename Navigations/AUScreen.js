@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import AUButton from "./Elements/AUButton";
+import DeviceButton from "./Elements/DeviceButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import { AppContext } from "../Firebase/AppProvider";
 
@@ -23,7 +23,7 @@ export default function AUScreen({ navigation }) {
 
         <View style={{ marginBottom: 60, width: "100%" }}>
           {selectName.map((AU) => (
-            <AUButton
+            <DeviceButton
               type={"Auto Curtain"}
               name={AU.name}
               key={AU.ID}

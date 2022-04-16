@@ -1,10 +1,10 @@
 import React from "react";
-import { Text, View, TouchableOpacity, Switch, Alert } from "react-native";
+import { Text, View, TouchableOpacity, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 
 const LEDButton = ({
-  type = "LED",
-  name = "My LED",
+  type = "Question",
+  name = "My device?",
   onDeletePress = () => {},
   onMainPress = () =>
     Alert.alert("Not assigned yet", "In development", [
@@ -37,8 +37,20 @@ const LEDButton = ({
     >
       <View style={{ left: "0%", position: "absolute", width: "25%" }}>
         <Icon
-          name="lightbulb-outline"
-          type="material-community"
+          name={
+            type == "LED"
+              ? "lightbulb-outline"
+              : type == "AC"
+              ? "air-conditioner"
+              : type == "Door"
+              ? "door-open"
+              : type == "Auto Curtain"
+              ? "window-open"
+              : type == "EnviSensor"
+              ? "camera-control"
+              : "account-question"
+          }
+          type={"material-community"}
           color="#29ABE2"
           size={36}
         />
@@ -67,11 +79,23 @@ const LEDButton = ({
 
       <View style={{ position: "absolute", right: "7%" }}>
         <Icon
-          type="material"
-          name="delete-outline"
+          type="material-community"
+          name="trash-can-outline"
           size={28}
           color="#29ABE2"
-          onPress={onDeletePress}
+          onPress={() =>
+            Alert.alert(
+              "Warning",
+              "Do you want to remove this device from your account?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                { text: "OK", onPress: onDeletePress },
+              ]
+            )
+          }
         />
       </View>
 
