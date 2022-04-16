@@ -4,6 +4,7 @@ import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { Snackbar } from "react-native-paper";
+import { getEnviData } from "../Controller/controller";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   const [visible, setVisible] = React.useState(Boolean(false));
@@ -12,13 +13,23 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
-  const { control, selectedDevice, selectedDeviceInfo } =
-    React.useContext(AppContext);
+  const {selectedDevice, selectedName, selectedDeviceInfo } = React.useContext(AppContext);
   // const [loading, setLoading] = useState(true);
 
-  // React.useEffect(() => {
-  //   setLoading(false);
-  // }, [selectedDeviceInfo])
+  React.useEffect(() => {
+    let isMounted = true;
+    if(selectedDeviceInfo.length > 0){
+      getEnviData(selectedDevice.boardID, selectedDeviceInfo[0]["DHT_index"], selectedDeviceInfo[0]["LDR_index"], selectedDeviceInfo[0]["Gas_index"]).then((data) => {
+        if (isMounted){
+          setTemp(data.temperature);
+          setHumid(data.humid);
+          setBrightness(data.brightness);
+          setFlammable(data.gas);
+        }
+      })
+      return () => { isMounted = false };
+    }
+  }, [selectedDeviceInfo])
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -92,36 +103,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
               value={isOn}
               onValueChange={() => setIsOn(!isOn)}
             />
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            height: 60,
-            width: "82%",
-            borderRadius: 20,
-            paddingLeft: 20,
-
-            marginRight: "auto",
-            marginLeft: "auto",
-            marginTop: 10,
-
-            justifyContent: "center",
-            alignItems: "flex-start",
-          }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen", { obj: ES, type: "ES" })
-          }
-        >
-          <View style={{ width: "100%" }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: "black",
-              }}
-            >
-              Set time
-            </Text>
           </View>
         </TouchableOpacity>
 

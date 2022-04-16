@@ -1,6 +1,52 @@
 import { serverTimestamp } from "firebase/firestore";
 import { addDocument, deleteDocumentById, editDocumentById } from "./service";
 
+const switchTable = (status) => {
+  let table = "";
+  switch (status) {
+    case 1:
+      table = "LED";
+      break;
+    case 2:
+      table = "AC";
+      break;
+    case 3:
+      table = "EnviSensor";
+      break;
+    case 6:
+      table = "SmartCurtain";
+      break;
+    case 7:
+      table = "SmartDoor";
+      break;
+    default:
+      table = "Device";
+      break;
+  }
+  return table;
+};
+
+export const removeLog = async (uid) => {
+  try {
+    const temp = await deleteDocumentById("Log", uid);
+    return temp;
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
+export const removeSchedule = async (data) => {
+  try {
+    const temp = await deleteDocumentById("Schedule", data.ID);
+    const temp2 = await editDocumentById(switchTable(data.status), data.ID, {
+      scheduleList: [...data.scheduleList.filter((value) => value !== data.ID)],
+    });
+    return [temp, temp2];
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
 export const addLED = async (data) => {
   collectionParam = "LED";
   try {
@@ -127,55 +173,13 @@ export const addSensor = async (data) => {
   }
 };
 
-const switchTable = (status) => {
-  let table = "";
-  switch (status) {
-    case 1:
-      table = "LED";
-      break;
-    case 2:
-      table = "AC";
-      break;
-    case 3:
-      table = "EnviSensor";
-      break;
-    case 6:
-      table = "SmartCurtain";
-      break;
-    case 7:
-      table = "SmartDoor";
-      break;
-    default:
-      table = "Device";
-      break;
-  }
-  return table;
-};
-
-const getTimeString = () => {
-  var currentdate = new Date();
-  var datetime =
-    currentdate.getDate() +
-    "/" +
-    (currentdate.getMonth() + 1) +
-    "/" +
-    currentdate.getFullYear() +
-    "@" +
-    currentdate.getHours() +
-    ":" +
-    currentdate.getMinutes() +
-    ":" +
-    currentdate.getSeconds();
-  return datetime;
-};
-
 export const addLog = async (data) => {
   collectionParam = "Log";
   try {
     const temp = await addDocument(collectionParam, {
       content: data.content,
       deviceID: data.deviceID,
-      time: getTimeString(),
+      Time: serverTimestamp(),
     });
     // const temp2 = await editDocumentById(switchTable(data.status), data.deviceID, {
     //     scheduleList: [...data.scheduleList, temp]

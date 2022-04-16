@@ -19,9 +19,11 @@ const LogScreen = () => {
       <ScrollView>
         {logList.map((log) => (
           <LogCard 
+            key = {log.id}
             time = {log.time}
             title = {deviceList.find(x => x.ID == log.deviceID).name}
             content = {log.content}
+            uid = {log.id}
           />
         ))}
       </ScrollView>

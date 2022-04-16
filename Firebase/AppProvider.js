@@ -60,14 +60,7 @@ export default function AppProvider({ children }) {
     });
 
     // Get the selected Workspace
-    let selectDevice;
-    if (status != 3) {
-        selectDevice = React.useMemo(() => deviceList.filter(item => item.type === status) , [deviceList, status]);
-    }
-    else {
-        selectDevice = React.useMemo(() => deviceList.filter(item => (item.type === status || item.type === status + 1 || item.type === status + 2)) || [{}], [deviceList, status]);
-        console.log(control)
-    }
+    const selectDevice = React.useMemo(() => deviceList.filter(item => item.type === status) , [deviceList, status]);
 
     // Display in First Page
     const tempList = selectDevice.map(getID);
@@ -114,10 +107,6 @@ export default function AppProvider({ children }) {
             table = "Device";
             break;
     }
-
-    // Get current selected Device
-    const selectedDevice = React.useMemo(() => deviceList.find(item => item.ID === curSelection) || [], [selectDevice, curSelection]);
-    const selectedName = React.useMemo(() => selectName.find(item => item.ID === curSelection) , [selectDevice, curSelection]);
     const selectedDeviceCondition = React.useMemo(() => ({
         fieldName: "ID",
         operator: "==",
@@ -126,6 +115,13 @@ export default function AppProvider({ children }) {
 
     // Get selectedDeviceList from type with Condition 2
     const selectedDeviceInfo = useFirebase(table, selectedDeviceCondition);
+
+    // Get current selected Device
+    const selectedDevice = React.useMemo(() => deviceList.find(item => item.ID === curSelection) || [], [selectDevice, curSelection]);
+    const selectedName = React.useMemo(() => selectName.find(item => item.ID === curSelection) , [selectDevice, curSelection]);
+    
+
+    
 
     const scheduleList = selectedDeviceInfo?.reduce(
         (previousValue, currentValue) => previousValue.concat(currentValue.scheduleList),

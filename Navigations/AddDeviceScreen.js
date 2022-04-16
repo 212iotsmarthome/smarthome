@@ -86,7 +86,9 @@ export default function AddScreen({ navigation }) {
           placeholder="Set device name"
           secureTextEntry={false}
           onChangeText={(text) => {
-            setDeviceName(text);
+            if(text.length < 15){
+              setDeviceName(text);
+            }
           }}
         />
       </View>

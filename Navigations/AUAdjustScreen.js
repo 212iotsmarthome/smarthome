@@ -21,7 +21,7 @@ export default function AUAdjustScreen({ navigation, route }) {
   const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     getCurtainStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
       console.log(data);
       setSelectedAction(data);
