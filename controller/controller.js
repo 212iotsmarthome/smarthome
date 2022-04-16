@@ -37,8 +37,7 @@ const controlLED = (_userName, _userID, _id, _name, _index, _boardID, _value) =>
     }
     return "";
   };
-
-  console.log(path);
+  
   axios
     .put(path + "/controlLED", {
       id: _index,
