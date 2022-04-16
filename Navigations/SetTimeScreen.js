@@ -70,7 +70,7 @@ export default function SetTimeScreen({ navigation, route }) {
     selectedDeviceInfo[0].scheduleList
   );
   const [date, setDate] = React.useState(new Date());
-  const [selectedAction, setSelectedAction] = React.useState("");
+  const [selectedAction, setSelectedAction] = React.useState(0);
   const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -278,8 +278,8 @@ export default function SetTimeScreen({ navigation, route }) {
                   <DataTable.Cell>
                     <Text>
                       {sched.Daily == true
-                        ? "   Yes        "
-                        : "   No         "}
+                        ? "  Yes    "
+                        : "  No     "}
                     </Text>
 
                     <Icon
@@ -312,7 +312,7 @@ export default function SetTimeScreen({ navigation, route }) {
             addSchedule({
               status: status,
               uid: selectedDeviceInfo[0].id,
-              Action: selectedAction,
+              Action: actList[selectedAction],
               Daily: toggleCheckBox,
               Time: date,
               DeviceID: selectedName.ID,
