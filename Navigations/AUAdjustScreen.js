@@ -22,12 +22,16 @@ export default function AUAdjustScreen({ navigation, route }) {
 
   React.useEffect(() => {
     let isMounted = true;
-    getCurtainStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
-      console.log(data);
-      setSelectedAction(data);
-    })
-    return () => { isMounted = false };
-  }, [])
+    getCurtainStatus(selectedDevice.boardID, selectedDevice.index).then(
+      (data) => {
+        console.log(data);
+        setSelectedAction(data);
+      }
+    );
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -121,9 +125,7 @@ export default function AUAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen")
-          }
+          onPress={() => navigation.navigate("SetTimeScreen")}
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -172,7 +174,7 @@ export default function AUAdjustScreen({ navigation, route }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-      //action
+        //action
       >
         Change saved.
       </Snackbar>

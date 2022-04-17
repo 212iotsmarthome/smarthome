@@ -190,10 +190,7 @@ export default function ACAdjustScreen({ navigation }) {
             alignItems: "flex-start",
           }}
           onPress={() => {
-            navigation.navigate("SetTimeScreen", {
-              obj: selectedName,
-              type: "AC",
-            });
+            navigation.navigate("SetTimeScreen");
           }}
         >
           <View style={{ width: "70%" }}>

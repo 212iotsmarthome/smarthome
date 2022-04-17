@@ -24,6 +24,7 @@ export default function LEDScreen({ navigation }) {
             <DeviceButton
               type={"LED"}
               name={LED.name}
+              id={LED.ID}
               key={LED.ID}
               onMainPress={() => {
                 setCurSelection(LED.ID);

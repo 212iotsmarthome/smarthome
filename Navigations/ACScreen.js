@@ -23,6 +23,7 @@ export default function ACScreen({ navigation }) {
             <DeviceButton
               type={"AC"}
               name={AC.name}
+              id={AC.ID}
               key={AC.ID}
               onMainPress={() => {
                 setCurSelection(AC.ID);

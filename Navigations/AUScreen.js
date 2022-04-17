@@ -26,6 +26,7 @@ export default function AUScreen({ navigation }) {
             <DeviceButton
               type={"Auto Curtain"}
               name={AU.name}
+              id={AU.ID}
               key={AU.ID}
               onMainPress={() => {
                 setCurSelection(AU.ID);

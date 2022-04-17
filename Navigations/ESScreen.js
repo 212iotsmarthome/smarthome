@@ -21,6 +21,7 @@ export default function ESScreen({ navigation }) {
             <DeviceButton
               type={"EnviSensor"}
               name={ES.name}
+              id={ES.ID}
               key={ES.ID}
               onMainPress={() => {
                 setCurSelection(ES.ID);

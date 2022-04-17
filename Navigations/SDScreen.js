@@ -21,6 +21,7 @@ export default function SDScreen({ navigation }) {
             <DeviceButton
               type={"Door"}
               name={SD.name}
+              id={SD.ID}
               key={SD.ID}
               onMainPress={() => {
                 setCurSelection(SD.ID);

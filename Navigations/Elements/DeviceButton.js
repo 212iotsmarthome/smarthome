@@ -4,6 +4,7 @@ import { Icon } from "react-native-elements";
 
 const LEDButton = ({
   type = "Question",
+  id = "What?",
   name = "My device?",
   onDeletePress = () => {},
   onMainPress = () =>
@@ -63,7 +64,7 @@ const LEDButton = ({
             color: "black",
           }}
         >
-          {type}
+          {"ID: " + id}
         </Text>
 
         <Text
