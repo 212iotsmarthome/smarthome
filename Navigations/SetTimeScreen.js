@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Icon } from "react-native-elements";
@@ -277,9 +278,7 @@ export default function SetTimeScreen({ navigation, route }) {
                   <DataTable.Cell>{sched.Action}</DataTable.Cell>
                   <DataTable.Cell>
                     <Text>
-                      {sched.Daily == true
-                        ? "  Yes    "
-                        : "  No     "}
+                      {sched.Daily == true ? "  Yes    " : "  No     "}
                     </Text>
 
                     <Icon
@@ -288,12 +287,26 @@ export default function SetTimeScreen({ navigation, route }) {
                       size={18}
                       color="#c00"
                       onPress={() => {
-                        removeSchedule({
-                          scheduleid: sched.id,
-                          status: status,
-                          scheduleList: scheduleList, // child device table
-                          DeviceID: selectedDeviceInfo[0].id,
-                        });
+                        Alert.alert(
+                          "Warning",
+                          "Do you want to remove this device from your account?",
+                          [
+                            {
+                              text: "Cancel",
+                              style: "cancel",
+                            },
+                            {
+                              text: "OK",
+                              onPress: () =>
+                                removeSchedule({
+                                  scheduleid: sched.id,
+                                  status: status,
+                                  scheduleList: scheduleList, // child device table
+                                  DeviceID: selectedDeviceInfo[0].id,
+                                }),
+                            },
+                          ]
+                        );
                       }}
                     />
                   </DataTable.Cell>

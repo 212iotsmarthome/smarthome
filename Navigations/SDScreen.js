@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView } from "react-native";
 
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import SDButton from "./Elements/SDButton";
+import DeviceButton from "./Elements/DeviceButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import { AppContext } from "../Firebase/AppProvider";
 
@@ -18,16 +18,15 @@ export default function SDScreen({ navigation }) {
       <View>
         <View style={{ marginBottom: 60, width: "100%" }}>
           {selectName.map((SD) => (
-            <SDButton
+            <DeviceButton
               type={"Door"}
               name={SD.name}
+              id={SD.ID}
               key={SD.ID}
-              onMainPress={
-                () => {
-                  setCurSelection(SD.ID);
-                  navigation.navigate("SDAdjustScreen");
-                }
-              }
+              onMainPress={() => {
+                setCurSelection(SD.ID);
+                navigation.navigate("SDAdjustScreen");
+              }}
             />
           ))}
         </View>

@@ -58,13 +58,13 @@ export default function AppProvider({ children }) {
   // Get workspaceList from workspace with Condition 1
   const deviceList = useFirebase("Device", controlCondition);
   const logList = useFirebase("Log", logCondition).sort((a, b) => {
-    return a.Time - b.Time;
+    return b.Time - a.Time;
   });
 
   // Get the selected Workspace
   const selectDevice = React.useMemo(
     () => deviceList.filter((item) => item.type === status),
-    [deviceList, status]
+    [user, deviceList, status]
   );
 
   // Display in First Page

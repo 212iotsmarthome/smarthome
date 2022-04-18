@@ -22,7 +22,11 @@ const IOTButton = ({
         flex: 1,
         height: 135,
         width: "100%",
-        backgroundColor: "#F1F9FD",
+        backgroundColor: title == "Add Device" ? "white" : "#F1F9FD",
+
+        borderColor: title == "Add Device" ? "#F1F9FD" : "transparent",
+        borderWidth: 2.5,
+
         borderRadius: 20,
         paddingLeft: 20,
         paddingBottom: 20,
@@ -37,6 +41,7 @@ const IOTButton = ({
       <Icon
         name={name}
         type={type}
+        // color={title == "Add Device" ? "#F1F9FD" : "#29ABE2"}
         color="#29ABE2"
         size={36}
         style={{ marginBottom: 10 }}
@@ -45,6 +50,7 @@ const IOTButton = ({
       <Text
         style={{
           fontSize: 18,
+          // color: title == "Add Device" ? "#F1F9FD" : "black",
           color: "black",
           fontWeight: "bold",
         }}
@@ -55,6 +61,7 @@ const IOTButton = ({
       <Text
         style={{
           fontSize: 14,
+          // color: title == "Add Device" ? "#F1F9FD" : "black",
           color: "black",
         }}
       >

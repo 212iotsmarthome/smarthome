@@ -1,12 +1,15 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import TopHeadTypo from "./Elements/TopHeadTypo";
-import ACButton from "./Elements/ACButton";
+import DeviceButton from "./Elements/DeviceButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 
 export default function ACScreen({ navigation }) {
-  const { status, selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
+  const { status, selectName, selectDevice, setCurSelection } =
+    React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
   const [isConnected, setIsConnected] = React.useState(true);
 
   function ACDiv(props) {
@@ -17,9 +20,10 @@ export default function ACScreen({ navigation }) {
       <View>
         <View style={{ marginBottom: 60, width: "100%" }}>
           {selectName.map((AC) => (
-            <ACButton
+            <DeviceButton
               type={"AC"}
               name={AC.name}
+              id={AC.ID}
               key={AC.ID}
               onMainPress={() => {
                 setCurSelection(AC.ID);

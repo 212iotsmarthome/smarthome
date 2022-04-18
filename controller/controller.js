@@ -1,7 +1,7 @@
-const axios = require('axios');
-import { serverTimestamp } from 'firebase/firestore';
-import { addLog } from '../Firebase/AUD';
-const path = 'http://192.168.1.9:3003';
+const axios = require("axios");
+import { serverTimestamp } from "firebase/firestore";
+import { addLog } from "../Firebase/AUD";
+const path = "http://192.168.1.9:3003";
 
 // const controlAlarm = (_id, _boardId, _value) => {
 //   axios
@@ -28,24 +28,24 @@ const controlLED = (
   const createLog = () => {
     let log = "";
     if (_value == 0) {
-      log = `User ${_userName} has turned off LED named ${_name}`;
+      log = `User ${_userName} has turned off this LED`;
       return log;
     }
     if (_value == 1) {
-      log = `User ${_userName} has set LED with low brightness named ${_name}`;
+      log = `User ${_userName} has set this LED with low brightness`;
       return log;
     }
     if (_value == 2) {
-      log = `User ${_userName} has set LED with medium brightness named ${_name}`;
+      log = `User ${_userName} has set this LED with medium brightness`;
       return log;
     }
     if (_value == 3) {
-      log = `User ${_userName} has set LED with high brightness named ${_name}`;
+      log = `User ${_userName} has set this LED with high brightness`;
       return log;
     }
     return "";
   };
-  
+
   axios
     .put(path + "/controlLED", {
       id: _index,
@@ -74,9 +74,9 @@ const controlAC = (
   const createLog = () => {
     let log = "";
     if (_isOn == false) {
-      log = `User ${_userName} has turned off Air Conditioner named ${_name}`;
+      log = `User ${_userName} has turned off this Air Conditioner`;
     } else {
-      log = `User ${_userName} has turned on Air Conditioner named ${_name} at ${_temp} C`;
+      log = `User ${_userName} has turned on this Air Conditioner at ${_temp}°C`;
     }
     return log;
   };
@@ -110,12 +110,12 @@ const controlDoor = (
   const createLog = () => {
     let log = "";
     if (_isOpen == true) {
-      log = `User ${_userName} has open Door named ${_name}`;
+      log = `User ${_userName} has open this Door`;
     } else {
       if (_isLocked == true) {
-        log = `User ${_userName} has locked Door named ${_name}`;
+        log = `User ${_userName} has locked this Door`;
       } else {
-        log = `User ${_userName} has closed Door named ${_name}`;
+        log = `User ${_userName} has closed this Door`;
       }
     }
     return log;
@@ -149,13 +149,13 @@ const controlCurtain = (
   const createLog = () => {
     let log = "";
     if (_action == 0) {
-      log = `User ${_userName} has closed Curtain named ${_name}`;
+      log = `User ${_userName} has closed this Curtain`;
     }
     if (_action == 1) {
-      log = `User ${_userName} has half-opened Curtain named ${_name}`;
+      log = `User ${_userName} has half-opened this Curtain`;
     }
     if (_action == 2) {
-      log = `User ${_userName} has full-opened Curtain named ${_name}`;
+      log = `User ${_userName} has full-opened this Curtain`;
     }
     return log;
   };

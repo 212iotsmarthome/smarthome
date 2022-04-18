@@ -2,6 +2,20 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { removeLog } from "../../Firebase/AUD";
 
+const formatDate = (date) => {
+  let text = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  text +=
+    " " +
+    String(date.getHours()).padStart(2, "0") +
+    ":" +
+    String(date.getMinutes()).padStart(2, "0") +
+    " GMT" +
+    (date.getTimezoneOffset() > 0 ? "-" : "+") +
+    Math.abs(date.getTimezoneOffset() / 60);
+
+  return text;
+};
+
 const LogCard = ({
   time = "Bug",
   title = "Bug",
@@ -10,8 +24,8 @@ const LogCard = ({
 }) => {
   return (
     <View style={styles.logContainer}>
-      <View>
-        <Text style={styles.time}>{String(time.toDate())}</Text>
+      <View style={{ width: "90%" }}>
+        <Text style={styles.time}>{formatDate(time.toDate())}</Text>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.contentContainer}>
           <Text numberOfLines={2} style={styles.content}>
@@ -20,14 +34,14 @@ const LogCard = ({
         </View>
       </View>
       <View>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Icon
             name="delete-outline"
             size={30}
             color="#29ABE2"
             onPress={() => removeLog(uid)}
           ></Icon>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -36,7 +50,8 @@ const LogCard = ({
 const styles = StyleSheet.create({
   logContainer: {
     backgroundColor: "#F1F9FD",
-    padding: 20,
+    paddingHorizontal: 25,
+    paddingVertical: 20,
     borderRadius: 20,
     width: "82%",
     marginLeft: "auto",
@@ -45,7 +60,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   time: {
     fontSize: 12,

@@ -14,24 +14,32 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
-  const {selectedDevice, selectedName, selectedDeviceInfo } = React.useContext(AppContext);
+  const { selectedDevice, selectedName, selectedDeviceInfo } =
+    React.useContext(AppContext);
   // const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     let isMounted = true;
-    if(selectedDeviceInfo.length > 0){
-      getEnviData(selectedDevice.boardID, selectedDeviceInfo[0]["DHT_index"], selectedDeviceInfo[0]["LDR_index"], selectedDeviceInfo[0]["Gas_index"]).then((data) => {
-        if (isMounted){
+    if (selectedDeviceInfo.length > 0) {
+      getEnviData(
+        selectedDevice.boardID,
+        selectedDeviceInfo[0]["DHT_index"],
+        selectedDeviceInfo[0]["LDR_index"],
+        selectedDeviceInfo[0]["Gas_index"]
+      ).then((data) => {
+        if (isMounted) {
           setTemp(data.temperature);
           setHumid(data.humid);
           setBrightness(data.brightness);
           setFlammable(data.gas);
         }
-      })
+      });
       setIsOn(selectedDeviceInfo[0].setBuzzer);
-      return () => { isMounted = false };
+      return () => {
+        isMounted = false;
+      };
     }
-  }, [selectedDeviceInfo])
+  }, [selectedDeviceInfo]);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -108,6 +116,45 @@ export default function LEDAdjustScreen({ navigation, route }) {
           </View>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={{
+            height: 70,
+            width: "82%",
+            borderRadius: 20,
+            paddingLeft: 20,
+
+            marginRight: "auto",
+            marginLeft: "auto",
+            marginVertical: 5,
+
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+          onPress={() => {
+            navigation.navigate("SetTimeScreen");
+          }}
+        >
+          <View style={{ width: "70%" }}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: "black",
+              }}
+            >
+              Set time
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: "30%",
+              position: "absolute",
+              right: "0%",
+              alignItems: "center",
+            }}
+          ></View>
+        </TouchableOpacity>
+
         <View
           style={{
             height: 60,
@@ -122,34 +169,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
             alignItems: "flex-start",
           }}
         >
-          <TouchableOpacity
-            style={{
-              height: 70,
-              width: "82%",
-              borderRadius: 20,
-              paddingLeft: 20,
-
-              marginRight: "auto",
-              marginLeft: "auto",
-
-              justifyContent: "center",
-              alignItems: "flex-start",
-            }}
-            onPress={() =>
-              navigation.navigate("SetTimeScreen")
-            }
-          >
-            <View style={{ width: "70%" }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "black",
-                }}
-              >
-                Set time
-              </Text>
-            </View>
-          </TouchableOpacity>
           <View style={{ width: "70%" }}>
             <Text
               style={{
@@ -195,7 +214,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
           onPress={() => {
             setVisible(true);
             console.log(selectedDeviceInfo[0].id);
-            changeBuzzer({value: isOn, ID: selectedDeviceInfo[0].id});
+            changeBuzzer({ value: isOn, ID: selectedDeviceInfo[0].id });
           }}
         />
       </View>

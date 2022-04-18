@@ -16,33 +16,31 @@ export default function AddScreen({ navigation }) {
   const { devList, control } = React.useContext(AppContext);
 
   const checkIf = async (dC, dN) => {
-    if(devList.includes(dC)){
+    if (devList.includes(dC)) {
       try {
-        console.log(user.control);
-        if(user.control == []){
-            await editDocumentById("User", user.id, {
-                control: [{ID: dC, name: dN}]
-            })
-        }
-        else{
-            let result = [];
-            for(let i = 0; i < user.control.length; i++){
-              result.push({ID: user.control[i].ID, name: user.control[i].name});
-            }
-            result.push({ID: dC, name: dN});
-            await editDocumentById("User", user.id, {
-                control: result
-            })
+        // console.log(user.control);
+        if (user.control == []) {
+          await editDocumentById("User", user.id, {
+            control: [{ ID: dC, name: dN }],
+          });
+        } else {
+          let result = [];
+          for (let i = 0; i < user.control.length; i++) {
+            result.push({ ID: user.control[i].ID, name: user.control[i].name });
+          }
+          result.push({ ID: dC, name: dN });
+          await editDocumentById("User", user.id, {
+            control: result,
+          });
         }
         getUser(user.email);
       } catch (e) {
         console.error("Error adding document: ", e);
       }
+    } else {
+      alert("Device ID not exist!");
     }
-    else{
-      alert("Device ID not exist !");
-    }
-  }
+  };
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -86,7 +84,7 @@ export default function AddScreen({ navigation }) {
           placeholder="Set device name"
           secureTextEntry={false}
           onChangeText={(text) => {
-            if(text.length < 15){
+            if (text.length < 15) {
               setDeviceName(text);
             }
           }}

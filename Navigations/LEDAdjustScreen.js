@@ -10,25 +10,30 @@ import { controlLED, getLEDStatus } from "../Controller/controller";
 import { AppContext } from "../Firebase/AppProvider";
 import { AuthContext } from "../Firebase/AuthProvider";
 
-
 export default function LEDAdjustScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   // const [isConnected, setIsConnected] = React.useState(true);
   const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
   const [brightness, setBrightness] = React.useState(1);
-  const { selectedName, selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  const { selectedName, selectedDevice, selectedDeviceInfo } =
+    React.useContext(AppContext);
   const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    let isMounted = true
-    getLEDStatus(selectedDevice.boardID, selectedDevice.index).then((bright) => {
-      setBrightness(bright)
-      if (bright > 0) { setIsOn(true) }
-
-    })
-    return () => { isMounted = false };
-  }, [])
+    let isMounted = true;
+    getLEDStatus(selectedDevice.boardID, selectedDevice.index).then(
+      (bright) => {
+        setBrightness(bright);
+        if (bright > 0) {
+          setIsOn(true);
+        }
+      }
+    );
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const getValue = () => {
     if (!isOn) {
@@ -45,7 +50,7 @@ export default function LEDAdjustScreen({ navigation }) {
       }
       return 4;
     }
-  };  
+  };
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -161,12 +166,7 @@ export default function LEDAdjustScreen({ navigation }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen", {
-              obj: selectedDeviceInfo,
-              type: "LED",
-            })
-          }
+          onPress={() => navigation.navigate("SetTimeScreen")}
         >
           <View style={{ width: "100%" }}>
             <Text
@@ -205,7 +205,7 @@ export default function LEDAdjustScreen({ navigation }) {
             console.log(
               selectedDevice.index,
               selectedDevice.boardID,
-              getValue(),
+              getValue()
             );
             setVisible(true);
           }}
@@ -223,7 +223,7 @@ export default function LEDAdjustScreen({ navigation }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-      //action
+        //action
       >
         Change saved.
       </Snackbar>

@@ -10,8 +10,8 @@ const LogScreen = () => {
   const { logList, deviceList, selectName } = React.useContext(AppContext);
   const { user } = React.useContext(AuthContext);
   React.useEffect(() => {
-    console.log(user.control);
-  })
+    // console.log(user.control);
+  });
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={{ marginTop: "10%", marginBottom: 20 }}>
@@ -28,7 +28,7 @@ const LogScreen = () => {
           />
         ))}
       </ScrollView>
-      <DeleteButton text="Clear Log" type="dark"></DeleteButton>
+      {/* <DeleteButton text="Clear Log" type="dark"></DeleteButton> */}
     </View>
   );
 };
