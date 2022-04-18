@@ -122,6 +122,34 @@ export default function LEDAdjustScreen({ navigation, route }) {
             alignItems: "flex-start",
           }}
         >
+          <TouchableOpacity
+            style={{
+              height: 70,
+              width: "82%",
+              borderRadius: 20,
+              paddingLeft: 20,
+
+              marginRight: "auto",
+              marginLeft: "auto",
+
+              justifyContent: "center",
+              alignItems: "flex-start",
+            }}
+            onPress={() =>
+              navigation.navigate("SetTimeScreen")
+            }
+          >
+            <View style={{ width: "70%" }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "black",
+                }}
+              >
+                Set time
+              </Text>
+            </View>
+          </TouchableOpacity>
           <View style={{ width: "70%" }}>
             <Text
               style={{
