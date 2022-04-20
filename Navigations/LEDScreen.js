@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, BackHandler } from "react-native";
 import { AppContext } from "../Firebase/AppProvider";
 import { AuthContext } from "../Firebase/AuthProvider";
 import DeviceButton from "./Elements/DeviceButton";
@@ -11,7 +11,7 @@ export default function LEDScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
   const { selectName, setCurSelection } = React.useContext(AppContext);
   const { user, getUser } = React.useContext(AuthContext);
-  const [isConnected, setIsConnected] = React.useState(true);
+  const [ isConnected, setIsConnected ] = React.useState(true);
 
   function LEDDiv(props) {
     const length = props.length;
