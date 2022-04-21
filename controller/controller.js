@@ -1,7 +1,6 @@
 const axios = require("axios");
-import { serverTimestamp } from "firebase/firestore";
 import { addLog } from "../Firebase/AUD";
-const path = "http://192.168.1.7:3003";
+const path = "http://192.168.43.47:3003";
 
 // const controlAlarm = (_id, _boardId, _value) => {
 //   axios

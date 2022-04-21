@@ -40,9 +40,9 @@ export default function HomeScreen({ navigation }) {
   //   "hardwareBackPress", backHome
   // );
 
-  useEffect(() => {
-    sendMesaage("Hello" + user.name, "Welcome Back");
-  }, []);
+  // useEffect(() => {
+  //   sendMesaage("Hello" + user.name, "Welcome Back");
+  // }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
