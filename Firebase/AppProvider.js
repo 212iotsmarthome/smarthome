@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import useFirebase from "./useFirestore";
+import { useFirestore}  from "./useFirestore";
 import { AuthContext } from "./AuthProvider";
-import { db } from "./firebase";
+import { db, dc } from "./firebase";
 import { documentId } from "firebase/firestore";
 
 export const AppContext = React.createContext();
@@ -26,7 +26,7 @@ export default function AppProvider({ children }) {
   }, [db]);
 
   // Get workspaceList from workspace with Condition 1
-  const devList = useFirebase("Device", devCondition).map(getID);
+  const devList = useFirestore("Device", devCondition).map(getID);
 
   // User Control
   const control = React.useMemo(() => {
@@ -56,8 +56,8 @@ export default function AppProvider({ children }) {
   }, [user, db]);
 
   // Get workspaceList from workspace with Condition 1
-  const deviceList = useFirebase("Device", controlCondition);
-  const logList = useFirebase("Log", logCondition).sort((a, b) => {
+  const deviceList = useFirestore("Device", controlCondition);
+  const logList = useFirestore("Log", logCondition).sort((a,b) => {
     return b.Time - a.Time;
   });
 
@@ -66,6 +66,8 @@ export default function AppProvider({ children }) {
     () => deviceList.filter((item) => item.type === status),
     [user, deviceList, status]
   );
+
+  const commentsQuery = dc.collection("Schedule");
 
   // Display in First Page
   const tempList = selectDevice.map(getID);
@@ -122,7 +124,7 @@ export default function AppProvider({ children }) {
   );
 
   // Get selectedDeviceList from type with Condition 2
-  const selectedDeviceInfo = useFirebase(table, selectedDeviceCondition);
+  const selectedDeviceInfo = useFirestore(table, selectedDeviceCondition);
 
   // Get current selected Device
   const selectedDevice = React.useMemo(
@@ -151,10 +153,12 @@ export default function AppProvider({ children }) {
   );
 
   // Get selectedDeviceList from type with Condition 2
-  const selectedDeviceSchedule = useFirebase(
+  const selectedDeviceSchedule = useFirestore(
     "Schedule",
     selectedDeviceScheduleCondition
   );
+
+
 
   return (
     <AppContext.Provider

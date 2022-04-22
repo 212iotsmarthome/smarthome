@@ -14,13 +14,13 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
-  const { selectedDevice, selectedName, selectedDeviceInfo } =
-    React.useContext(AppContext);
+  const { selectedDevice, selectedName, selectedDeviceInfo } = React.useContext(AppContext);
   // const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     let isMounted = true;
     if (selectedDeviceInfo.length > 0) {
+      setIsOn(selectedDeviceInfo[0].setBuzzer);
       getEnviData(
         selectedDevice.boardID,
         selectedDeviceInfo[0]["DHT_index"],
@@ -34,9 +34,26 @@ export default function LEDAdjustScreen({ navigation, route }) {
           setFlammable(data.gas);
         }
       });
-      setIsOn(selectedDeviceInfo[0].setBuzzer);
+
+      const intervalId = setInterval(() => {
+        getEnviData(
+          selectedDevice.boardID,
+          selectedDeviceInfo[0]["DHT_index"],
+          selectedDeviceInfo[0]["LDR_index"],
+          selectedDeviceInfo[0]["Gas_index"]
+        ).then((data) => {
+          if (isMounted) {
+            setTemp(data.temperature);
+            setHumid(data.humid);
+            setBrightness(data.brightness);
+            setFlammable(data.gas);
+          }
+        });
+      }, 5000);
+
       return () => {
         isMounted = false;
+        clearInterval(intervalId);
       };
     }
   }, [selectedDeviceInfo]);
@@ -213,7 +230,6 @@ export default function LEDAdjustScreen({ navigation, route }) {
           text="Save"
           onPress={() => {
             setVisible(true);
-            console.log(selectedDeviceInfo[0].id);
             changeBuzzer({ value: isOn, ID: selectedDeviceInfo[0].id });
           }}
         />

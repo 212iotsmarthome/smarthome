@@ -6,9 +6,8 @@ import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
 
 export default function ESScreen({ navigation }) {
-  const [isConnected, setIsConnected] = React.useState(true);
-  const { selectName, selectDevice, setCurSelection } =
-    React.useContext(AppContext);
+  const [ isConnected, setIsConnected ] = React.useState(true);
+  const { selectName, setCurSelection } = React.useContext(AppContext);
 
   function ESDiv(props) {
     const length = props.length;

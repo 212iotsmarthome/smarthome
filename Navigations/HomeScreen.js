@@ -21,7 +21,7 @@ import Credit from "./Elements/Credit";
 export default function HomeScreen({ navigation }) {
   const [ isConnected, setIsConnected ] = React.useState(true);
   const { user } = React.useContext(AuthContext);
-  const { setStatus, selectName } = React.useContext(AppContext);
+  const { setStatus, selectName, commentsQuery } = React.useContext(AppContext);
   const { sendMesaage } = React.useContext(NotiContext);
 
   // const backHome = () => {
@@ -40,7 +40,7 @@ export default function HomeScreen({ navigation }) {
   //   "hardwareBackPress", backHome
   // );
 
-  // useEffect(() => {
+  // useEffect(async () => {
   //   sendMesaage("Hello" + user.name, "Welcome Back");
   // }, []);
 

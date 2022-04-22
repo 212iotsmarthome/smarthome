@@ -1,6 +1,6 @@
 const axios = require("axios");
 import { addLog } from "../Firebase/AUD";
-const path = "http://192.168.43.47:3003";
+const path = "http://192.168.1.9:3003";
 
 // const controlAlarm = (_id, _boardId, _value) => {
 //   axios
@@ -10,7 +10,6 @@ const path = "http://192.168.43.47:3003";
 //       value: _value,
 //     })
 //     .then((response) => {
-//       console.log(response.data);
 //     });
 // };
 
@@ -52,7 +51,6 @@ const controlLED = (
       value: _value,
     })
     .then((response) => {
-      console.log(response.data);
       addLog({
         content: createLog(),
         deviceID: _id,
@@ -88,7 +86,6 @@ const controlAC = (
       temp: _temp,
     })
     .then((response) => {
-      console.log(response.data);
       addLog({
         content: createLog(),
         deviceID: _id,
@@ -128,7 +125,6 @@ const controlDoor = (
       isOpen: _isOpen,
     })
     .then((response) => {
-      console.log(response.data);
       addLog({
         content: createLog(),
         deviceID: _id,
@@ -166,7 +162,6 @@ const controlCurtain = (
       action: _action,
     })
     .then((response) => {
-      console.log(response.data);
       addLog({
         content: createLog(),
         deviceID: _id,
@@ -181,13 +176,11 @@ const addDevice = (_code, _name) => {
       dName: _name,
     })
     .then((response) => {
-      console.log(response.data);
     });
 };
 
 // Method GET: Get data from Nodejs
 const getEnviData = async (_boardID, _Dindex, _Lindex, _Gindex) => {
-  console.log(_Dindex, _Lindex, _Gindex);
   let payload = {
     boardID: _boardID,
     Dindex: _Dindex,

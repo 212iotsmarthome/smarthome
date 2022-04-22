@@ -1,17 +1,18 @@
 import { ScrollView, View } from "react-native";
 import React from "react";
-import DeleteButton from "./Elements/DeleteButton";
 import LogCard from "./Elements/LogCard";
 import THTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
 import { AuthContext } from "../Firebase/AuthProvider";
 
 const LogScreen = () => {
-  const { logList, deviceList, selectName } = React.useContext(AppContext);
+  const { logList } = React.useContext(AppContext);
   const { user } = React.useContext(AuthContext);
+
   React.useEffect(() => {
     // console.log(user.control);
-  });
+  }, []);
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View style={{ marginTop: "10%", marginBottom: 20 }}>
