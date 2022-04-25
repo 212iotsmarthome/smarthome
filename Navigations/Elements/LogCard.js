@@ -3,7 +3,7 @@ import { Icon } from "react-native-elements";
 import { removeLog } from "../../Firebase/AUD";
 
 const formatDate = (date) => {
-  let text = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  let text = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
   text +=
     " " +
     String(date.getHours()).padStart(2, "0") +

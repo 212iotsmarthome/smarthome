@@ -38,7 +38,7 @@ export default function AUAdjustScreen({ navigation, route }) {
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo
           smalltext="Auto Curtain Adjustment"
-          largetext={selectedDevice.name}
+          largetext={selectedName.name}
         />
 
         <Image
