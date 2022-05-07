@@ -213,13 +213,12 @@ export default function LEDAdjustScreen({ navigation, route }) {
               isLocked,
               isOpen
             );
-            // console.log(
-            //   selectedDevice.index,
-            //   selectedDevice.boardID,
-            //   isLocked,
-            //   isOpen,
-            //   createLog()
-            // );
+            console.log(
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isLocked,
+              isOpen
+            );
             // navigation.goBack();
             setVisible(true);
           }}
