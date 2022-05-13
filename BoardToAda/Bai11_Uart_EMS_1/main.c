@@ -85,10 +85,11 @@ void main(void)
         
         if (k == 0) {       //run every 5 seconds.
             scene = (scene + 1) % 6;
+//            UartSendString("Hello");
             send_All_Info();
         }
         
-        k = (k + 1) % 100;
+        k = (k + 1) % 40;
         DisplayLcdScreen();
         
 	}

@@ -17,7 +17,7 @@ AIO_FEED_ID_DEVICES = {
 AIO_FEED_ID_SENSORS = "bbc-sensor"
 
 AIO_USERNAME = "namdiep239"
-AIO_KEY = "aio_cSFh41uOGJgJ3IyiK0f0evTUtDOw"
+AIO_KEY = "aio_TGyJ31Y6Dr8Ynnqk3tBYEqL2y64H"
 
 
 # ----------------------------------------MQTT---------------------------------------------------
@@ -86,8 +86,15 @@ client.loop_background()
 LED_string = "\"board1\": { \"0\": 3, \"1\": 0 }"
 
 LED_json = {"board1":{"0":3, "1": 0}}
+door1 = {"board1":{"0":{"motor":0,"lock":0}}}
+door2 = {"board1":{"0":{"motor":1,"lock":0}}}
+door3 = {"board1":{"0":{"motor":0,"lock":1}}}
 
 # LED_string la mot chuoi json dung dinh dang
 client.publish(AIO_FEED_ID_DEVICES["LED"], LED_string)
 
 client.publish(AIO_FEED_ID_DEVICES["LED"], json.dumps(LED_json))
+
+client.publish(AIO_FEED_ID_DEVICES["door"], json.dumps(door1))  #lock
+client.publish(AIO_FEED_ID_DEVICES["door"], json.dumps(door2))
+client.publish(AIO_FEED_ID_DEVICES["door"], json.dumps(door3))

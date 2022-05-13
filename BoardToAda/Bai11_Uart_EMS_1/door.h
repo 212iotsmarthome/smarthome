@@ -22,6 +22,7 @@ void setDoor(int value);
 char get_lock_value();
 //0 la dong, 1 la mo. 
 void set_lock(int value);
+void runDoor(int motor, int lock);
 
 
 #ifdef	__cplusplus

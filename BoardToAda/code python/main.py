@@ -3,6 +3,7 @@ import sys
 from Adafruit_IO import MQTTClient
 import random
 import time
+from datetime import datetime
 import serial.tools.list_ports
 
 # from Adafruit_IO import Client, Feed, Data
@@ -17,7 +18,7 @@ AIO_FEED_ID_DEVICES = {
 AIO_FEED_ID_SENSORS = "bbc-sensor"
 
 AIO_USERNAME = "namdiep239"
-AIO_KEY = "aio_cSFh41uOGJgJ3IyiK0f0evTUtDOw"
+AIO_KEY = "aio_TGyJ31Y6Dr8Ynnqk3tBYEqL2y64H"
 
 # ----------------------------------------SERIAL COMMUNICATION-----------------------------------
 NUM_OF_DEVICE = 1
@@ -55,7 +56,7 @@ mode: [0,3] -> 0:tat, 1:sang den trai, 2:sang den phai, 3:sang 2 den
 
 def set_led(ser, ledIndex, mode):
     command = "!setLed:" + str(ledIndex) + ":" + str(mode) + "*"
-    print(command)
+    print(datetime.now().strftime("%H:%M:%S") + " " + command)
     ser.write(command.encode())  # chuyen du lieu ve dang binary de chuyen sang uart.
 
 
@@ -67,7 +68,7 @@ mode: [0,2] -> 0:dong rem, 1:mo rem 1 nua, 2:mo het rem.
 
 def set_curtain(ser, mode):
     command = "!setCurtain:" + str(mode) + "*"
-    print(command)
+    print(datetime.now().strftime("%H:%M:%S") + " " + command)
     ser.write(command.encode())
 
 
@@ -80,7 +81,7 @@ temp: [0,99] : gia tri nhiet do may lanh
 
 def set_conditioner(ser, is_on, temp):
     command = f'!setConditioner:{is_on}:{temp}*'  # f' string in python.
-    print(command)
+    print(datetime.now().strftime("%H:%M:%S") + " " + command)
     ser.write(command.encode())
 
 
@@ -91,7 +92,7 @@ gui serial command de set 4 den lan luot la den 0, 1 voi mode0, mode1
 
 def set_mul_led(ser, mode0, mode1):
     command = f'!setMulLed:{mode0}:{mode1}*'
-    print(command)
+    print(datetime.now().strftime("%H:%M:%S") + " " + command)
     ser.write(command.encode())
 
 
@@ -102,7 +103,7 @@ gui serial command de dong mo cua. open: 1 de mo cua, 0 de dong cua; lock: 1 de 
 
 def set_door(ser, open, lock):
     command = f'!setDoor:{open}:{lock}*'
-    print(command)
+    print(datetime.now().strftime("%H:%M:%S") + " " + command)
     ser.write(command.encode())
 
 
@@ -113,7 +114,7 @@ gui serial command de tat mo buzzer. 1 de mo loa, 0 de tat loa
 
 def set_buzzer(ser, open):
     command = f'!setBuzzer:{open}*'
-    print(command)
+    print(datetime.now().strftime("%H:%M:%S") + " " + command)
     ser.write(command.encode())
 
 
@@ -124,30 +125,36 @@ def getPort():
     for i in range(0, N):
         port = ports[i]
         strPort = str(port)
-        print(strPort)
-        # print(strPort)  -> COM3 - USB-SERIAL CH340 (COM3)
+        print(datetime.now().strftime("%H:%M:%S") + " " + strPort)
+        # print(datetime.now().strftime("%H:%M:%S") + " " +strPort)  -> COM3 - USB-SERIAL CH340 (COM3)
         # dung lenh sau neu ket noi board that
         # if "USB Serial Device" in strPort:
         #     splitPort = strPort.split(" ")
         #     commPort = (splitPort[0])
         # dung lenh sau neu dung port ao
-        if "Virtual Serial Port" in strPort:
+        if "USB-SERIAL" in strPort:
             splitPort = strPort.split(" ")
             commPort = splitPort[0]
+            print(datetime.now().strftime("%H:%M:%S") + " " + commPort)
+            return commPort
     return commPort
 
 
 def print_data():
     global device_info
-    print("---------------------------------------------------------------------")
-    print("temperature = ", device_info["temperature"])
-    print("humid = ", device_info["humid"])
-    print("LDR1 = ", device_info["LDR"]["1"], "; LDR2 = ", device_info["LDR"]["2"])
-    print("LED0 = ", device_info["LED"]["0"], "; LED1 = ", device_info["LED"]["1"])
-    print("curtain = ", device_info["curtain"])
-    print("door = ", device_info["door"])
-    print("conditioner: power = ", device_info["conditioner"]["power"], " temp = ", device_info["conditioner"]["temp"])
-    print("gas = ", device_info["gas"], " buzzer = ", device_info["buzzer"])
+    print(datetime.now().strftime(
+        "%H:%M:%S") + " " + "---------------------------------------------------------------------")
+    print(datetime.now().strftime("%H:%M:%S") + " " + "temperature = ", device_info["temperature"])
+    print(datetime.now().strftime("%H:%M:%S") + " " + "humid = ", device_info["humid"])
+    print(datetime.now().strftime("%H:%M:%S") + " " + "LDR1 = ", device_info["LDR"]["1"], "; LDR2 = ",
+          device_info["LDR"]["2"])
+    print(datetime.now().strftime("%H:%M:%S") + " " + "LED0 = ", device_info["LED"]["0"], "; LED1 = ",
+          device_info["LED"]["1"])
+    print(datetime.now().strftime("%H:%M:%S") + " " + "curtain = ", device_info["curtain"])
+    print(datetime.now().strftime("%H:%M:%S") + " " + "door = ", device_info["door"])
+    print(datetime.now().strftime("%H:%M:%S") + " " + "conditioner: power = ", device_info["conditioner"]["power"],
+          " temp = ", device_info["conditioner"]["temp"])
+    print(datetime.now().strftime("%H:%M:%S") + " " + "gas = ", device_info["gas"], " buzzer = ", device_info["buzzer"])
 
 
 '''
@@ -195,6 +202,7 @@ def DeviceHandle(temp_info, index):
         # client.publish(AIO_FEED_ID_DEVICES["curtain"], temp_info["curtain"])
     if temp_info["door"] != device_info[index]["door"]:
         new_door_data = 1
+        print(temp_info["door"], device_info[index]["door"], sep='\n')
         # client.publish(AIO_FEED_ID_DEVICES["door"], temp_info["door"])
     if temp_info["buzzer"] != device_info[index]["buzzer"]:
         new_buzzer_data = 1
@@ -218,21 +226,23 @@ def SensorHandle(index):
     sensor_json["value"][device_info[index]["deviceID"]]["LDR"] = device_info[index]["LDR"]
     sensor_json["value"][device_info[index]["deviceID"]]["gas"] = device_info[index]["gas"]
 
+
 first_run = True
+
 
 def processData(data, index):
     global first_run, new_conditioner_data, new_buzzer_data, new_curtain_data, new_door_data, new_led_data
     data = data.replace("!", "")
     data = data.replace("*", "")
     # splitData = data.split(":")
-    # print(splitData)
+    # print(datetime.now().strftime("%H:%M:%S") + " " +splitData)
     # if splitData[1] == "TEMP":
     #     client.publish("bbc-temp", splitData[2])
     global device_info
     global device_ready
     if data == "OK":
         device_ready = 1
-        print("device ready")
+        print(datetime.now().strftime("%H:%M:%S") + " " + "device ready")
     else:
         try:
             if first_run:
@@ -241,7 +251,7 @@ def processData(data, index):
                 new_led_data = 1
                 new_curtain_data = 1
                 new_conditioner_data = 1
-                first_run = False
+
             temp_device_info = json.loads(data)
             # kiem tra su thay doi input cua cac device va gui
             DeviceHandle(temp_device_info, index)
@@ -249,9 +259,9 @@ def processData(data, index):
             device_info[index] = temp_device_info
             # gui input cua sensor (ko can kiem tra)
             SensorHandle(index)
+            first_run = False
         except:
             pass
-
 
 
 # serial_messages = ""
@@ -270,7 +280,7 @@ def readSerial(ser, index):
     global serial_messages
     if bytesToRead > 0:
         serial_messages[index] = serial_messages[index] + ser.read(bytesToRead).decode("UTF-8")
-        # print(serial_messages)
+        #print(serial_messages)
         while ("!" in serial_messages[index]) and ("*" in serial_messages[index]):
             start = serial_messages[index].find("!")
             end = serial_messages[index].find("*")
@@ -291,49 +301,47 @@ def readSerial(ser, index):
 def send_to_ada():
     global new_led_data, new_door_data, new_curtain_data, new_conditioner_data, new_buzzer_data
     if new_led_data == 1:
-        print(f'send to {AIO_FEED_ID_DEVICES["LED"]}', LED_json)
+        print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["LED"]}', LED_json)
         new_led_data = 0
         client.publish(AIO_FEED_ID_DEVICES["LED"], json.dumps(LED_json))
     if new_conditioner_data == 1:
-        print(f'send to {AIO_FEED_ID_DEVICES["conditioner"]}', cond_json)
+        print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["conditioner"]}', cond_json)
         new_conditioner_data = 0
         client.publish(AIO_FEED_ID_DEVICES["conditioner"], json.dumps(cond_json))
     if new_curtain_data == 1:
-        print(f'send to {AIO_FEED_ID_DEVICES["curtain"]}', curtain_json)
+        print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["curtain"]}', curtain_json)
         new_curtain_data = 0
         client.publish(AIO_FEED_ID_DEVICES["curtain"], json.dumps(curtain_json))
     if new_door_data == 1:
-        print(f'send to {AIO_FEED_ID_DEVICES["door"]}', door_json)
+        print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["door"]}', door_json)
         new_door_data = 0
         client.publish(AIO_FEED_ID_DEVICES["door"], json.dumps(door_json))
     if new_buzzer_data == 1:
-        print(f'send to {AIO_FEED_ID_DEVICES["buzzer"]}', buzzer_json)
+        print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["buzzer"]}', buzzer_json)
         client.publish(AIO_FEED_ID_DEVICES["buzzer"], json.dumps(buzzer_json))
         new_buzzer_data = 0
         # buzzer
     client.publish(AIO_FEED_ID_SENSORS, json.dumps(sensor_json))
-    print(f'send to {AIO_FEED_ID_SENSORS}', sensor_json)
+    print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_SENSORS}', sensor_json)
 
 
 def print_send_json():
-    print(f'send to {AIO_FEED_ID_DEVICES["LED"]}', LED_json)
-    print(f'send to {AIO_FEED_ID_DEVICES["conditioner"]}', cond_json)
-    print(f'send to {AIO_FEED_ID_DEVICES["curtain"]}', curtain_json)
-    print(f'send to {AIO_FEED_ID_DEVICES["door"]}', door_json)
-    print(f'send to {AIO_FEED_ID_DEVICES["buzzer"]}', buzzer_json)
-    print(f'send to {AIO_FEED_ID_SENSORS}', sensor_json)
-
-
+    print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["LED"]}', LED_json)
+    print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["conditioner"]}', cond_json)
+    print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["curtain"]}', curtain_json)
+    print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["door"]}', door_json)
+    print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_DEVICES["buzzer"]}', buzzer_json)
+    print(datetime.now().strftime("%H:%M:%S") + " " + f'send to {AIO_FEED_ID_SENSORS}', sensor_json)
 
 
 isMicrobitConnected = False
 ser = []
 for i in range(0, NUM_OF_DEVICE):
-    ser.append(serial.Serial(port="COM3", baudrate=9600))  # baudrate=115200
+    ser.append(serial.Serial(port=getPort(), baudrate=9600))  # baudrate=115200
 
 
 # if getPort() != "None":
-#     print(getPort())
+#     print(datetime.now().strftime("%H:%M:%S") + " " +getPort())
 #     isMicrobitConnected = True
 # ----------------------------------------SERIAL COMMUNICATION-----------------------------------
 
@@ -341,7 +349,7 @@ for i in range(0, NUM_OF_DEVICE):
 # ----------------------------------------MQTT---------------------------------------------------
 
 def connected(client):
-    print("Ket noi thanh cong...")
+    print(datetime.now().strftime("%H:%M:%S") + " " + "Ket noi thanh cong...")
     for feed in AIO_FEED_ID_DEVICES:
         client.subscribe(AIO_FEED_ID_DEVICES[feed])
     # client.subscribe(AIO_FEED_IDS_TEST)
@@ -350,26 +358,22 @@ def connected(client):
 
 
 def subscribe(client, userdata, mid, granted_qos):
-    print("Subscribe thanh cong...")
+    print(datetime.now().strftime("%H:%M:%S") + " " + "Subscribe thanh cong...")
 
 
 def disconnected(client):
-    print("Ngat ket noi...")
+    print(datetime.now().strftime("%H:%M:%S") + " " + "Ngat ket noi...")
     sys.exit(1)
 
 
 def SendToBoard(feed_id, payload):
-    for i in range(0, NUM_OF_DEVICE):
-        bytes = ser[i].inWaiting()
-        if bytes > 0:
-            trash_data = ser[i].read(bytes)
+    global device_info, serial_messages, ser
     try:
         payload_json = json.loads(payload)
     except:
         return
-    global device_info
-    if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
 
+    if (feed_id == AIO_FEED_ID_DEVICES["LED"]):
         # payload_json se co dang kieu: {"board1":{"0":1, "1":0}, "board2": {"0":1, "1":1}}
         for key in payload_json:
             for index in range(0, NUM_OF_DEVICE):
@@ -422,15 +426,24 @@ def SendToBoard(feed_id, payload):
                     # cap nhat device_info de ko bi gui 2 lan
                     device_info[index]["buzzer"] = payload_json[key]
                     break
+    for i in range(0, NUM_OF_DEVICE):
+        bytes = ser[i].inWaiting()
+        if bytes > 0:
+            trash_data = ser[i].read(bytes)
+        serial_messages[i] = ""
+
+
+mqttMessage = []
 
 
 def message(client, feed_id, payload):
-    print(feed_id + " nhan du lieu: " + payload)
-    print(type(payload))
-    global device_ready
+    print(datetime.now().strftime("%H:%M:%S") + " " + feed_id + " nhan du lieu: " + payload)
+    # print(datetime.now().strftime("%H:%M:%S") + " " + type(payload))
+    global device_ready, mqttMessage
     # if device_ready:
-    SendToBoard(feed_id, payload)
-        # device_ready = 0
+    mqttMessage.append([feed_id, payload])
+    # SendToBoard(feed_id, payload)
+    # device_ready = 0
 
 
 client = MQTTClient(AIO_USERNAME, AIO_KEY)
@@ -442,25 +455,40 @@ client.connect()
 client.loop_background()
 
 # ----------------------------------------MQTT---------------------------------------------------
+ignore = 0
 i = 0
 while True:
     # if isMicrobitConnected:
-    for j in range(0, NUM_OF_DEVICE):
-        readSerial(ser[j], j)
+    if ignore == 0:
+        for j in range(0, NUM_OF_DEVICE):
+            readSerial(ser[j], j)
+    else:
+        for i in range(0, NUM_OF_DEVICE):
+            bytess = ser[i].inWaiting()
+            if bytess > 0:
+                trash_data = ser[i].read(bytess)
+            serial_messages[i] = ""
+        ignore = ignore - 1
+
+    while len(mqttMessage) > 0:
+        tempmqtt = mqttMessage.pop(0)
+        SendToBoard(tempmqtt[0], tempmqtt[1])
+        ignore = 2
 
     i = (i + 1) % 5
+
     if i == 0:
         send_to_ada()
         # print_send_json()
-        print("--------------------------------")
+        print(datetime.now().strftime("%H:%M:%S") + " " + "--------------------------------")
     time.sleep(1)
 
     # value = random.randint(0,100)
-    # print("Cap nhat: ", value)
+    # print(datetime.now().strftime("%H:%M:%S") + " " +"Cap nhat: ", value)
     # client.publish("bbc-temp", value)
     #
     # currentLed = client.receive("bbc-temp")
-    # print(currentLed)
-    # print("done")
+    # print(datetime.now().strftime("%H:%M:%S") + " " +currentLed)
+    # print(datetime.now().strftime("%H:%M:%S") + " " +"done")
     #
     # time.sleep(10)

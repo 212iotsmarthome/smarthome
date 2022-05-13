@@ -62,8 +62,9 @@ void Uart_Processing() {
             set_Led(1, uart_message[12] - '0');
 //            UartSendString("!OK*");
         }  else if (str_ncmp(uart_message, command_setDoor, 7) == 0) {
-            setDoor(uart_message[8] - '0');
-            set_lock(uart_message[10] - '0');
+//            set_lock(uart_message[10] - '0');
+//            setDoor(uart_message[8] - '0');
+            runDoor(uart_message[8] - '0', uart_message[10] - '0');
 //            UartSendString("!OK*");
         }else if (str_ncmp(uart_message, command_setBuzzer, 9) == 0){
             setBuzzer(uart_message[10] - '0');
