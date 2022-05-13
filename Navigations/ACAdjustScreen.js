@@ -11,6 +11,7 @@ import { controlAC, getACStatus } from "../Controller/controller";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 import { Snackbar } from "react-native-paper";
 
 export default function ACAdjustScreen({ navigation }) {
@@ -19,17 +20,19 @@ export default function ACAdjustScreen({ navigation }) {
   const [visible, setVisible] = React.useState(Boolean(false));
   const [isOn, setIsOn] = React.useState(false);
   const [temp, setTemp] = React.useState("25");
-  const { selectedName, selectedDevice, selectedDeviceInfo } =
-    React.useContext(AppContext);
+  const { selectedName, selectedDevice } = React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     getACStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
-      setTemp(data.temp)
-      setIsOn(data.power == 1 ? true : false)
-    })
-    return () => { isMounted = false };
-  }, [])
+      setTemp(data.temp);
+      setIsOn(data.power == 1 ? true : false);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -164,9 +167,9 @@ export default function ACAdjustScreen({ navigation }) {
                 parseInt(temp) > 30
                   ? setTemp("30")
                   : parseInt(temp) < 16
-                    ? setTemp("16")
-                    : setTemp(String(parseInt(temp)));
-                console.log(temp);
+                  ? setTemp("16")
+                  : setTemp(String(parseInt(temp)));
+                // console.log(temp);
               }}
               keyboardType="number-pad"
             />
@@ -187,10 +190,7 @@ export default function ACAdjustScreen({ navigation }) {
             alignItems: "flex-start",
           }}
           onPress={() => {
-            navigation.navigate("SetTimeScreen", {
-              obj: selectedName,
-              type: "AC",
-            });
+            navigation.navigate("SetTimeScreen");
           }}
         >
           <View style={{ width: "70%" }}>
@@ -219,7 +219,16 @@ export default function ACAdjustScreen({ navigation }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            controlAC(selectedDevice.index, selectedDevice.boardID, isOn, temp);
+            controlAC(
+              user.name,
+              user.ID,
+              selectedName.ID,
+              selectedName.name,
+              selectedDevice.index,
+              selectedDevice.boardID,
+              isOn,
+              temp
+            );
             console.log(
               selectedDevice.index,
               selectedDevice.boardID,
@@ -242,7 +251,7 @@ export default function ACAdjustScreen({ navigation }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-      //action
+        //action
       >
         Change saved.
       </Snackbar>

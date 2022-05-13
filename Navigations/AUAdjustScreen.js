@@ -1,13 +1,10 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-<<<<<<< HEAD
 import { Snackbar } from "react-native-paper";
-import { controlCurtain } from "../Controller/controller";
 import { AppContext } from "../Firebase/AppProvider";
-=======
+import { AuthContext } from "../Firebase/AuthProvider";
 import { controlCurtain, getCurtainStatus } from "../Controller/controller";
->>>>>>> a9bc09484395b0926210a72f426276dd80ef4a2e
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 
@@ -20,24 +17,28 @@ export default function AUAdjustScreen({ navigation, route }) {
   const [isConnected, setIsConnected] = React.useState(true);
   const [isClosed, setIsClosed] = React.useState(false);
   const [isMoving, setIsMoving] = React.useState(false);
-  const { selectedDevice, selectedDeviceInfo } = React.useContext(AppContext);
+  const { selectedDevice, selectedName } = React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    let isMounted = true
-    getCurtainStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
-      console.log(data)
-      setSelectedAction(data)
-    })
-    return () => { isMounted = false };
-  }, [])
-
+    let isMounted = true;
+    getCurtainStatus(selectedDevice.boardID, selectedDevice.index).then(
+      (data) => {
+        console.log(data);
+        setSelectedAction(data);
+      }
+    );
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
       <View style={{ marginVertical: "10%" }}>
         <TopHeadTypo
           smalltext="Auto Curtain Adjustment"
-          largetext={selectedDevice.name}
+          largetext={selectedName.name}
         />
 
         <Image
@@ -124,9 +125,7 @@ export default function AUAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen", { obj: AU, type: "AU" })
-          }
+          onPress={() => navigation.navigate("SetTimeScreen")}
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -142,17 +141,14 @@ export default function AUAdjustScreen({ navigation, route }) {
       </View>
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
-<<<<<<< HEAD
-        <IOTButton text="Save" onPress={() => {
-          // controlCurtain(selectedDevice.index, selectedDevice.boardID, selectedAction);
-          console.log(selectedDevice.index, selectedDevice.boardID, selectedAction);
-          navigation.goBack();
-        }} />
-=======
         <IOTButton
           text="Save"
           onPress={() => {
             controlCurtain(
+              user.name,
+              user.ID,
+              selectedName.ID,
+              selectedName.name,
               selectedDevice.index,
               selectedDevice.boardID,
               selectedAction
@@ -162,11 +158,9 @@ export default function AUAdjustScreen({ navigation, route }) {
               selectedDevice.boardID,
               selectedAction
             );
-            // navigation.goBack();
             setVisible(true);
           }}
         />
->>>>>>> ab0705421219eb18b605f29378e400e5a92edc02
       </View>
 
       <Snackbar
@@ -180,7 +174,7 @@ export default function AUAdjustScreen({ navigation, route }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-      //action
+        //action
       >
         Change saved.
       </Snackbar>

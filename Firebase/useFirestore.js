@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot, orderBy, limit, Query } from "firebase/firestore";
 import { db } from './firebase';
 
-export default function useFirebase(collectionParam, condition) {
+export function useFirestore(collectionParam, condition) {
   const [document, setDocument] = useState([]);
   useEffect(() => {
     let collectionRef = collection(db, collectionParam);
@@ -32,4 +32,6 @@ export default function useFirebase(collectionParam, condition) {
   }, [collectionParam, condition, db])
   return document;
 }
+
+
 

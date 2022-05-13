@@ -14,13 +14,15 @@ import IOTDeviceGroupCard from "./Elements/IOTDeviceGroupCard";
 import AvatarButton from "./Elements/AvatarButton";
 import { AuthContext } from "../Firebase/AuthProvider";
 import { AppContext } from "../Firebase/AppProvider";
+import { NotiContext } from "../Firebase/NotiProvider";
 
 import Credit from "./Elements/Credit";
 
 export default function HomeScreen({ navigation }) {
-  const [isConnected, setIsConnected] = React.useState(true);
+  const [ isConnected, setIsConnected ] = React.useState(true);
   const { user } = React.useContext(AuthContext);
-  const { setStatus, selectName } = React.useContext(AppContext);
+  const { setStatus, selectName, commentsQuery } = React.useContext(AppContext);
+  const { sendMesaage } = React.useContext(NotiContext);
 
   // const backHome = () => {
   //   Alert.alert("Hold on!", "Are you sure you want to go back?", [
@@ -34,9 +36,12 @@ export default function HomeScreen({ navigation }) {
   //   return true;
   // };
 
-  // useEffect(() => {
-  //   BackHandler.addEventListener("hardwareBackPress", backHome);
-  //   return () => BackHandler.removeEventListener("hardwareBackPress", backHome);
+  // const backHandler = BackHandler.addEventListener(
+  //   "hardwareBackPress", backHome
+  // );
+
+  // useEffect(async () => {
+  //   sendMesaage("Hello" + user.name, "Welcome Back");
   // }, []);
 
   return (
@@ -44,7 +49,9 @@ export default function HomeScreen({ navigation }) {
       <View style={{ marginTop: "10%" }}>
         <TopHeadTypo smalltext={"Hello, " + user.name} largetext="Home" />
       </View>
-      <AvatarButton onPress={() => navigation.navigate("PersonalScreen")} />
+      <AvatarButton onPress={() => {
+        navigation.navigate("PersonalScreen");
+      }} />
 
       <Image
         style={{
@@ -122,7 +129,10 @@ export default function HomeScreen({ navigation }) {
             subtitle="Add smartness"
             name="add-circle-outline"
             type="material"
-            onPress={() => navigation.navigate("AddDeviceScreen")}
+            onPress={() => {
+              sendMesaage("Hello" + user.name, "Welcome Back, again");
+              navigation.navigate("AddDeviceScreen");
+            }}
           />
         </View>
       </ScrollView>

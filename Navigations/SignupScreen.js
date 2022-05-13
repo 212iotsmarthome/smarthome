@@ -4,7 +4,7 @@ import TopHeadTypo from "./Elements/TopHeadTypo";
 import IOTButton from "./Elements/IOTButton";
 import IOTTextInput from "./Elements/IOTTextInput";
 import Credit from "./Elements/Credit";
-import { getEnviData } from "../controller/controller";
+import { getEnviData } from "../Controller/controller";
 
 import { handleSignUp } from "../Firebase/utility";
 
@@ -12,11 +12,6 @@ export default function SUScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-
-  useEffect(async () => {
-    const res = await getEnviData("0", "board1", 3);
-    console.log(res.data);
-  }, []);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>

@@ -1,11 +1,28 @@
 import {
-    getFirestore, collection, onSnapshot,
-    addDoc, updateDoc, deleteDoc, doc,
-    query, where,
-    orderBy, serverTimestamp,
-    getDoc,
-} from 'firebase/firestore'
+  getFirestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  query,
+  where,
+  orderBy,
+  serverTimestamp,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
+
+export const getDocument = async (collectionParam, id) => {
+  try {
+    const docRef = await doc(db, collectionParam, id);
+    console.log("Document getting with ID: ", docRef.id);
+    return docRef;
+  } catch (e) {
+    console.error("Error getting document: ", e);
+  }
+};
 
 export const addDocument = async (collectionParam, data) => {
   try {
@@ -15,7 +32,7 @@ export const addDocument = async (collectionParam, data) => {
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-}
+};
 
 export const deleteDocumentById = async (collectionParam, id) => {
   try {
@@ -23,13 +40,13 @@ export const deleteDocumentById = async (collectionParam, id) => {
   } catch (e) {
     console.error("Error delete: ", e);
   }
-}
+};
 
 export const editDocumentById = async (collectionParam, id, data) => {
   try {
     await updateDoc(doc(db, collectionParam, id), data);
-    console.log("update doc: ", id);
+    console.log("Update doc: ", id);
   } catch (e) {
     console.error("Error update: ", e);
   }
-}
+};

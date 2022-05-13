@@ -4,6 +4,8 @@ import { AppContext } from "../Firebase/AppProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { Snackbar } from "react-native-paper";
+import { getEnviData } from "../Controller/controller";
+import { changeBuzzer } from "../Firebase/AUD";
 
 export default function LEDAdjustScreen({ navigation, route }) {
   const [visible, setVisible] = React.useState(Boolean(false));
@@ -12,13 +14,49 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [humid, setHumid] = React.useState("--");
   const [brightness, setBrightness] = React.useState("--");
   const [flammable, setFlammable] = React.useState(false);
-  const { control, selectedDevice, selectedDeviceInfo } =
-    React.useContext(AppContext);
+  const { selectedDevice, selectedName, selectedDeviceInfo } = React.useContext(AppContext);
   // const [loading, setLoading] = useState(true);
 
-  // React.useEffect(() => {
-  //   setLoading(false);
-  // }, [selectedDeviceInfo])
+  React.useEffect(() => {
+    let isMounted = true;
+    if (selectedDeviceInfo.length > 0) {
+      setIsOn(selectedDeviceInfo[0].setBuzzer);
+      getEnviData(
+        selectedDevice.boardID,
+        selectedDeviceInfo[0]["DHT_index"],
+        selectedDeviceInfo[0]["LDR_index"],
+        selectedDeviceInfo[0]["Gas_index"]
+      ).then((data) => {
+        if (isMounted) {
+          setTemp(data.temperature);
+          setHumid(data.humid);
+          setBrightness(data.brightness);
+          setFlammable(data.gas);
+        }
+      });
+
+      const intervalId = setInterval(() => {
+        getEnviData(
+          selectedDevice.boardID,
+          selectedDeviceInfo[0]["DHT_index"],
+          selectedDeviceInfo[0]["LDR_index"],
+          selectedDeviceInfo[0]["Gas_index"]
+        ).then((data) => {
+          if (isMounted) {
+            setTemp(data.temperature);
+            setHumid(data.humid);
+            setBrightness(data.brightness);
+            setFlammable(data.gas);
+          }
+        });
+      }, 5000);
+
+      return () => {
+        isMounted = false;
+        clearInterval(intervalId);
+      };
+    }
+  }, [selectedDeviceInfo]);
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -97,23 +135,23 @@ export default function LEDAdjustScreen({ navigation, route }) {
 
         <TouchableOpacity
           style={{
-            height: 60,
+            height: 70,
             width: "82%",
             borderRadius: 20,
             paddingLeft: 20,
 
             marginRight: "auto",
             marginLeft: "auto",
-            marginTop: 10,
+            marginVertical: 5,
 
             justifyContent: "center",
             alignItems: "flex-start",
           }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen", { obj: ES, type: "ES" })
-          }
+          onPress={() => {
+            navigation.navigate("SetTimeScreen");
+          }}
         >
-          <View style={{ width: "100%" }}>
+          <View style={{ width: "70%" }}>
             <Text
               style={{
                 fontSize: 18,
@@ -123,6 +161,15 @@ export default function LEDAdjustScreen({ navigation, route }) {
               Set time
             </Text>
           </View>
+
+          <View
+            style={{
+              width: "30%",
+              position: "absolute",
+              right: "0%",
+              alignItems: "center",
+            }}
+          ></View>
         </TouchableOpacity>
 
         <View
@@ -182,8 +229,8 @@ export default function LEDAdjustScreen({ navigation, route }) {
         <IOTButton
           text="Save"
           onPress={() => {
-            // controlAlarm(LED.id, isOn);
             setVisible(true);
+            changeBuzzer({ value: isOn, ID: selectedDeviceInfo[0].id });
           }}
         />
       </View>

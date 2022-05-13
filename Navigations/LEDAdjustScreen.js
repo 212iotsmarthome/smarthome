@@ -2,13 +2,13 @@ import React from "react";
 const axios = require("axios");
 import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
 import { Slider } from "@miblanchard/react-native-slider";
-
-import { AppContext } from "../Firebase/AppProvider";
+import { Snackbar } from "react-native-paper";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
+
 import { controlLED, getLEDStatus } from "../Controller/controller";
-import { addLog } from "../Firebase/AUD";
-import { Snackbar } from "react-native-paper";
+import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 
 export default function LEDAdjustScreen({ navigation }) {
   // const LEDinfo = {DeviceID: 1000001, DeviceName: "Phòng khách"};
@@ -18,16 +18,22 @@ export default function LEDAdjustScreen({ navigation }) {
   const [brightness, setBrightness] = React.useState(1);
   const { selectedName, selectedDevice, selectedDeviceInfo } =
     React.useContext(AppContext);
+  const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    let isMounted = true
-    getLEDStatus(selectedDevice.boardID, selectedDevice.index).then((bright) => {
-      setBrightness(bright)
-      if (bright > 0) { setIsOn(true) }
-
-    })
-    return () => { isMounted = false };
-  }, [])
+    let isMounted = true;
+    getLEDStatus(selectedDevice.boardID, selectedDevice.index).then(
+      (bright) => {
+        setBrightness(bright);
+        if (bright > 0) {
+          setIsOn(true);
+        }
+      }
+    );
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const getValue = () => {
     if (!isOn) {
@@ -160,12 +166,7 @@ export default function LEDAdjustScreen({ navigation }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
-          onPress={() =>
-            navigation.navigate("SetTimeScreen", {
-              obj: selectedDeviceInfo,
-              type: "LED",
-            })
-          }
+          onPress={() => navigation.navigate("SetTimeScreen")}
         >
           <View style={{ width: "100%" }}>
             <Text
@@ -193,6 +194,10 @@ export default function LEDAdjustScreen({ navigation }) {
           text="Save"
           onPress={() => {
             controlLED(
+              user.name,
+              user.ID,
+              selectedName.ID,
+              selectedName.name,
               selectedDevice.index,
               selectedDevice.boardID,
               getValue()
@@ -202,12 +207,7 @@ export default function LEDAdjustScreen({ navigation }) {
               selectedDevice.boardID,
               getValue()
             );
-            addLog({
-              content: `Hello ${getValue()}`,
-              deviceID: selectedDevice.ID,
-            });
             setVisible(true);
-            // navigation.goBack();
           }}
         />
       </View>
@@ -223,7 +223,7 @@ export default function LEDAdjustScreen({ navigation }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-      //action
+        //action
       >
         Change saved.
       </Snackbar>

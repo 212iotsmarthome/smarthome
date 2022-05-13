@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { controlDoor, getDoorStatus } from "../Controller/controller";
 import { AppContext } from "../Firebase/AppProvider";
+import { AuthContext } from "../Firebase/AuthProvider";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { Snackbar } from "react-native-paper";
@@ -16,24 +17,26 @@ export default function LEDAdjustScreen({ navigation, route }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const { selectedName, selectedDevice, selectedDeviceInfo } =
     React.useContext(AppContext);
-
+  const { user } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     getDoorStatus(selectedDevice.boardID, selectedDevice.index).then((data) => {
-      setIsOpen(data.motor == 0 ? false : true)
-      setIsLocked(data.lock == 1 ? true : false)
-    })
-    return () => { isMounted = false };
-  }, [])
+      setIsOpen(data.motor == 0 ? false : true);
+      setIsLocked(data.lock == 1 ? true : false);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   React.useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     if (isLocked) setIsOpen(false);
-    return () => { isMounted = false };
-
+    return () => {
+      isMounted = false;
+    };
   }, [isLocked]);
-
 
   return (
     <View style={{ height: "100%", backgroundColor: "white" }}>
@@ -181,7 +184,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
             justifyContent: "center",
             alignItems: "flex-start",
           }}
-          onPress={() => navigation.navigate("SetTimeScreen", { type: "SD" })}
+          onPress={() => navigation.navigate("SetTimeScreen")}
         >
           <View style={{ width: "70%" }}>
             <Text
@@ -201,6 +204,10 @@ export default function LEDAdjustScreen({ navigation, route }) {
           text="Save"
           onPress={() => {
             controlDoor(
+              user.name,
+              user.ID,
+              selectedName.ID,
+              selectedName.name,
               selectedDevice.index,
               selectedDevice.boardID,
               isLocked,
@@ -229,7 +236,7 @@ export default function LEDAdjustScreen({ navigation, route }) {
         visible={visible}
         onDismiss={() => setVisible(false)}
         duration={2000}
-      //action
+        //action
       >
         Change saved.
       </Snackbar>

@@ -1,20 +1,13 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
-import ESButton from "./Elements/ESButton";
+import DeviceButton from "./Elements/DeviceButton";
 import NoDeviceFoundGray from "./Elements/NoDeviceFoundGray";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
 
-
 export default function ESScreen({ navigation }) {
-  const [isConnected, setIsConnected] = React.useState(true);
-  const { selectName, selectDevice, setCurSelection } = React.useContext(AppContext);
-
-  const getType = (type) => {
-    if(type === 3) return "LDR";
-    if(type === 4) return "DHT11";
-    else return "Gas";
-  }
+  const [ isConnected, setIsConnected ] = React.useState(true);
+  const { selectName, setCurSelection } = React.useContext(AppContext);
 
   function ESDiv(props) {
     const length = props.length;
@@ -22,17 +15,12 @@ export default function ESScreen({ navigation }) {
 
     return (
       <View>
-        {/* <Text
-          style={{ left: "70%", marginBottom: 10, color: "#aaa", fontSize: 12 }}
-        >
-          Lock/Unlock
-        </Text> */}
-
         <View style={{ marginBottom: 60, width: "100%" }}>
           {selectName.map((ES) => (
-            <ESButton
-              type={getType(ES.type)}
+            <DeviceButton
+              type={"EnviSensor"}
               name={ES.name}
+              id={ES.ID}
               key={ES.ID}
               onMainPress={() => {
                 setCurSelection(ES.ID);

@@ -9,8 +9,9 @@ import Credit from "./Elements/Credit";
 import { handleSignIn } from "../Firebase/utility";
 
 export default function LIScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [typing, setTyping] = useState(false);
   const { user } = React.useContext(AuthContext);
 
   return (
@@ -30,16 +31,32 @@ export default function LIScreen({ navigation }) {
       </Text>
 
       <View style={{ marginVertical: "15%" }}>
-        <IOTTextInput value={email} onChangeText={(text) => { setEmail(text); }} placeholder="Email" />
-        <IOTTextInput value={password} onChangeText={(text) => { setPassword(text); }} placeholder="Password" secureTextEntry={true} />
+        <IOTTextInput
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+          placeholder="Email"
+        />
+        <IOTTextInput
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+          placeholder="Password"
+          secureTextEntry={true}
+        />
       </View>
 
-      <IOTButton text="Log In" onPress={() => {
-        console.log(user);
-        handleSignIn(email, password)
-        // navigation.navigate("HomeScreen")
-      }} />
-      <Credit />
+      <IOTButton
+        text="Log In"
+        onPress={() => {
+          console.log(user);
+          handleSignIn(email, password);
+          // navigation.navigate("HomeScreen")
+        }}
+      />
+      {/* <Credit /> */}
     </View>
   );
 }

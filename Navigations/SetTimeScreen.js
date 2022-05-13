@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Icon } from "react-native-elements";
@@ -15,74 +16,14 @@ import { DataTable } from "react-native-paper";
 import IOTButton from "./Elements/IOTButton";
 import TopHeadTypo from "./Elements/TopHeadTypo";
 import { AppContext } from "../Firebase/AppProvider";
-import { addSchedule } from "../Firebase/AUD";
+import { addSchedule, removeSchedule } from "../Firebase/AUD";
+import { getDocument } from "../Firebase/service";
 
 // import { AuthContext } from "../Firebase/AuthProvider";
 // import { AppContext } from "../Firebase/AppProvider";
 // import { auth } from "../Firebase/firebase";
 
 export default function SetTimeScreen({ navigation, route }) {
-  const Devicejson = route.params;
-  const ScheduleList = [
-    {
-      Action: "Full-open",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 03:24:00"),
-    },
-    {
-      Action: "Close",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 21:50:00"),
-    },
-    {
-      Action: "Full-open",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 03:24:00"),
-    },
-    {
-      Action: "Close",
-      Daily: false,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 21:50:00"),
-    },
-    {
-      Action: "Half-open",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 03:24:00"),
-    },
-    {
-      Action: "Close",
-      Daily: true,
-      ScheduleID: "1212",
-      Time: new Date("March 16, 2022 21:50:00"),
-    },
-  ];
-
-  const actList =
-    Devicejson.type == "LED"
-      ? ["Turn off", "Low brightness", "Medium brightness", "High brightness"]
-      : Devicejson.type == "AC"
-        ? ["Turn off", "Turn on"]
-        : Devicejson.type == "SD"
-          ? ["Open door", "Close door", "Unlock door", "Lock door"]
-          : Devicejson.type == "AU"
-            ? ["Close", "Half-open", "Full-open"]
-            : ["Set alarm on", "Set alarm off"];
-
-  const wait = (timeout) => {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
-  };
-
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [isShow, setShow] = React.useState(false);
-
-  const [date, setDate] = React.useState(new Date());
-  const [selectedAction, setSelectedAction] = React.useState("");
-  const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
   const {
     status,
     selectedName,
@@ -91,23 +32,57 @@ export default function SetTimeScreen({ navigation, route }) {
     scheduleList,
     selectedDeviceSchedule,
   } = React.useContext(AppContext);
+  const Devicejson = { type: status, name: selectedName.name };
+  // const ScheduleList = [
+  //   {
+  //     Action: "Full-open",
+  //     Daily: true,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 03:24:00"),
+  //   },
+  //   {
+  //     Action: "Close",
+  //     Daily: true,
+  //     ScheduleID: "1212",
+  //     Time: new Date("March 16, 2022 21:50:00"),
+  //   },
+
+  // ];
+
+  const actList =
+    Devicejson.type == 1 // LED
+      ? ["Light off", "Low brightness", "Medium brightness", "High brightness"]
+      : Devicejson.type == 2 // AC
+      ? ["AC off", "AC on"]
+      : Devicejson.type == 7 /// Door
+      ? ["Open door", "Close door", "Unlock door", "Lock door"]
+      : Devicejson.type == 6 // Curtain
+      ? ["Close", "Half-open", "Full-open"]
+      : ["Alarm stand-by", "Alarm off"];
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [isShow, setShow] = React.useState(false);
+
+  const [ScheduleList, setScheduleList] = React.useState(
+    selectedDeviceInfo[0].scheduleList
+  );
+  const [date, setDate] = React.useState(new Date());
+  const [selectedAction, setSelectedAction] = React.useState(0);
+  const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    //get method
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  // React.useEffect(() => {
-  //   console.log(selectedDeviceInfo);
-  //   addSchedule({
-  //     Action: "Turn On",
-  //     Daily: true,
-  //     status: status,
-  //     deviceID: selectedDeviceInfo[0]["id"],
-  //     scheduleList: scheduleList
-  //   });
-  // }, [])
+  React.useEffect(() => {
+    // const sched = getDocument("Schedule", schedID).then(() => {
+    // });
+  });
 
   return (
     <View>
@@ -122,17 +97,17 @@ export default function SetTimeScreen({ navigation, route }) {
           <TopHeadTypo
             smalltext={
               "Set Time - " +
-              (Devicejson.type == "LED"
+              (Devicejson.type == 1
                 ? "LED"
-                : Devicejson.type == "AC"
-                  ? "Air Conditioner"
-                  : Devicejson.type == "SD"
-                    ? "Smart Door"
-                    : Devicejson.type == "AU"
-                      ? "Auto Curtain"
-                      : "EnviSensor™")
+                : Devicejson.type == 2
+                ? "Air Conditioner"
+                : Devicejson.type == 7
+                ? "Smart Door"
+                : Devicejson.type == 6
+                ? "Auto Curtain"
+                : "EnviSensor™")
             }
-            largetext={Devicejson.obj.name}
+            largetext={Devicejson.name}
           />
         </View>
 
@@ -192,6 +167,7 @@ export default function SetTimeScreen({ navigation, route }) {
               onChange={(event, selectedDate) => {
                 setShow(false);
                 const currentDate = selectedDate || date;
+                // currentDate.setTime(currentDate.getTime() + 7 * 60 * 60 * 1000);
                 setDate(currentDate);
               }}
             />
@@ -284,30 +260,25 @@ export default function SetTimeScreen({ navigation, route }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            {/* <DataTable.Row>
-            <DataTable.Cell>John</DataTable.Cell>
-            <DataTable.Cell>john@kindacode.com</DataTable.Cell>
-            <DataTable.Cell numeric>33</DataTable.Cell>
-          </DataTable.Row> */}
-
-            {ScheduleList.map((sched, index) => {
+            {selectedDeviceSchedule.map((sched, index) => {
+              // const sched = getDocument("Schedule", schedID).then((res) =>
+              //   console.log(sched)
+              // const sched = getDocument("Schedule", schedID).then(() =>
+              // console.log(sched)
+              //   {}
+              // );
+              // console.log(sched);
               return (
                 <DataTable.Row key={index}>
                   <DataTable.Cell>
-                    {(sched.Time.getHours() < 10
-                      ? "0" + sched.Time.getHours()
-                      : sched.Time.getHours()) +
+                    {String(sched.Time.toDate().getHours()).padStart(2, "0") +
                       ":" +
-                      (sched.Time.getMinutes() < 10
-                        ? "0" + sched.Time.getMinutes()
-                        : sched.Time.getMinutes())}
+                      String(sched.Time.toDate().getMinutes()).padStart(2, "0")}
                   </DataTable.Cell>
                   <DataTable.Cell>{sched.Action}</DataTable.Cell>
                   <DataTable.Cell>
                     <Text>
-                      {sched.Daily == true
-                        ? "   Yes        "
-                        : "   No         "}
+                      {sched.Daily == true ? "  Yes    " : "  No     "}
                     </Text>
 
                     <Icon
@@ -315,7 +286,28 @@ export default function SetTimeScreen({ navigation, route }) {
                       name="delete"
                       size={18}
                       color="#c00"
-                      onPress={() => { }}
+                      onPress={() => {
+                        Alert.alert(
+                          "Warning",
+                          "Do you want to remove this device from your account?",
+                          [
+                            {
+                              text: "Cancel",
+                              style: "cancel",
+                            },
+                            {
+                              text: "OK",
+                              onPress: () =>
+                                removeSchedule({
+                                  scheduleid: sched.id,
+                                  status: status,
+                                  scheduleList: scheduleList, // child device table
+                                  DeviceID: selectedDeviceInfo[0].id,
+                                }),
+                            },
+                          ]
+                        );
+                      }}
                     />
                   </DataTable.Cell>
                 </DataTable.Row>
@@ -327,7 +319,29 @@ export default function SetTimeScreen({ navigation, route }) {
 
       <View style={{ width: "100%", position: "absolute", bottom: "5%" }}>
         {/* <IOTButton text="Add" onPress={() => navigation.goBack()} /> */}
-        <IOTButton text="Add" onPress={() => {}} />
+        <IOTButton
+          text="Add"
+          onPress={() => {
+            addSchedule({
+              status: status,
+              uid: selectedDeviceInfo[0].id,
+              Action: actList[selectedAction],
+              Daily: toggleCheckBox,
+              Time: date,
+              DeviceID: selectedName.ID,
+              scheduleList: scheduleList,
+            });
+
+            // console.log({
+            //   status: status,
+            //   uid: selectedDeviceInfo[0].id,
+            //   Action: selectedAction,
+            //   Daily: toggleCheckBox,
+            //   Time: date,
+            //   DeviceID: selectedName.ID,
+            // });
+          }}
+        />
       </View>
     </View>
   );
